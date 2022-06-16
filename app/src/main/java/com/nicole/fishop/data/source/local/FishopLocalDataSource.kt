@@ -1,25 +1,22 @@
 package com.nicole.fishop.data.source.local
 
-import com.nicole.fishop.data.FishCategory
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.ChatRecord
+import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopDataSource
-import com.nicole.fishop.data.Users
 
 class FishopLocalDataSource: FishopDataSource {
-    override suspend fun getUsersInfo(): Result<Users> {
+    override suspend fun getUsersInfo(): Result1<Users> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getFishRecord(): Result<FishRecord> {
+    override suspend fun getFishRecord(): Result1<List<FishRecord>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getFishCategory(): Result<FishCategory> {
+    override suspend fun getFishCategory(): Result1<FishCategory> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getChatRecord(): Result<ChatRecord> {
+    override suspend fun getChatRecord(): Result1<ChatRecord> {
         TODO("Not yet implemented")
     }
 }

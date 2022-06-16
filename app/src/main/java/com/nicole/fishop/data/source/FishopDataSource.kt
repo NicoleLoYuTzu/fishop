@@ -1,17 +1,14 @@
 package com.nicole.fishop.data.source
 
-import com.nicole.fishop.data.ChatRecord
-import com.nicole.fishop.data.FishCategory
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.Users
+import com.nicole.fishop.data.*
 
 interface FishopDataSource {
 
-    suspend fun getUsersInfo():Result<Users>
+    suspend fun getUsersInfo(): Result1<Users>
 
-    suspend fun getFishRecord(): Result<List<FishRecord>>
+    suspend fun getFishRecord(): Result1<List<FishRecord>>
 
-    suspend fun getFishCategory(): Result<FishCategory>
+    suspend fun getFishCategory(): Result1<FishCategory>
 
-    suspend fun getChatRecord():Result<ChatRecord>
+    suspend fun getChatRecord():Result1<ChatRecord>
 }

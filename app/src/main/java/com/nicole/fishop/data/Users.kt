@@ -1,4 +1,12 @@
 package com.nicole.fishop.data
 
-class Users {
-}
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.sql.Timestamp
+
+
+
+@Parcelize
+data class Users(
+    var id: String,
+) : Parcelable

@@ -7,7 +7,6 @@ import java.sql.Timestamp
 
 @Parcelize
 data class FishRecord(
-    var id: String,
-    var createdTime: Timestamp,
-    var category: String,
+    var id: String = "",
+    var category: String = "",
 ) : Parcelable

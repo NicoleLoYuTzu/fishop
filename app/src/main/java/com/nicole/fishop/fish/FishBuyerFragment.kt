@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.nicole.fishop.R
 import com.nicole.fishop.databinding.FragmentFishBuyerBinding
 import com.nicole.fishop.databinding.FragmentProfileBuyerBinding
@@ -19,6 +21,10 @@ class FishBuyerFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
+
+
+
+
         return binding.root
     }
 
