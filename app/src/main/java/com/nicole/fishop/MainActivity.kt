@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        val a = 123
         val fishop = findViewById<TextView>(R.id.fishop)
         val profileTitle = findViewById<TextView>(R.id.profile_title)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
