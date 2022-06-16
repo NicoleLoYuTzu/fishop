@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_fragment"
+    app:startDestination="@id/FishSellerFragment">
+    <fragment
+        android:id="@+id/FishSellerFragment"
+        android:name="com.nicole.fishop.fish.FishSellerFragment"
+        android:label="FishSellerFragment" />
+    <fragment
+        android:id="@+id/FishBuyerFragment"
+        android:name="com.nicole.fishop.fish.FishBuyerFragment"
+        android:label="FishBuyerFragment" />
+
+    <fragment
+        android:id="@+id/ProfileBuyerFragment"
+        android:name="com.nicole.fishop.profile.ProfileBuyerFragment"
+        android:label="ProfileBuyerFragment" />
+
+    <fragment
+        android:id="@+id/ProfileSellerFragment"
+        android:name="com.nicole.fishop.profile.ProfileSellerFragment"
+        android:label="ProfileSellerFragment" />
+
+</navigation>
