@@ -7,6 +7,10 @@
         <variable
             name="fishRecord"
             type="com.nicole.fishop.data.FishRecord" />
+
+        <variable
+            name="fishCategory"
+            type="com.nicole.fishop.data.FishCategory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +22,7 @@
             style="@style/date"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="2022/6/16"
+            android:text="2022/6/17"
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,22 +69,25 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="當日魚類:"
+            android:text="當日魚類 : "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <TextView
-            android:id="@+id/textView6"
-            style="@style/date"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="黃魚、鮭魚、鱸魚"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:listitem="@layout/fragment_fish_seller_item_item" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

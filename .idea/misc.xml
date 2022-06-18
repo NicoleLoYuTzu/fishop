@@ -5,8 +5,11 @@
       <map>
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer.xml" value="0.264" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer_item.xml" value="0.20989583333333334" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller.xml" value="0.1" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer_item.xml" value="0.2" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer_item_item.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller.xml" value="0.264" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_item.xml" value="0.1" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_item_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_buyer.xml" value="0.1" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_seller.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_seller1.xml" value="0.1" />

@@ -1,6 +1,7 @@
 package com.nicole.fishop.data.source
 
 import com.nicole.fishop.data.*
+import com.nicole.fishop.util.Logger
 
 interface FishopRepository {
 

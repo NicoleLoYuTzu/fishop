@@ -5,11 +5,11 @@
     app:startDestination="@id/FishSellerFragment">
     <fragment
         android:id="@+id/FishSellerFragment"
-        android:name="com.nicole.fishop.fish.FishSellerFragment"
+        android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
         android:label="FishSellerFragment" />
     <fragment
         android:id="@+id/FishBuyerFragment"
-        android:name="com.nicole.fishop.fish.FishBuyerFragment"
+        android:name="com.nicole.fishop.fishBuyer.FishBuyerFragment"
         android:label="FishBuyerFragment" />
 
     <fragment

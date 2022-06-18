@@ -1,16 +1,18 @@
-package com.nicole.fishop.fish
+package com.nicole.fishop.fishSeller
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.databinding.FragmentFishSellerItemBinding
+import com.nicole.fishop.util.Logger
+import java.sql.Timestamp
 
-class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapter<FishRecord,RecyclerView.ViewHolder>(DiffCallback) {
+class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapter<FishRecord,RecyclerView.ViewHolder>(
+    DiffCallback
+) {
 
     class OnClickListener(val clickListener: (fishRecord: FishRecord) -> Unit) {
         fun onClick(fishRecord: FishRecord) = clickListener(fishRecord)
@@ -20,8 +22,11 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishRecord: FishRecord, onClickListener: OnClickListener) {
-
+            val time = Timestamp(fishRecord.time.time)
+            binding.recyclerView.adapter = FishSellerAdapterItem()
+            binding.textViewDate.text = time.toString()
             binding.fishRecord = fishRecord
+            Logger.d("binding.fishRecord=> $fishRecord")
             binding.root.setOnClickListener { onClickListener.onClick(fishRecord) }
             binding.executePendingBindings()
         }

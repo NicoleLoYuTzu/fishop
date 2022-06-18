@@ -1,4 +1,4 @@
-package com.nicole.fishop.fish
+package com.nicole.fishop.fishSeller
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +9,7 @@ import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.network.LoadApiStatus
+import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +22,13 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
 
     val status: LiveData<LoadApiStatus>
         get() = _status
+
+//    private val _product = MutableLiveData<Product>().apply {
+//        value = arguments
+//    }
+//
+//    val product: LiveData<Product>
+//        get() = _product
 
 
     // error: The internal MutableLiveData that stores the error of the most recent request
@@ -45,11 +53,19 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    init {
+        getFishRecordResult()
+    }
+
     fun getFishRecordResult(){
         coroutineScope.launch {
+            Logger.d("getFishRecordResult")
+
             _status.value = LoadApiStatus.LOADING
 
             val result = repository.getFishRecord()
+            Logger.d("repository.getFishRecord()")
+            Logger.d("result $result")
 
             _fishRecord.value = when (result) {
                 is Result1.Success -> {
