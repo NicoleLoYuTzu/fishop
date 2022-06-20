@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
-import com.nicole.fishop.data.FishCategory
+import com.nicole.fishop.data.Category
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.source.FishopRepository
@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FishSellerViewModel (private val repository: FishopRepository) : ViewModel() {
+class FishSellerViewModelAddToday (private val repository: FishopRepository) : ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -24,32 +24,7 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-//    private val _product = MutableLiveData<Product>().apply {
-//        value = arguments
-//    }
-//
-//    val product: LiveData<Product>
-//        get() = _product
 
-
-    // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String>()
-
-    val error: LiveData<String>
-        get() = _error
-
-
-    private var _fishRecord = MutableLiveData<List<FishRecord>>()
-
-    val fishRecord: LiveData<List<FishRecord>>
-        get() = _fishRecord
-
-//    private var _fishCategory = MutableLiveData<List<FishCategory>>()
-//
-//    val fishCategory: LiveData<List<FishCategory>>
-//        get() = _fishCategory
-
-    // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
 
     val refreshStatus: LiveData<Boolean>
@@ -59,23 +34,34 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    private val _error = MutableLiveData<String>()
+
+    val error: LiveData<String>
+        get() = _error
+
+
+    private var _fishAll = MutableLiveData<List<Category>>()
+
+    val fishAll: LiveData<List<Category>>
+        get() = _fishAll
+
     init {
-        getFishRecordResult()
+        getFishAllResult()
     }
 
-    fun getFishRecordResult(){
+    fun getFishAllResult(){
         coroutineScope.launch {
-            Logger.d("getFishRecordResult")
+            Logger.d("getFishAllResult")
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getFishRecord()
-            Logger.d("repository.getFishRecord()")
+            val result = repository.getFishAll()
+            Logger.d("repository.getFishAll()")
             Logger.d("result $result")
 
-            _fishRecord.value = when (result) {
+            _fishAll.value = when (result) {
                 is Result1.Success -> {
-                    _error.value = null
+
                     _status.value = LoadApiStatus.DONE
                     result.data
                 }
@@ -100,6 +86,4 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
         }
 
     }
-
-
 }

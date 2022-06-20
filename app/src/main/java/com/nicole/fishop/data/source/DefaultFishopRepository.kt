@@ -11,8 +11,8 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
         return remoteDataSource.getFishRecord()
     }
 
-    override suspend fun getFishCategory(): Result1<FishCategory> {
-        return remoteDataSource.getFishCategory()
+    override suspend fun getFishAll(): Result1<List<Category>> {
+        return remoteDataSource.getFishAll()
     }
 
     override suspend fun getChatRecord(): Result1<ChatRecord> {

@@ -9,7 +9,7 @@ interface FishopRepository {
 
     suspend fun getFishRecord(): Result1<List<FishRecord>>
 
-    suspend fun getFishCategory(): Result1<FishCategory>
+    suspend fun getFishAll(): Result1<List<Category>>
 
     suspend fun getChatRecord():Result1<ChatRecord>
 

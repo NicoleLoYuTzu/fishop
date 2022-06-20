@@ -81,6 +81,7 @@
         android:id="@+id/RecyclerView_todayfish"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/fragment_fish_buyer_item_item"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"

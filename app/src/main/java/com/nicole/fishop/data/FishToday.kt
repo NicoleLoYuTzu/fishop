@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import java.sql.Timestamp
 import java.util.*
 
-
+//for buyer
 @Parcelize
 data class FishToday(
     var id: String = "",

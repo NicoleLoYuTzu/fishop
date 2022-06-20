@@ -22,11 +22,6 @@ import kotlin.coroutines.suspendCoroutine
 
 object FishopRemoteDataSource : FishopDataSource {
 
-    private const val PATH_EVERYDAYFISHES = "EverdayFishes"
-    private const val PATH_FISHESCOLLECTION = "fishes"
-    private const val KEY_CREATED_TIME = "time"
-
-
     override suspend fun getUsersInfo(): Result1<Users> {
         TODO("Not yet implemented")
     }
@@ -55,7 +50,6 @@ object FishopRemoteDataSource : FishopDataSource {
 //                                    // count: 4
 //                                    if (fishes.isSuccessful) {
 //                                        for (document2 in fishes.result!!) {
-//
 //                                            Logger.d("document2 count => $count")
 //                                            Logger.d("document2.data => ${document2.data}")
 //                                            fishRecord.fishCategory =
@@ -80,6 +74,10 @@ object FishopRemoteDataSource : FishopDataSource {
 //                }
 //        }
 
+    private const val PATH_EVERYDAYFISHES = "EverdayFishes"
+    private const val PATH_FISHESCOLLECTION = "fishes"
+    private const val KEY_CREATED_TIME = "time"
+
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getFishRecord(): Result1<List<FishRecord>> =
@@ -103,18 +101,18 @@ object FishopRemoteDataSource : FishopDataSource {
                                 .addOnCompleteListener { fishes ->
                                     // count: 4
                                     if (fishes.isSuccessful) {
-                                        val category= mutableListOf<FishCategory>()
+                                        val category = mutableListOf<FishCategory>()
                                         for (document2 in fishes.result!!) {
 
                                             Logger.d("document2 count => $count")
                                             Logger.d("document2.data => ${document2.data}")
                                             category.add(document2.toObject((FishCategory::class.java)))
-                                            }
+                                        }
                                         fishRecord.fishCategory = category
                                         list1.add(fishRecord)
-                                        Logger.d( "fishRecord.fishCategory => ${fishRecord.fishCategory}")
+                                        Logger.d("fishRecord.fishCategory => ${fishRecord.fishCategory}")
                                         count -= 1
-                                        if(count==0){
+                                        if (count == 0) {
                                             Logger.d("continuation.resume list1) $list1}")
                                             continuation.resume(Result1.Success(list1))
                                         }
@@ -122,14 +120,35 @@ object FishopRemoteDataSource : FishopDataSource {
                                     }
 
                                 }
-                            }
+                        }
                     }
                 }
         }
 
-    override suspend fun getFishCategory(): Result1<FishCategory> {
-        TODO("Not yet implemented")
-    }
+    private const val PATH_FISHESCATEGORIES = "Categories"
+
+    override suspend fun getFishAll(): Result1<List<Category>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collection(PATH_FISHESCATEGORIES)
+                .get()
+                .addOnCompleteListener { todayFishes ->
+                    if (todayFishes.isSuccessful) {
+
+                        var list = mutableListOf<Category>()
+
+                        for (document1 in todayFishes.result!!) {
+
+                            Logger.d("document1 $document1 ")
+                            val category = document1.toObject(Category::class.java)
+                            list.add(category)
+                        }
+
+                        continuation.resume(Result1.Success(list))
+                    }
+                }
+
+        }
 
     override suspend fun getChatRecord(): Result1<ChatRecord> {
         TODO("Not yet implemented")

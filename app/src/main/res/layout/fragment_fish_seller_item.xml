@@ -7,10 +7,6 @@
         <variable
             name="fishRecord"
             type="com.nicole.fishop.data.FishRecord" />
-
-        <variable
-            name="fishCategory"
-            type="com.nicole.fishop.data.FishCategory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
