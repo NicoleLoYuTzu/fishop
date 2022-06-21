@@ -4,4 +4,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="you_know_nothing">You know nothing</string>
+
+    <string-array name="unit">
+        <item>斤</item>
+        <item>桶</item>
+        <item>籃</item>
+        <item>隻</item>
+        <item>兩</item>
+        <item>箱</item>
+    </string-array>
 </resources>

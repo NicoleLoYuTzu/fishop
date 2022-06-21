@@ -1,9 +1,7 @@
 package com.nicole.fishop.data
 
 import android.os.Parcelable
-import com.nicole.fishop.fishSeller.FishSellerViewModelAddToday
 import kotlinx.parcelize.Parcelize
-import java.util.ArrayList
 
 @Parcelize
 data class CategoryItem(
@@ -11,4 +9,16 @@ data class CategoryItem(
     val title: String = "",
     val unit: String = ""
 ) : Parcelable {
+
+
+//    fun toCategoryItems(): List<AddTodayItem> {
+//        val items1 = mutableListOf<AddTodayItem>()
+//
+//        title.let {
+//            for (items in it) {
+//                items1.add(AddTodayItem.CategoryName(it))
+//            }
+//        }
+//        return items1
+//    }
 }

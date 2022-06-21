@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.fishBuyer.FishBuyerViewModel
 import com.nicole.fishop.fishSeller.FishSellerViewModel
-import com.nicole.fishop.fishSeller.FishSellerViewModelAddToday
+import com.nicole.fishop.fishSeller.AddTodayCategoryViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -26,8 +26,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(FishBuyerViewModel::class.java) ->
                     FishBuyerViewModel(stylishRepository)
 
-                isAssignableFrom(FishSellerViewModelAddToday::class.java) ->
-                    FishSellerViewModelAddToday(stylishRepository)
+                isAssignableFrom(AddTodayCategoryViewModel::class.java) ->
+                    AddTodayCategoryViewModel(stylishRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

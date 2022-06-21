@@ -103,7 +103,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                     if (fishes.isSuccessful) {
                                         val category = mutableListOf<FishCategory>()
                                         for (document2 in fishes.result!!) {
-
                                             Logger.d("document2 count => $count")
                                             Logger.d("document2.data => ${document2.data}")
                                             category.add(document2.toObject((FishCategory::class.java)))
@@ -127,6 +126,29 @@ object FishopRemoteDataSource : FishopDataSource {
 
     private const val PATH_FISHESCATEGORIES = "Categories"
 
+//    override suspend fun getFishAll(): Result1<List<Category>> =
+//        suspendCoroutine { continuation ->
+//            FirebaseFirestore.getInstance()
+//                .collection(PATH_FISHESCATEGORIES)
+//                .get()
+//                .addOnCompleteListener { todayFishes ->
+//                    if (todayFishes.isSuccessful) {
+//
+//                        var list = mutableListOf<Category>()
+//
+//                        for (document1 in todayFishes.result!!) {
+//
+//                            Logger.d("document1 $document1 ")
+//                            val category = document1.toObject(Category::class.java)
+//                            list.add(category)
+//                        }
+//
+//                        continuation.resume(Result1.Success(list))
+//                    }
+//                }
+//
+//        }
+
     override suspend fun getFishAll(): Result1<List<Category>> =
         suspendCoroutine { continuation ->
             FirebaseFirestore.getInstance()
@@ -135,6 +157,7 @@ object FishopRemoteDataSource : FishopDataSource {
                 .addOnCompleteListener { todayFishes ->
                     if (todayFishes.isSuccessful) {
 
+//                        var todayItem = CategoryResult()
                         var list = mutableListOf<Category>()
 
                         for (document1 in todayFishes.result!!) {
@@ -142,6 +165,7 @@ object FishopRemoteDataSource : FishopDataSource {
                             Logger.d("document1 $document1 ")
                             val category = document1.toObject(Category::class.java)
                             list.add(category)
+//                            todayItem.CategoryList = listOf(category)
                         }
 
                         continuation.resume(Result1.Success(list))

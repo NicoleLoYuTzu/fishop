@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/FishSellerFragment"
-        android:icon="@drawable/ic_menu_profile_drawable_selector"
+        android:icon="@drawable/fishibottomnavigation"
         android:title=""
         />
 
     <item
         android:id="@+id/FishBuyerFragment"
-        android:icon="@drawable/ic_menu_profile_drawable_selector"
+        android:icon="@drawable/nav_item_color_state"
         android:title=""/>
 
     <item

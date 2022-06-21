@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
-import com.nicole.fishop.data.Category
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.Result1
+import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
@@ -16,13 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FishSellerViewModelAddToday (private val repository: FishopRepository) : ViewModel() {
+class AddTodayCategoryViewModel (private val repository: FishopRepository) : ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
+
 
 
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -40,14 +39,50 @@ class FishSellerViewModelAddToday (private val repository: FishopRepository) : V
         get() = _error
 
 
-    private var _fishAll = MutableLiveData<List<Category>>()
+    private var _fishAll = MutableLiveData<List<AddTodayItem>>()
 
-    val fishAll: LiveData<List<Category>>
+    val fishAll: LiveData<List<AddTodayItem>>
         get() = _fishAll
+
+    private var _fishtodayItem = MutableLiveData<List<AddTodayItem>>()
+
+    val fishtodayItem: LiveData<List<AddTodayItem>>
+        get() = _fishtodayItem
+
+
+    /**
+     * List<Category> -> List<AddTodayItem>
+     */
+    fun toCategoryName(categories:List<Category>): List<AddTodayItem> {
+        Logger.d("toCategoryName")
+
+        val newItems = mutableListOf<AddTodayItem>()
+
+        for (category in categories) {
+
+            val categoryName = AddTodayItem.CategoryName(category.categoryName)
+            newItems.add(categoryName)
+
+            val categoryItems = category.items
+
+            for (item in categoryItems) {
+
+                val categoryTitle = AddTodayItem.CategoryTitle(item.title)
+                newItems.add(categoryTitle)
+            }
+        }
+
+        return newItems
+    }
+
+
 
     init {
         getFishAllResult()
     }
+
+
+
 
     fun getFishAllResult(){
         coroutineScope.launch {
@@ -61,9 +96,8 @@ class FishSellerViewModelAddToday (private val repository: FishopRepository) : V
 
             _fishAll.value = when (result) {
                 is Result1.Success -> {
-
                     _status.value = LoadApiStatus.DONE
-                    result.data
+                    toCategoryName(result.data)
                 }
                 is Result1.Fail -> {
                     _error.value = result.error
@@ -86,4 +120,5 @@ class FishSellerViewModelAddToday (private val repository: FishopRepository) : V
         }
 
     }
+
 }

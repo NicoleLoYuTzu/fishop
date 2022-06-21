@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/FishSellerFragmentAddToday"
-        android:name="com.nicole.fishop.fishSeller.FishSellerFragmentAddToday"
+        android:name="com.nicole.fishop.fishSeller.AddTodayCategoryFragment"
         android:label="FishSellerFragmentAddToday" />
 
     <fragment

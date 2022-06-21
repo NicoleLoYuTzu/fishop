@@ -3,15 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/ic_menu_profile_drawable_selector.xml" value="0.106" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/nav_item_color_state.xml" value="0.1645" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/frame_circle.xml" value="0.1645" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer.xml" value="0.264" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer_item.xml" value="0.2" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_buyer_item_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller.xml" value="0.264" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today.xml" value="0.4" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_item.xml" value="0.23802083333333332" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_item_item.xml" value="0.15052083333333333" />
-        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_item.xml" value="0.2" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_crab_item.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_fish_item.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_shellfish_item.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_shrimp_item.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today.xml" value="0.152" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_categoryitems.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_categoryname.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_item.xml" value="0.264" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_add_today_item_item.xml" value="0.29296875" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_item.xml" value="0.264" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_fish_seller_item_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_buyer.xml" value="0.1" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_seller.xml" value="0.1925925925925926" />

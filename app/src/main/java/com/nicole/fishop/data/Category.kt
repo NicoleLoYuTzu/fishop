@@ -4,14 +4,23 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 //for seller
-
+@Parcelize
 data class Category(
     var id: String = "",
     var categoryName: String = "",
-    var items :List<CategoryItem> = emptyList()
-//    var items: ArrayList<FishAllItems> = arrayListOf(FishAllItems(arrayOf(""),"")),
-//    var items: HashMap<String,FishAllItems> = mapOf("childItems" to FishAllItems()) as HashMap<String, FishAllItems>,
-//    var items: List<String> =
-//    val childItems: List<Int> = listOf(1,2,3) ,
-//    val title: String = ""
-)
+    var items: List<CategoryItem> = emptyList()
+) : Parcelable {
+
+
+//    fun toCategoryName(): List<AddTodayItem> {
+//        val items1 = mutableListOf<AddTodayItem>()
+//
+//        categoryName.let {
+//            for (items in it) {
+//                items1.add(AddTodayItem.CategoryName(it))
+//            }
+//        }
+//        return items1
+//    }
+}
+

@@ -2,12 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fishSeller.FishSellerFragmentAddToday">
+    tools:context=".fishSeller.AddTodayCategoryFragment">
 
     <data>
         <variable
             name="category"
             type="com.nicole.fishop.data.Category" />
+        <variable name="viewModel" type="com.nicole.fishop.fishSeller.AddTodayCategoryViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,14 +39,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_today" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_today"
+            tools:listitem="@layout/fragment_fish_seller_add_today_categoryitems" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
