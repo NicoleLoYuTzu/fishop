@@ -2,23 +2,18 @@ package com.nicole.fishop.data.source.remote
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
-import android.util.Log.d
 import androidx.annotation.RequiresApi
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.nicole.fishop.FishopApplication
-import com.nicole.fishop.R
 import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopDataSource
 import com.nicole.fishop.util.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+
 
 object FishopRemoteDataSource : FishopDataSource {
 
@@ -125,30 +120,6 @@ object FishopRemoteDataSource : FishopDataSource {
         }
 
     private const val PATH_FISHESCATEGORIES = "Categories"
-
-//    override suspend fun getFishAll(): Result1<List<Category>> =
-//        suspendCoroutine { continuation ->
-//            FirebaseFirestore.getInstance()
-//                .collection(PATH_FISHESCATEGORIES)
-//                .get()
-//                .addOnCompleteListener { todayFishes ->
-//                    if (todayFishes.isSuccessful) {
-//
-//                        var list = mutableListOf<Category>()
-//
-//                        for (document1 in todayFishes.result!!) {
-//
-//                            Logger.d("document1 $document1 ")
-//                            val category = document1.toObject(Category::class.java)
-//                            list.add(category)
-//                        }
-//
-//                        continuation.resume(Result1.Success(list))
-//                    }
-//                }
-//
-//        }
-
     override suspend fun getFishAll(): Result1<List<Category>> =
         suspendCoroutine { continuation ->
             FirebaseFirestore.getInstance()
@@ -173,6 +144,71 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
 
         }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getFishTodayAll(): Result1<List<FishToday>> =
+        suspendCoroutine { continuation ->
+            val todayDate = getNowDate(System.currentTimeMillis())
+            FirebaseFirestore.getInstance()
+                .collection(PATH_EVERYDAYFISHES)
+//                .whereLessThan("time", System.currentTimeMillis())
+//                .whereGreaterThan("time",System.currentTimeMillis()-86400000)
+                .whereEqualTo("date", todayDate)
+                .get()
+                .addOnCompleteListener { todaySeller ->
+                    Logger.d("${System.currentTimeMillis()}")
+                    if (todaySeller.isSuccessful) {
+                        var list = mutableListOf<FishToday>()
+                        var count = todaySeller.result.size()
+                        for (document1 in todaySeller.result!!) {
+                            Logger.d("getFishTodayAll document1 $document1 ")
+                            val fishToday = document1.toObject(FishToday::class.java)
+                            FirebaseFirestore.getInstance()
+                                .collection(PATH_EVERYDAYFISHES)
+                                .document(document1.id)
+                                .collection(PATH_FISHESCOLLECTION)
+                                .get()
+                                .addOnCompleteListener { fishes ->
+                                    // count: 4
+                                    if (fishes.isSuccessful) {
+                                        val categories = mutableListOf<FishTodayCategory>()
+                                        for (document2 in fishes.result!!) {
+                                            Logger.d("document2.data => ${document2.data}")
+                                            categories.add(document2.toObject((FishTodayCategory::class.java)))
+                                        }
+                                        fishToday.category = categories
+
+                                        list.add(fishToday)
+                                        Logger.d("fishToday.category => ${fishToday.category}")
+                                        count -= 1
+                                        if (count == 0) {
+                                            Logger.d("continuation.resume list) $list}")
+                                            continuation.resume(Result1.Success(list))
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
+
+        }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getNowDate(time: Long): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("yyyy/MM/dd").format(time)
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
+    }
+
 
     override suspend fun getChatRecord(): Result1<ChatRecord> {
         TODO("Not yet implemented")

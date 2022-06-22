@@ -14,20 +14,20 @@ import com.nicole.fishop.fishSeller.AddTodayCategoryViewModel
  */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val stylishRepository: FishopRepository
+    private val fishopRepository: FishopRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
                 isAssignableFrom(FishSellerViewModel::class.java) ->
-                    FishSellerViewModel(stylishRepository)
+                    FishSellerViewModel(fishopRepository)
 
                 isAssignableFrom(FishBuyerViewModel::class.java) ->
-                    FishBuyerViewModel(stylishRepository)
+                    FishBuyerViewModel(fishopRepository)
 
                 isAssignableFrom(AddTodayCategoryViewModel::class.java) ->
-                    AddTodayCategoryViewModel(stylishRepository)
+                    AddTodayCategoryViewModel(fishopRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

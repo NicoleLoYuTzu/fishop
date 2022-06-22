@@ -16,10 +16,10 @@ class FishBuyerAdapter() : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffC
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishToday: FishToday) {
-
+            binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
             binding.RecyclerViewTodayfish.adapter = FishBuyerAdapterItem()
-
+            (binding.RecyclerViewTodayfish.adapter as FishBuyerAdapterItem).submitList(fishToday.category)
             binding.executePendingBindings()
         }
     }

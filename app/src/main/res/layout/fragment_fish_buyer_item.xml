@@ -11,92 +11,94 @@
     </data>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView_sellername"
-        style="@style/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="文章水產店"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView_sellername"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="文章水產店"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="距離你"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_sellername"
-        app:layout_constraintStart_toEndOf="@+id/textView_sellername"
-        app:layout_constraintTop_toTopOf="@+id/textView_sellername" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="距離你"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_sellername"
+            app:layout_constraintStart_toEndOf="@+id/textView_sellername"
+            app:layout_constraintTop_toTopOf="@+id/textView_sellername" />
 
-    <TextView
-        android:id="@+id/textView_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="100"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        <TextView
+            android:id="@+id/textView_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="100"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="公尺"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_distance"
-        app:layout_constraintStart_toEndOf="@+id/textView_distance"
-        app:layout_constraintTop_toTopOf="@+id/textView_distance" />
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="公尺"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_distance"
+            app:layout_constraintStart_toEndOf="@+id/textView_distance"
+            app:layout_constraintTop_toTopOf="@+id/textView_distance" />
 
-    <ImageView
-        android:id="@+id/imageView_chat"
-        android:layout_width="37dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_sellername"
-        app:srcCompat="@drawable/chat" />
+        <ImageView
+            android:id="@+id/imageView_chat"
+            android:layout_width="37dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_sellername"
+            app:srcCompat="@drawable/chat" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="來去聊聊"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_chat"
-        app:layout_constraintStart_toEndOf="@+id/imageView_chat"
-        app:layout_constraintTop_toTopOf="@+id/imageView_chat" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="來去聊聊"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_chat"
+            app:layout_constraintStart_toEndOf="@+id/imageView_chat"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chat" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView_todayfish"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/fragment_fish_buyer_item_item"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_chat" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView_todayfish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_chat"
+            tools:listitem="@layout/fragment_fish_buyer_item_item" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="20dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView7"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@+id/textView7"
-        app:srcCompat="@drawable/gpsnavigation" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="20dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="@+id/textView7"
+            app:srcCompat="@drawable/gpsnavigation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,6 +11,8 @@ interface FishopRepository {
 
     suspend fun getFishAll(): Result1<List<Category>>
 
+    suspend fun getFishTodayAll(): Result1<List<FishToday>>
+
     suspend fun getChatRecord():Result1<ChatRecord>
 
 }

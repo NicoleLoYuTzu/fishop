@@ -6,28 +6,29 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.FishToday
+import com.nicole.fishop.data.FishTodayCategory
 import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
+import com.nicole.fishop.databinding.FragmentFishBuyerItemItemBinding
 
-class FishBuyerAdapterItem : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
+class FishBuyerAdapterItem : ListAdapter<FishTodayCategory, RecyclerView.ViewHolder>(DiffCallback) {
 
-    class TodayFishHolder(private var binding: FragmentFishBuyerItemBinding) :
+    class TodayFishHolder(private var binding: FragmentFishBuyerItemItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(fishToday: FishToday) {
-
-            binding.fishToday = fishToday
-            binding.RecyclerViewTodayfish.adapter = FishBuyerAdapterItem()
-
+        fun bind(fishTodayCategory: FishTodayCategory) {
+            binding.fishToday = fishTodayCategory
+            binding.textViewFishCategory.text = fishTodayCategory.category
+            binding.textViewPrice.text = fishTodayCategory.saleprice
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<FishToday>() {
-        override fun areItemsTheSame(oldItem: FishToday, newItem: FishToday): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<FishTodayCategory>() {
+        override fun areItemsTheSame(oldItem: FishTodayCategory, newItem: FishTodayCategory): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: FishToday, newItem: FishToday): Boolean {
+        override fun areContentsTheSame(oldItem: FishTodayCategory, newItem: FishTodayCategory): Boolean {
             return oldItem.id == newItem.id
         }
 
@@ -38,7 +39,7 @@ class FishBuyerAdapterItem : ListAdapter<FishToday, RecyclerView.ViewHolder>(Dif
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_RECORD -> TodayFishHolder(
-                FragmentFishBuyerItemBinding.inflate(
+                FragmentFishBuyerItemItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
@@ -49,7 +50,7 @@ class FishBuyerAdapterItem : ListAdapter<FishToday, RecyclerView.ViewHolder>(Dif
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TodayFishHolder -> {
-                holder.bind((getItem(position) as FishToday))
+                holder.bind((getItem(position) as FishTodayCategory))
             }
         }
     }

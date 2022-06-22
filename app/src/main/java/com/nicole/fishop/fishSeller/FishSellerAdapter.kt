@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.databinding.FragmentFishSellerItemBinding
 import com.nicole.fishop.util.Logger
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,8 +24,8 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishRecord: FishRecord, onClickListener: OnClickListener) {
-            val time = getNowTime(fishRecord.time.time)
-            val date = getNowDate(fishRecord.time.time)
+            val time = getNowTime(fishRecord.time.toLong())
+            val date = getNowDate(fishRecord.time.toLong())
             binding.recyclerView.adapter = FishSellerAdapterItem()
             val fishCategory =  fishRecord.fishCategory
             (binding.recyclerView.adapter as FishSellerAdapterItem).submitList(fishCategory)

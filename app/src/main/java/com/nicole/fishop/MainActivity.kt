@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nicole.fishop.databinding.ActivityMainBinding
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -43,12 +44,17 @@ class MainActivity : AppCompatActivity() {
                     profileTitle.text = "每日漁貨紀錄"
                     fishop.visibility = View.INVISIBLE
                 }
+                R.id.FishSellerFragmentAddToday-> {
+                    bottomNavigationView.visibility = View.GONE
+                    toolbar.visibility = View.GONE
+                    profileTitle.visibility = View.INVISIBLE
+                }
 
                 R.id.FishBuyerFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     toolbar.visibility = View.VISIBLE
                     profileTitle.visibility = View.VISIBLE
-                    profileTitle.text = "直播間"
+                    profileTitle.text = "今日漁貨"
                     fishop.visibility = View.INVISIBLE
                 }
                 R.id.ProfileBuyerFragment -> {
@@ -64,6 +70,7 @@ class MainActivity : AppCompatActivity() {
                     profileTitle.visibility = View.INVISIBLE
                     fishop.visibility = View.VISIBLE
                 }
+
 
             }
         }

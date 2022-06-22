@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.util.Logger
@@ -39,6 +41,10 @@ class AddTodayCategoryFragment : Fragment() {
 
 
         binding.textViewToday.text= getNow()
+        binding.buttonSave.setOnClickListener {
+//            findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentToFishSellerFragmentAddToday())
+            findNavController().popBackStack()
+        }
 
 
 
@@ -48,7 +54,7 @@ class AddTodayCategoryFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     fun getNow(): String {
         return if (android.os.Build.VERSION.SDK_INT >= 24) {
-            SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Date())
+            SimpleDateFormat("yyyy/MM/dd").format(Date())
         } else {
             val tms = Calendar.getInstance()
             tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +

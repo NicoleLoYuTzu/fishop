@@ -11,7 +11,7 @@ import java.util.*
 data class FishRecord(
     var id: String = "",
     var ownerId: String = "",
-    var time: Date = Timestamp(0),
+    var time: String = "",
     var fishCategory:List<FishCategory> = listOf(FishCategory("","","","","","")) ,
 ) : Parcelable{
 

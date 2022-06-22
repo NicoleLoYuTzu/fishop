@@ -10,8 +10,9 @@ import java.util.*
 data class FishToday(
     var id: String = "",
     var ownerId: String = "",
-    var time: Date = Timestamp(0),
-    var category: FishCategory= FishCategory("","","","","",""),
+    var time: String = "",
+    var name: String = "",
+    var category: List<FishTodayCategory> = listOf(FishTodayCategory("","","","","","")) ,
 ) : Parcelable {
 
 }

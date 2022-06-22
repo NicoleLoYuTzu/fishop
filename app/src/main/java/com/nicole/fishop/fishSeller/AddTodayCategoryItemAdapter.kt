@@ -3,6 +3,7 @@ package com.nicole.fishop.fishSeller
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,13 +12,15 @@ import com.nicole.fishop.R
 import com.nicole.fishop.data.AddTodayItem
 import com.nicole.fishop.databinding.*
 import com.nicole.fishop.util.Logger
+import java.lang.reflect.Field
+
 
 class AddTodayCategoryItemAdapter() :
     ListAdapter<AddTodayItem, RecyclerView.ViewHolder>(DiffCallback) {
 
 
     class CategoryNameViewHolder(private var binding: FragmentFishSellerAddTodayCategorynameBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(category: String, ) {
+        fun bind(category: String) {
             Logger.d("CategoryNameViewHolder bind")
             binding.textCategory.text = category
             binding.imageView4.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.fishiright))
@@ -30,11 +33,11 @@ class AddTodayCategoryItemAdapter() :
 
     class CategoryItemViewHolder(private var binding: FragmentFishSellerAddTodayItemItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(title: String, ) {
+        fun bind(title: String) {
             Logger.d("CategoryItemViewHolder bind")
             binding.title = title
             binding.checkBox.text = title
-            val adapter = ArrayAdapter.createFromResource(binding.root.context, R.array.unit, android.R.layout.simple_spinner_dropdown_item)
+            val adapter = ArrayAdapter.createFromResource(binding.root.context, R.array.unit, R.layout.simple_spinner_dropdown_item)
             binding.spinner2.adapter = adapter
             binding.executePendingBindings()
         }

@@ -10,12 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.nicole.fishop.databinding.FragmentFishBuyerBinding
+import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.fishSeller.FishSellerViewModel
 
 
 class FishBuyerFragment : Fragment() {
 
     private lateinit var list: MutableList<String>
+    private val viewModel by viewModels<FishBuyerViewModel> { getVmFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,8 +28,13 @@ class FishBuyerFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
+        viewModel
 
-         val adapter = FishBuyerAdapter()
+
+        viewModel.fishToday.observe(viewLifecycleOwner, Observer {
+            (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
+        })
+        binding.recyclerView.adapter = FishBuyerAdapter()
         list = mutableListOf(
             "黃魚"
         )
