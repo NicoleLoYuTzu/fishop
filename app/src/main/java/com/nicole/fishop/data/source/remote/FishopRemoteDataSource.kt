@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopDataSource
 import com.nicole.fishop.util.Logger
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.resume
@@ -153,7 +151,7 @@ object FishopRemoteDataSource : FishopDataSource {
                 .collection(PATH_EVERYDAYFISHES)
 //                .whereLessThan("time", System.currentTimeMillis())
 //                .whereGreaterThan("time",System.currentTimeMillis()-86400000)
-                .whereEqualTo("date", todayDate)
+                .whereEqualTo("date", "2022/06/22")
                 .get()
                 .addOnCompleteListener { todaySeller ->
                     Logger.d("${System.currentTimeMillis()}")
@@ -193,26 +191,62 @@ object FishopRemoteDataSource : FishopDataSource {
 
         }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun getNowDate(time: Long): String {
-        return if (android.os.Build.VERSION.SDK_INT >= 24) {
-            SimpleDateFormat("yyyy/MM/dd").format(time)
-        } else {
-            val tms = Calendar.getInstance()
-            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                    tms.get(Calendar.MONTH).toString() + "/" +
-                    tms.get(Calendar.YEAR).toString() + " " +
-                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                    tms.get(Calendar.MINUTE).toString() + ":" +
-                    tms.get(Calendar.SECOND).toString()
+    //上架前改成當天日期, 下面第二行註解取消
+    override suspend fun getFishTodayFilterAll(fish: String): Result1<List<FishToday>> =
+        suspendCoroutine { continuation ->
+//            val todayDate = getNowDate(System.currentTimeMillis())
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_FISHESCOLLECTION)
+                .whereEqualTo("category", fish)
+                .whereEqualTo("date", "2022/06/22")
+                .get()
+                .addOnCompleteListener { todayCategory ->
+                    var list = mutableListOf<FishToday>()
+                    Logger.d("category ${fish} ")
+                    Logger.d("todayCategory.documents ${todayCategory.result.documents} ")
+                    Logger.d("todayCategory.documents ${todayCategory.result} ")
+                    for (document1 in todayCategory.result!!) {
+                        Logger.d("document1.data => ${document1.data}")
+                        val fishTodayCategory = document1.toObject(FishTodayCategory::class.java)
+                        FirebaseFirestore.getInstance()
+                            .collectionGroup(PATH_EVERYDAYFISHES)
+                            .whereIn("id", listOf(fishTodayCategory.tfId))
+                            .get()
+                            .addOnCompleteListener { todaySeller ->
+                                var fishTodaySeller = FishToday()
+                                for (document2 in todaySeller.result!!) {
+                                    Logger.d("getFishTodayFilterAll document1.data => ${document1.data}")
+                                    fishTodaySeller = document2.toObject(FishToday::class.java)
+                                    fishTodaySeller.category = listOf(fishTodayCategory)
+                                }
+                                list.add(fishTodaySeller)
+                                continuation.resume(Result1.Success(list))
+                                Logger.d("getFishTodayFilterAll continuation.resume list) $list}")
+                            }
+                    }
+                }
+                .addOnFailureListener {
+                    Logger.d(".addOnFailureListener) ${it.message}}")
+                }
         }
-    }
-
 
     override suspend fun getChatRecord(): Result1<ChatRecord> {
         TODO("Not yet implemented")
     }
+}
 
-
+@SuppressLint("SimpleDateFormat")
+private fun getNowDate(time: Long): String {
+    return if (android.os.Build.VERSION.SDK_INT >= 24) {
+        SimpleDateFormat("yyyy/MM/dd").format(time)
+    } else {
+        val tms = Calendar.getInstance()
+        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
+    }
 }

@@ -13,6 +13,8 @@ interface FishopRepository {
 
     suspend fun getFishTodayAll(): Result1<List<FishToday>>
 
+    suspend fun getFishTodayFilterAll(fish:String): Result1<List<FishToday>>
+
     suspend fun getChatRecord():Result1<ChatRecord>
 
 }

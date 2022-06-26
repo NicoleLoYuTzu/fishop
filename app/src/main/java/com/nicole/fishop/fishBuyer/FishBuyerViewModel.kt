@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.FishToday
-import com.nicole.fishop.data.Result1
+import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
@@ -45,6 +43,10 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
     val fishToday: LiveData<List<FishToday>>
         get() = _fishToday
 
+    private var _fishTodayCategory = MutableLiveData<List<FishCategory>>()
+    val fishTodayCategory: LiveData<List<FishCategory>>
+        get() = _fishTodayCategory
+
 //    private var _fishCategory = MutableLiveData<List<FishCategory>>()
 //
 //    val fishCategory: LiveData<List<FishCategory>>
@@ -73,6 +75,42 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
             val result = repository.getFishTodayAll()
             Logger.d("repository.getFishTodayAll()")
             Logger.d("result $result")
+
+            _fishToday.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
+    }
+
+    fun getFishTodayFilterResult(fish: String) {
+        coroutineScope.launch {
+            Logger.d("getFishTodayFilterResult")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.getFishTodayFilterAll(fish)
+            Logger.d("repository.getFishTodayFilterAll()")
+            Logger.d("getFishTodayFilterAll result $result")
 
             _fishToday.value = when (result) {
                 is Result1.Success -> {

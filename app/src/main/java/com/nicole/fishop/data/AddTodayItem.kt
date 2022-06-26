@@ -14,4 +14,8 @@ sealed class AddTodayItem {
         override val id: Long = -1
 //            get() = categoryItem.id.toLong()
     }
+    data class CategoryChildItem(val childItem: String) : AddTodayItem() {
+        override val id: Long = -1
+//            get() = categoryItem.id.toLong()
+    }
 }

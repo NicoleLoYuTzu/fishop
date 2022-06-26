@@ -13,6 +13,6 @@ data class FishToday(
     var time: String = "",
     var name: String = "",
     var category: List<FishTodayCategory> = listOf(FishTodayCategory("","","","","","")) ,
-) : Parcelable {
+) : Parcelable{
 
 }

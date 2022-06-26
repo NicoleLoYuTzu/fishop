@@ -1,11 +1,14 @@
 package com.nicole.fishop.fishSeller
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
@@ -42,10 +45,22 @@ class AddTodayCategoryFragment : Fragment() {
 
         binding.textViewToday.text= getNow()
         binding.buttonSave.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setTitle("確定儲存?")
+                .setPositiveButton("確定"){ dialog, _ ->
+                    Toast.makeText(context, "已儲存", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentAddTodayToFishSellerFragment())
+                }
+                .setNeutralButton("取消"){ dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+        binding.buttonBack.setOnClickListener {
 //            findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentToFishSellerFragmentAddToday())
             findNavController().popBackStack()
         }
-
 
 
         return binding.root

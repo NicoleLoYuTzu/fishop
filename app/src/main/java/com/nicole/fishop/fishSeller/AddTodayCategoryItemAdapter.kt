@@ -3,7 +3,6 @@ package com.nicole.fishop.fishSeller
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +11,6 @@ import com.nicole.fishop.R
 import com.nicole.fishop.data.AddTodayItem
 import com.nicole.fishop.databinding.*
 import com.nicole.fishop.util.Logger
-import java.lang.reflect.Field
 
 
 class AddTodayCategoryItemAdapter() :
@@ -37,8 +35,21 @@ class AddTodayCategoryItemAdapter() :
             Logger.d("CategoryItemViewHolder bind")
             binding.title = title
             binding.checkBox.text = title
+//            binding.checkBox.setOnCheckedChangeListener(
+//
+//            )
             val adapter = ArrayAdapter.createFromResource(binding.root.context, R.array.unit, R.layout.simple_spinner_dropdown_item)
             binding.spinner2.adapter = adapter
+            binding.executePendingBindings()
+        }
+    }
+
+    class CategoryChildItemViewHolder(private var binding: FragmentFishSellerAddTodayItemChilditemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(title: String) {
+            Logger.d("CategoryItemViewHolder bind")
+            binding.title = title
+            binding.textViewChilditem.text = title
             binding.executePendingBindings()
         }
     }
@@ -57,6 +68,7 @@ class AddTodayCategoryItemAdapter() :
 
         private const val ITEM_VIEW_TYPE_CATEGORYNAME = 0x00
         private const val ITEM_VIEW_TYPE_CATEGORYITEM = 0x01
+        private const val ITEM_VIEW_TYPE_CATEGORYCHILDITEM = 0x02
     }
 
 
@@ -72,6 +84,11 @@ class AddTodayCategoryItemAdapter() :
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
+            ITEM_VIEW_TYPE_CATEGORYCHILDITEM-> CategoryChildItemViewHolder(
+                FragmentFishSellerAddTodayItemChilditemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
@@ -84,6 +101,9 @@ class AddTodayCategoryItemAdapter() :
             is CategoryItemViewHolder -> {
                 holder.bind((getItem(position) as AddTodayItem.CategoryTitle).title)
             }
+            is CategoryChildItemViewHolder -> {
+                holder.bind((getItem(position) as AddTodayItem.CategoryChildItem).childItem)
+            }
         }
     }
 
@@ -91,6 +111,7 @@ class AddTodayCategoryItemAdapter() :
         return when (getItem(position)) {
             is AddTodayItem.CategoryName -> ITEM_VIEW_TYPE_CATEGORYNAME
             is AddTodayItem.CategoryTitle -> ITEM_VIEW_TYPE_CATEGORYITEM
+            is AddTodayItem.CategoryChildItem ->ITEM_VIEW_TYPE_CATEGORYCHILDITEM
         }
     }
 }

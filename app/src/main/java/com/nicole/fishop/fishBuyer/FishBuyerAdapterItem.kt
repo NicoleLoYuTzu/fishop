@@ -9,6 +9,7 @@ import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.FishTodayCategory
 import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
 import com.nicole.fishop.databinding.FragmentFishBuyerItemItemBinding
+import com.nicole.fishop.util.Logger
 
 class FishBuyerAdapterItem : ListAdapter<FishTodayCategory, RecyclerView.ViewHolder>(DiffCallback) {
 
@@ -18,6 +19,8 @@ class FishBuyerAdapterItem : ListAdapter<FishTodayCategory, RecyclerView.ViewHol
         fun bind(fishTodayCategory: FishTodayCategory) {
             binding.fishToday = fishTodayCategory
             binding.textViewFishCategory.text = fishTodayCategory.category
+            Logger.d( "fishTodayCategory.category ${fishTodayCategory.category}")
+            Logger.d( "binding.textViewFishCategory.text ${binding.textViewFishCategory.text}")
             binding.textViewPrice.text = fishTodayCategory.saleprice
             binding.executePendingBindings()
         }

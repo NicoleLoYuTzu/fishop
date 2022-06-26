@@ -2,9 +2,12 @@ package com.nicole.fishop.fishBuyer
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
@@ -18,6 +21,15 @@ class FishBuyerAdapter() : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffC
         fun bind(fishToday: FishToday) {
             binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
+            binding.imageViewNavigate.setOnClickListener {
+                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
+            }
+            binding.imageViewChat.setOnClickListener {
+                findNavController(binding.root).navigate(NavFragmentDirections.actionToBuyerChatFragment())
+            }
+            binding.textViewChat.setOnClickListener {
+                findNavController(binding.root).navigate(NavFragmentDirections.actionToSalerChatFragment())
+            }
             binding.RecyclerViewTodayfish.adapter = FishBuyerAdapterItem()
             (binding.RecyclerViewTodayfish.adapter as FishBuyerAdapterItem).submitList(fishToday.category)
             binding.executePendingBindings()

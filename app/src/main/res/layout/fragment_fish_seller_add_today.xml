@@ -22,10 +22,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="今天日期 : "
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/textView_today"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintStart_toEndOf="@+id/button_back"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -62,11 +63,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/textView_today"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintStart_toEndOf="@+id/button_back"
             app:layout_constraintTop_toTopOf="@+id/textView_today" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_back"
             android:layout_width="63dp"
             android:layout_height="37dp"
             android:background="@drawable/frame_circle"

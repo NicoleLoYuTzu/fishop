@@ -69,6 +69,16 @@ class AddTodayCategoryViewModel (private val repository: FishopRepository) : Vie
 
                 val categoryTitle = AddTodayItem.CategoryTitle(item.title)
                 newItems.add(categoryTitle)
+
+                val categoryChildItems = item.childItems
+
+                for ( items in categoryChildItems){
+
+                    val categoryChildItem = AddTodayItem.CategoryChildItem(items)
+                    newItems.add(categoryChildItem)
+                }
+
+
             }
         }
 

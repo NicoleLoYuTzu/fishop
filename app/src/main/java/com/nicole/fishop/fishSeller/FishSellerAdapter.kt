@@ -40,7 +40,7 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
         @SuppressLint("SimpleDateFormat")
         private fun getNowTime(time: Long): String {
             return if (android.os.Build.VERSION.SDK_INT >= 24) {
-                SimpleDateFormat("HH:mm:ss").format(time)
+                SimpleDateFormat("HH:mm").format(time)
             } else {
                 val tms = Calendar.getInstance()
                 tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +

@@ -7,7 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class CategoryItem(
     val childItems: List<String> = emptyList(),
     val title: String = "",
-    val unit: String = ""
 ) : Parcelable {
 
 
