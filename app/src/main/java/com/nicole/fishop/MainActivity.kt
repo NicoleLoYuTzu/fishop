@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nicole.fishop.databinding.ActivityMainBinding
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -20,11 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        val a = 123
         val fishop = findViewById<TextView>(R.id.fishop)
         val profileTitle = findViewById<TextView>(R.id.profile_title)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.activity_main_bottom_navigation_view)
+//        bottomNavigationView.itemIconTintList
+        bottomNavigationView.itemIconTintList = null
 
         val navController: NavController =
             Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
@@ -40,27 +44,39 @@ class MainActivity : AppCompatActivity() {
                     profileTitle.text = "每日漁貨紀錄"
                     fishop.visibility = View.INVISIBLE
                 }
+                R.id.FishSellerFragmentAddToday-> {
+                    bottomNavigationView.visibility = View.GONE
+                    toolbar.visibility = View.GONE
+                    profileTitle.visibility = View.INVISIBLE
+                }
 
                 R.id.FishBuyerFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     toolbar.visibility = View.VISIBLE
                     profileTitle.visibility = View.VISIBLE
-                    profileTitle.text = "直播間"
+                    profileTitle.text = "今日漁貨"
                     fishop.visibility = View.INVISIBLE
                 }
-                R.id.ProfileBuyerFragment -> {
-                    bottomNavigationView.visibility = View.VISIBLE
-                    toolbar.visibility = View.VISIBLE
-                    profileTitle.visibility = View.VISIBLE
-                    profileTitle.text = "聊天室"
-                    fishop.visibility = View.INVISIBLE
-                }
+//                R.id.ProfileBuyerFragment -> {
+//                    bottomNavigationView.visibility = View.VISIBLE
+//                    toolbar.visibility = View.VISIBLE
+//                    profileTitle.visibility = View.VISIBLE
+//                    profileTitle.text = "聊天室"
+//                    fishop.visibility = View.INVISIBLE
+//                }
                 R.id.ProfileSellerFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     toolbar.visibility = View.VISIBLE
                     profileTitle.visibility = View.INVISIBLE
                     fishop.visibility = View.VISIBLE
                 }
+                R.id.BuyerChatFragment ->{
+                    bottomNavigationView.visibility = View.VISIBLE
+                    toolbar.visibility = View.GONE
+                    profileTitle.visibility = View.INVISIBLE
+                    fishop.visibility = View.INVISIBLE
+                }
+
 
             }
         }

@@ -1,4 +1,4 @@
-package com.nicole.fishop.fish
+package com.nicole.fishop.chatingroom.buyer
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nicole.fishop.R
-import com.nicole.fishop.databinding.FragmentFishBuyerBinding
-import com.nicole.fishop.databinding.FragmentFishSellerBinding
+import com.nicole.fishop.databinding.FragmentChatBuyerBinding
 
 
-class FishSellerFragment : Fragment() {
+class BuyerChatFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +20,8 @@ class FishSellerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = FragmentFishSellerBinding.inflate(inflater)
+        val binding = FragmentChatBuyerBinding.inflate(layoutInflater)
+        binding.recyclerView.adapter=
         return binding.root
     }
 
