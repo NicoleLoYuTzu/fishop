@@ -41,7 +41,12 @@
         android:id="@+id/fishBuyerGoogleMap"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerGoogleMap"
         android:label="fragment_fish_buyer_google_map"
-        tools:layout="@layout/fragment_fish_buyer_google_map" />
+        tools:layout="@layout/fragment_fish_buyer_google_map">
+
+        <argument android:name="addressKey"
+            app:argType="com.nicole.fishop.data.FishToday"
+            app:nullable="false"/>
+    </fragment>
 
     <action
         android:id="@+id/action_to_fishBuyerGoogleMap"

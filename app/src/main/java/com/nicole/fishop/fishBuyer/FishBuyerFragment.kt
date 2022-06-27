@@ -1,30 +1,26 @@
 package com.nicole.fishop.fishBuyer
 
-import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
-import com.nicole.fishop.fishSeller.FishSellerViewModel
 import com.nicole.fishop.util.Logger
 
 
 class FishBuyerFragment : Fragment() {
 
     private lateinit var list: MutableList<String>
-    private val viewModel by viewModels<FishBuyerViewModel> { getVmFactory() }
+    private val viewModel by viewModels<FishBuyerViewModel> { getVmFactory(
+    )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,28 +32,39 @@ class FishBuyerFragment : Fragment() {
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
             (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
         })
-        binding.recyclerView.adapter = FishBuyerAdapter( FishBuyerAdapter.OnClickListener {
+        binding.recyclerView.adapter = FishBuyerAdapter(FishBuyerAdapter.OnClickListener {
 //            viewModel.navigateToDetail(it)
-            findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
+//            findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
+            viewModel.navigateToGoogleMap(it)
         })
-            /**
-             * Set up search view with list view to show the user enter text
-             */
-            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String): Boolean {
-                        viewModel.getFishTodayFilterResult(p0)
-                        Logger.d("searchView p0 $p0")
-                    return false
-                }
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    Logger.d("onQueryTextChange p0 $p0")
-                    if (p0==null || p0==""){
-                        viewModel.getFishTodayAllResult()
-                    }
-                    return false
-                }
 
-            })
+        viewModel.navigateToGoogleMap.observe( viewLifecycleOwner,
+            Observer {
+                it?.let {
+                    findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap(it))
+                    viewModel.onGoogleMapNavigated()
+                }
+            }
+        )
+        /**
+         * Set up search view with list view to show the user enter text
+         */
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String): Boolean {
+                viewModel.getFishTodayFilterResult(p0)
+                Logger.d("searchView p0 $p0")
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Logger.d("onQueryTextChange p0 $p0")
+                if (p0 == null || p0 == "") {
+                    viewModel.getFishTodayAllResult()
+                }
+                return false
+            }
+
+        })
 
 //        list = mutableListOf(
 //            "黃魚"
@@ -102,7 +109,6 @@ class FishBuyerFragment : Fragment() {
 //            }
 //        }
 //        binding.spinner.adapter = adapter1
-
 
 
         return binding.root

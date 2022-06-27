@@ -13,4 +13,6 @@
         <item>兩</item>
         <item>箱</item>
     </string-array>
+
+    <string name="google_map_api_key"></string>
 </resources>

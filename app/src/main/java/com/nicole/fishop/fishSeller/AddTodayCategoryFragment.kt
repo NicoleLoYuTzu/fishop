@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.fishBuyer.FishBuyerGoogleMapArgs
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,7 +22,9 @@ import java.util.*
 
 class AddTodayCategoryFragment : Fragment() {
 
-    private val viewModel by viewModels<AddTodayCategoryViewModel> { getVmFactory() }
+    private val viewModel by viewModels<AddTodayCategoryViewModel> { getVmFactory(
+    )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

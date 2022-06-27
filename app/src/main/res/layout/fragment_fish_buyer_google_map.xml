@@ -56,8 +56,9 @@ android:orientation="vertical">
             android:text="店家位置 :"
             android:textColor="@color/black" />
 
-        <EditText
+        <TextView
             android:id="@+id/editText_SellerLocation"
+            style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

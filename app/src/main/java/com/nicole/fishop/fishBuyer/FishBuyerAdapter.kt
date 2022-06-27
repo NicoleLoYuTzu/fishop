@@ -28,7 +28,10 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapt
 //            binding.imageViewNavigate.setOnClickListener {
 //                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
 //            }
-            binding.imageViewNavigate.setOnClickListener { onClickListener.onClick(fishToday) }
+            binding.imageViewNavigate.setOnClickListener { onClickListener.onClick(fishToday)
+                Logger.d("binding.imageViewNavigate fishToday $fishToday")
+            }
+
 
             binding.imageViewChat.setOnClickListener {
                 findNavController(binding.root).navigate(NavFragmentDirections.actionToBuyerChatFragment())

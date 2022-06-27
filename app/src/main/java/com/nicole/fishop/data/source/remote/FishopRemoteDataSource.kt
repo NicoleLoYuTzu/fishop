@@ -231,37 +231,43 @@ object FishopRemoteDataSource : FishopDataSource {
         }
 
     override suspend fun getChatRecord(): Result1<ChatRecord> =
-    suspendCoroutine { continuation ->
+        suspendCoroutine { continuation ->
 
-    }
+        }
 
     private const val PATH_USERS = "Users"
     override suspend fun getGoogleMap(sellerId: String): Result1<SellerLocation> =
-    suspendCoroutine {continuation->
-        FirebaseFirestore.getInstance()
-            .collectionGroup(PATH_USERS)
-            .whereEqualTo("id", "3TfIP4L6w9Q9Zqs1bnb0")
-            .get()
-            .addOnCompleteListener {SellerInfo ->
-                Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereEqualTo("id", sellerId)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                    var sellerLocation = SellerLocation()
+                    for (document2 in SellerInfo.result!!) {
+                        sellerLocation = document2.toObject(SellerLocation::class.java)
+                    }
+                    continuation.resume(Result1.Success(sellerLocation))
+                }
 
-            }
-//        continuation.resume(Result1.Success())
-            }
-}
+        }
 
-@SuppressLint("SimpleDateFormat")
-private fun getNowDate(time: Long): String {
-    return if (android.os.Build.VERSION.SDK_INT >= 24) {
-        SimpleDateFormat("yyyy/MM/dd").format(time)
-    } else {
-        val tms = Calendar.getInstance()
-        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                tms.get(Calendar.MONTH).toString() + "/" +
-                tms.get(Calendar.YEAR).toString() + " " +
-                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                tms.get(Calendar.MINUTE).toString() + ":" +
-                tms.get(Calendar.SECOND).toString()
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getNowDate(time: Long): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("yyyy/MM/dd").format(time)
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
     }
 }
+
