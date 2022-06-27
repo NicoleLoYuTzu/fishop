@@ -230,9 +230,24 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
 
-    override suspend fun getChatRecord(): Result1<ChatRecord> {
-        TODO("Not yet implemented")
+    override suspend fun getChatRecord(): Result1<ChatRecord> =
+    suspendCoroutine { continuation ->
+
     }
+
+    private const val PATH_USERS = "Users"
+    override suspend fun getGoogleMap(sellerId: String): Result1<SellerLocation> =
+    suspendCoroutine {continuation->
+        FirebaseFirestore.getInstance()
+            .collectionGroup(PATH_USERS)
+            .whereEqualTo("id", "3TfIP4L6w9Q9Zqs1bnb0")
+            .get()
+            .addOnCompleteListener {SellerInfo ->
+                Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+
+            }
+//        continuation.resume(Result1.Success())
+            }
 }
 
 @SuppressLint("SimpleDateFormat")

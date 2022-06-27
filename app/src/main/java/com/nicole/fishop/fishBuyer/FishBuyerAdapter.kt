@@ -13,17 +13,23 @@ import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
 import com.nicole.fishop.util.Logger
 
-class FishBuyerAdapter() : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
+class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
+
+    class OnClickListener(val clickListener: (fishToday: FishToday) -> Unit) {
+        fun onClick(fishToday: FishToday) = clickListener(fishToday)
+    }
 
     class TodayFishHolder(private var binding: FragmentFishBuyerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(fishToday: FishToday) {
+        fun bind(fishToday: FishToday, onClickListener: OnClickListener) {
             binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
-            binding.imageViewNavigate.setOnClickListener {
-                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
-            }
+//            binding.imageViewNavigate.setOnClickListener {
+//                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
+//            }
+            binding.imageViewNavigate.setOnClickListener { onClickListener.onClick(fishToday) }
+
             binding.imageViewChat.setOnClickListener {
                 findNavController(binding.root).navigate(NavFragmentDirections.actionToBuyerChatFragment())
             }
@@ -63,7 +69,7 @@ class FishBuyerAdapter() : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffC
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TodayFishHolder -> {
-                holder.bind((getItem(position) as FishToday))
+                holder.bind((getItem(position) as FishToday),onClickListener)
             }
         }
     }

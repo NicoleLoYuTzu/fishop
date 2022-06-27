@@ -17,4 +17,6 @@ interface FishopRepository {
 
     suspend fun getChatRecord():Result1<ChatRecord>
 
+    suspend fun getGoogleMap(location: String):Result1<SellerLocation>
+
 }

@@ -13,6 +13,8 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation.findNavController
+import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.fishSeller.FishSellerViewModel
@@ -34,7 +36,10 @@ class FishBuyerFragment : Fragment() {
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
             (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
         })
-        binding.recyclerView.adapter = FishBuyerAdapter()
+        binding.recyclerView.adapter = FishBuyerAdapter( FishBuyerAdapter.OnClickListener {
+//            viewModel.navigateToDetail(it)
+            findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
+        })
             /**
              * Set up search view with list view to show the user enter text
              */

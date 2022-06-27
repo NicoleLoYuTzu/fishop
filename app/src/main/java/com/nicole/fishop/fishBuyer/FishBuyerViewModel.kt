@@ -43,14 +43,12 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
     val fishToday: LiveData<List<FishToday>>
         get() = _fishToday
 
-    private var _fishTodayCategory = MutableLiveData<List<FishCategory>>()
-    val fishTodayCategory: LiveData<List<FishCategory>>
-        get() = _fishTodayCategory
+    private var _sellerLocation = MutableLiveData<List<SellerLocation>>()
 
-//    private var _fishCategory = MutableLiveData<List<FishCategory>>()
-//
-//    val fishCategory: LiveData<List<FishCategory>>
-//        get() = _fishCategory
+    val sellerLocation: LiveData<List<SellerLocation>>
+        get() = _sellerLocation
+
+
 
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -135,6 +133,44 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
                 }
             }
             _refreshStatus.value = false
+
+        }
+
+    }
+
+    fun getGoogleMapResult(location: String) {
+        coroutineScope.launch {
+            Logger.d("getFishTodayFilterResult")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.getGoogleMap(location)
+            Logger.d("repository.getGoogleMap()")
+            Logger.d("getGoogleMap result $result")
+
+//            _sellerLocation.value = when (result) {
+//                is Result1.Success -> {
+//                    _error.value = null
+//                    _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result1.Fail -> {
+//                    _error.value = result.error
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                is Result1.Error -> {
+//                    _error.value = result.exception.toString()
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//            _refreshStatus.value = false
 
         }
 

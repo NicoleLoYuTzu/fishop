@@ -57,18 +57,24 @@ class MainActivity : AppCompatActivity() {
                     profileTitle.text = "今日漁貨"
                     fishop.visibility = View.INVISIBLE
                 }
-                R.id.ProfileBuyerFragment -> {
-                    bottomNavigationView.visibility = View.VISIBLE
-                    toolbar.visibility = View.VISIBLE
-                    profileTitle.visibility = View.VISIBLE
-                    profileTitle.text = "聊天室"
-                    fishop.visibility = View.INVISIBLE
-                }
+//                R.id.ProfileBuyerFragment -> {
+//                    bottomNavigationView.visibility = View.VISIBLE
+//                    toolbar.visibility = View.VISIBLE
+//                    profileTitle.visibility = View.VISIBLE
+//                    profileTitle.text = "聊天室"
+//                    fishop.visibility = View.INVISIBLE
+//                }
                 R.id.ProfileSellerFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     toolbar.visibility = View.VISIBLE
                     profileTitle.visibility = View.INVISIBLE
                     fishop.visibility = View.VISIBLE
+                }
+                R.id.BuyerChatFragment ->{
+                    bottomNavigationView.visibility = View.VISIBLE
+                    toolbar.visibility = View.GONE
+                    profileTitle.visibility = View.INVISIBLE
+                    fishop.visibility = View.INVISIBLE
                 }
 
 

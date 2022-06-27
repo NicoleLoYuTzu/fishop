@@ -20,9 +20,9 @@
         android:label="FishBuyerFragment" />
 
     <fragment
-        android:id="@+id/ProfileBuyerFragment"
-        android:name="com.nicole.fishop.profile.ProfileBuyerFragment"
-        android:label="ProfileBuyerFragment" />
+        android:id="@+id/BuyerChatFragment"
+        android:name="com.nicole.fishop.chatingroom.buyer.BuyerChatFragment"
+        android:label="BuyerChatFragment" />
 
     <fragment
         android:id="@+id/ProfileSellerFragment"

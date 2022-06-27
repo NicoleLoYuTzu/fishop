@@ -13,7 +13,7 @@
         android:title=""/>
 
     <item
-        android:id="@+id/ProfileBuyerFragment"
+        android:id="@+id/BuyerChatFragment"
         android:icon="@drawable/ic_menu_profile_drawable_selector"
         android:title=""/>
 
