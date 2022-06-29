@@ -266,10 +266,11 @@ object FishopRemoteDataSource : FishopDataSource {
                     var sellerLocation = SellerLocation()
                     for (document2 in SellerInfo.result!!) {
                         sellerLocation = document2.toObject(SellerLocation::class.java)
+                        sellersLocation.add(sellerLocation)
                     }
-                    sellersLocation.add(sellerLocation)
                     continuation.resume(Result1.Success(sellersLocation))
                 }
+
         }
 
 

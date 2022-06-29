@@ -3,6 +3,7 @@ package com.nicole.fishop.fishBuyer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
 import com.nicole.fishop.data.*
@@ -38,7 +39,11 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
         get() = _error
 
 
-    private var _fishToday = MutableLiveData<List<FishToday>>()
+    val startLocation = MutableLiveData<LatLng>()
+
+
+
+    var _fishToday = MutableLiveData<List<FishToday>>()
 
     val fishToday: LiveData<List<FishToday>>
         get() = _fishToday
@@ -149,7 +154,7 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 
     }
 
-    private var _sellerLocations = MutableLiveData<List<SellerLocation>>()
+     var _sellerLocations = MutableLiveData<List<SellerLocation>>()
 
     val sellerLocations: LiveData<List<SellerLocation>>
         get() = _sellerLocations

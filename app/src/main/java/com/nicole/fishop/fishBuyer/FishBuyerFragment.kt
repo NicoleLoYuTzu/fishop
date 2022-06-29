@@ -34,7 +34,9 @@ import com.nicole.fishop.data.SellerLocation
 import com.nicole.fishop.databinding.FragmentFishBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.util.Logger
+import kotlinx.coroutines.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class FishBuyerFragment : Fragment() {
@@ -46,14 +48,17 @@ class FishBuyerFragment : Fragment() {
 
     private lateinit var mContext: Context
     private lateinit var mLocationProviderClient: FusedLocationProviderClient
-    private val viewModel by viewModels<FishBuyerViewModel> {
-        getVmFactory(
-        )
-    }
+    private val viewModel by viewModels<FishBuyerViewModel> { getVmFactory() }
 
-    private val googleMapViewModel by viewModels<FishBuyerGoogleMapViewModel> {
-        getVmFactory(
-        )
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(TimeUnit.SECONDS.toMillis(3))
+            withContext(Dispatchers.Main) {
+                getDeviceLocation()
+            }
+        }
+
     }
 
     override fun onCreateView(
@@ -61,13 +66,12 @@ class FishBuyerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
-//        getDeviceLocation()
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
 //        viewModel.getFishTodayFilterResult("")
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
             (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
+            (binding.recyclerView.adapter as FishBuyerAdapter).notifyDataSetChanged()
             //把所有owernerId帶入
 
             val ownerIds = mutableListOf<String>()
@@ -78,6 +82,8 @@ class FishBuyerFragment : Fragment() {
 
             viewModel.getAllSellerAddressResult(ownerIds)
             Logger.d("ownerIds $ownerIds ")
+
+            Logger.d(" viewModel.fishToday.observe $it ")
         })
 
 
@@ -126,19 +132,38 @@ class FishBuyerFragment : Fragment() {
 
         })
 
+        viewModel.sellerLocations.observe(viewLifecycleOwner) {
+            Logger.i("LIVEDATA SELLERLOCATION = $it")
+        }
 
-        viewModel.sellerLocations.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                for (location in it) {
+
+        viewModel.startLocation.observe(viewLifecycleOwner, Observer {
+
+            viewModel.sellerLocations.value?.let { locations ->
+                for (location in locations) {
+
+                    Logger.i("location = $location")
+                    Logger.i("location.name = ${location.name}")
+
                     val distance = getDistance(location)
+                    Logger.d("distance => $distance")
 
-                    Logger.d("viewModel.sellerLocations.observe, distance$distance")
+                    val foundToday = viewModel.fishToday.value?.find {
+                        it.ownerId == location.id
+                    }
+                    Logger.d("foundToday => $foundToday")
+                    foundToday?.distance = distance.toLong()
+                    Logger.d("foundToday after assign => $foundToday")
                 }
+                viewModel._fishToday.value = viewModel._fishToday.value
             }
         })
 
+
+
         return binding.root
     }
+
 
     fun calculateDistance(
         startlatitude: Double,
@@ -174,7 +199,7 @@ class FishBuyerFragment : Fragment() {
 
             checkGPSState()
         } else {
-            //adapter textview改成 查看距離
+            requestLocationPermission()
         }
     }
 
@@ -230,6 +255,7 @@ class FishBuyerFragment : Fragment() {
                                     p0.lastLocation?.latitude!!,
                                     p0.lastLocation?.longitude!!
                                 )
+                            viewModel.startLocation.value = startLocationFromBuyerPosition
 
                             // self location ready -> use googleMap do something
                         }
@@ -336,8 +362,9 @@ class FishBuyerFragment : Fragment() {
 
     fun getDistance(sellerLocation: SellerLocation): Float {
         val geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
-        val addressLocation: List<Address> = geoCoder!!.getFromLocationName(sellerLocation.address, 1)
-        Logger.d("addressLocation $addressLocation")
+        val addressLocation: List<Address> =
+            geoCoder!!.getFromLocationName(sellerLocation.address, 1)
+        Logger.i("addressLocation $addressLocation")
         val distance = calculateDistance(
             startLocationFromBuyerPosition.latitude,
             startLocationFromBuyerPosition.longitude,
@@ -346,7 +373,7 @@ class FishBuyerFragment : Fragment() {
         )
         Logger.d("it.address=>  ${sellerLocation.address} distance =>${distance}米")
         Logger.d("addressLocation[0].latitude ${addressLocation[0].latitude}")
-        Logger.d("addressLocation[0].longitude ${ addressLocation[0].longitude}")
+        Logger.d("addressLocation[0].longitude ${addressLocation[0].longitude}")
 
         Logger.d("startLocationFromBuyerPosition.latitude, ${startLocationFromBuyerPosition.latitude}")
         Logger.d("startLocationFromBuyerPosition.longitude, ${startLocationFromBuyerPosition.longitude}")

@@ -32,36 +32,13 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun calculateDistance(startlatitude: Double, startlongitude: Double, stoplatitude: Double, stoplongitude: Double): Float {
-
-            val startPoint = Location("locationA")
-            startPoint.latitude = startlatitude
-            startPoint.longitude = startlongitude
-
-            val endPoint = Location("locationB")
-            endPoint.latitude = stoplatitude
-            endPoint.longitude = stoplongitude
-
-            return startPoint.distanceTo(endPoint)
-        }
-
-
         fun bind(fishToday: FishToday, onClickListener: OnClickListener) {
             binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
 //            viewModel.getGoogleMapResult(fishToday.ownerId)
-            fishToday.distance
-            binding.textViewDistance.text = "--"
 
-//            binding.root.findViewTreeLifecycleOwner()?.let { viewModel.sellerLocation.observe(it, Observer {
-//                    val geoCoder: Geocoder? = Geocoder(binding.root.context, Locale.getDefault())
-//                    val addressLocation: List<Address> = geoCoder!!.getFromLocationName(it.address, 1)
-//                Logger.d("addressLocation $addressLocation")
-//                    calculateDistance(addressLocation[0].latitude,addressLocation[0].longitude,   )
-//                }) }
-//            binding.imageViewNavigate.setOnClickListener {
-//                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
-//            }
+            binding.textViewDistance.text = fishToday.distance.toString()
+
             binding.imageViewNavigate.setOnClickListener { onClickListener.onClick(fishToday)
                 Logger.d("binding.imageViewNavigate fishToday $fishToday")
             }

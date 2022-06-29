@@ -11,7 +11,6 @@ data class SellerLocation(
     var id: String = "",
     var name: String = "",
     var phone: String = "",
-    var distance: Long = 0
 ) : Parcelable {
 
 }
