@@ -23,26 +23,7 @@ android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start|left"
-            android:letterSpacing="0.25"
-            android:text="我的位置 :"
-            android:textColor="@color/black" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="點擊查看我的位置"
-            android:inputType="textPersonName" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,8 +33,9 @@ android:orientation="vertical">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start|left"
-            android:letterSpacing="0.25"
+            android:textSize="14sp"
             android:text="店家位置 :"
+            android:layout_gravity="center"
             android:textColor="@color/black" />
 
         <TextView
@@ -63,8 +45,10 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:textSize="18sp"
             android:hint="店家位置"
-            android:inputType="textPersonName" />
+            android:layout_gravity="center"
+            android:letterSpacing="0.25" />
 
     </LinearLayout>
 

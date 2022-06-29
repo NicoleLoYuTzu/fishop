@@ -1,19 +1,28 @@
 package com.nicole.fishop.fishBuyer
 
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.FishToday
+import com.nicole.fishop.data.SellerLocation
 import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
 import com.nicole.fishop.util.Logger
+import java.util.*
+import kotlin.math.absoluteValue
 
-class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
+class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
 
     class OnClickListener(val clickListener: (fishToday: FishToday) -> Unit) {
         fun onClick(fishToday: FishToday) = clickListener(fishToday)
@@ -22,9 +31,34 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapt
     class TodayFishHolder(private var binding: FragmentFishBuyerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+
+        fun calculateDistance(startlatitude: Double, startlongitude: Double, stoplatitude: Double, stoplongitude: Double): Float {
+
+            val startPoint = Location("locationA")
+            startPoint.latitude = startlatitude
+            startPoint.longitude = startlongitude
+
+            val endPoint = Location("locationB")
+            endPoint.latitude = stoplatitude
+            endPoint.longitude = stoplongitude
+
+            return startPoint.distanceTo(endPoint)
+        }
+
+
         fun bind(fishToday: FishToday, onClickListener: OnClickListener) {
             binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
+//            viewModel.getGoogleMapResult(fishToday.ownerId)
+            fishToday.distance
+            binding.textViewDistance.text = "--"
+
+//            binding.root.findViewTreeLifecycleOwner()?.let { viewModel.sellerLocation.observe(it, Observer {
+//                    val geoCoder: Geocoder? = Geocoder(binding.root.context, Locale.getDefault())
+//                    val addressLocation: List<Address> = geoCoder!!.getFromLocationName(it.address, 1)
+//                Logger.d("addressLocation $addressLocation")
+//                    calculateDistance(addressLocation[0].latitude,addressLocation[0].longitude,   )
+//                }) }
 //            binding.imageViewNavigate.setOnClickListener {
 //                findNavController(binding.root).navigate(NavFragmentDirections.actionToFishBuyerGoogleMap())
 //            }
@@ -76,5 +110,6 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapt
             }
         }
     }
+
 }
 

@@ -253,6 +253,25 @@ object FishopRemoteDataSource : FishopDataSource {
 
         }
 
+    override suspend fun getAllSellerAddressResult(sellerId: List<String>): Result1<List<SellerLocation>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereIn("id", sellerId)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                    Logger.d("sellerId => $sellerId")
+                    var sellersLocation = mutableListOf<SellerLocation>()
+                    var sellerLocation = SellerLocation()
+                    for (document2 in SellerInfo.result!!) {
+                        sellerLocation = document2.toObject(SellerLocation::class.java)
+                    }
+                    sellersLocation.add(sellerLocation)
+                    continuation.resume(Result1.Success(sellersLocation))
+                }
+        }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun getNowDate(time: Long): String {

@@ -30,4 +30,8 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
     override suspend fun getGoogleMap(location: String): Result1<SellerLocation> {
         return remoteDataSource.getGoogleMap(location)
     }
+
+    override suspend fun getAllSellerAddressResult(ownerId: List<String>): Result1<List<SellerLocation>> {
+        return remoteDataSource.getAllSellerAddressResult(ownerId)
+    }
 }

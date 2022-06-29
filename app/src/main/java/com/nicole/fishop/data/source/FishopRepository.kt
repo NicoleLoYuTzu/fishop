@@ -19,4 +19,7 @@ interface FishopRepository {
 
     suspend fun getGoogleMap(location: String):Result1<SellerLocation>
 
+    suspend fun getAllSellerAddressResult(location: List<String>):Result1<List<SellerLocation>>
+
+
 }

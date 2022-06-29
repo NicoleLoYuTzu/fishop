@@ -1,21 +1,35 @@
 package com.nicole.fishop.fishBuyer
 
+import android.Manifest
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.maps.route.extensions.drawRouteOnMap
 import com.maps.route.extensions.moveCameraOnMap
 import com.nicole.fishop.R
+import com.nicole.fishop.REQUEST_ENABLE_GPS
+import com.nicole.fishop.REQUEST_LOCATION_PERMISSION
 import com.nicole.fishop.databinding.FragmentFishBuyerGoogleMapBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.util.Logger
@@ -24,15 +38,32 @@ import java.util.*
 
 class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
 
-    private val viewModel by viewModels<FishBuyerGoogleMapViewModel> { getVmFactory() }
-    private var mMap: GoogleMap? = null
 
+    private var startLocationFromBuyerPosition: LatLng = startLocation(0.0, 0.0)
+    private var stopLocationToSalerPosition: LatLng = stopLocation(0.0, 0.0)
+    private val viewModel by viewModels<FishBuyerGoogleMapViewModel> { getVmFactory() }
+
+    private var locationPermissionGranted = false
+
+    private lateinit var mContext: Context
+    private lateinit var mLocationProviderClient: FusedLocationProviderClient
+
+    var googleMap: GoogleMap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+        mContext = requireActivity()
+        mLocationProviderClient =
+            activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+
+        getLocationPermission()
+        getDeviceLocation()
+
         val fishToday = FishBuyerGoogleMapArgs.fromBundle(
             requireArguments()
         ).addressKey
@@ -43,106 +74,249 @@ class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
         val binding = FragmentFishBuyerGoogleMapBinding.inflate(layoutInflater)
 
         viewModel.getGoogleMapResult(fishToday.ownerId)
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+
         viewModel.sellerLocation.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            // seller location ready -> use googleMap do something
             Logger.d(" it.address ${it.address}")
             binding.editTextSellerLocation.text = it.address.toString()
-            val callback = OnMapReadyCallback { googleMap ->
-
-                var geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
-                val addressLocation: List<Address> = geoCoder!!.getFromLocationName(it.address, 1)
-                val latitude = addressLocation[0].latitude
-                val longitude = addressLocation[0].longitude
-
-                val startLocation: List<Address> = geoCoder!!.getFromLocationName("台北市臨沂街74巷2弄", 1)
-                val startlatitude = startLocation[0].latitude
-                val startlongitude = startLocation[0].longitude
-
-                val source = LatLng(startlatitude, startlongitude) //starting point (LatLng)
-                val destination = LatLng(latitude, longitude) // ending point (LatLng)
-
-                googleMap.run {
-                    moveCameraOnMap(latLng = source) // if you want to zoom the map to any point
-
-                    //Called the drawRouteOnMap extension to draw the polyline/route on google maps
-                    drawRouteOnMap(
-                        getString(R.string.google_map_api_key), //your API key
-                        source = source, // Source from where you want to draw path
-                        destination = destination, // destination to where you want to draw path
-                        context = requireContext() //Activity context
-                    )
-
-                }
+            val geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
+            val addressLocation: List<Address> = geoCoder!!.getFromLocationName(it.address, 1)
+            val stoplatitude = addressLocation[0].latitude
+            val stoplongitude = addressLocation[0].longitude
+            stopLocationToSalerPosition = stopLocation(stoplatitude, stoplongitude)
+            googleMap?.run {
+                moveCameraOnMap(latLng = stopLocationToSalerPosition)
             }
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
+
         }
         )
 
         return binding.root
     }
 
+    fun calculateDistance(startlatitude: Double,startlongitude: Double, stoplatitude: Double,stoplongitude: Double): Float {
+
+        val startPoint = Location("locationA")
+        startPoint.latitude = startlatitude
+        startPoint.longitude = startlongitude
+
+        val endPoint = Location("locationB")
+        endPoint.latitude = stoplatitude
+        endPoint.longitude = stoplongitude
+
+        return startPoint.distanceTo(endPoint)
+    }
+
+
+
+    fun startLocation(startlatitude: Double, startlongitude: Double): LatLng {
+        val destination = LatLng(startlatitude, startlongitude) // ending point (LatLng)
+        return destination
+    }
+
+    fun stopLocation(stoplatitude: Double, stoplongitude: Double): LatLng {
+        val source = LatLng(stoplatitude, stoplongitude)
+        return source
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
     }
 
-    private fun getURL(from: LatLng, to: LatLng): String {
-        val origin = "origin=" + from.latitude + "," + from.longitude
-        val dest = "destination=" + to.latitude + "," + to.longitude
-        val sensor = "sensor=false"
-        val params = "$origin&$dest&$sensor"
-        return "https://maps.googleapis.com/maps/api/directions/json?$params"
+    override fun onMapReady(map: GoogleMap) {
+        // map ready
+        googleMap = map
+
     }
 
-    private fun decodePoly(encoded: String): List<LatLng> {
-        val poly = ArrayList<LatLng>()
-        var index = 0
-        val len = encoded.length
-        var lat = 0
-        var lng = 0
+    fun getLocationPermission() {
+        Logger.d("getLocationPermission")
+        //檢查權限
+        if (activity?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } == PackageManager.PERMISSION_GRANTED
+        ) {
+            //已獲取到權限
+            Toast.makeText(activity, "已獲取到位置權限，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
+            locationPermissionGranted = true
 
-        while (index < len) {
-            var b: Int
-            var shift = 0
-            var result = 0
-            do {
-                b = encoded[index++].toInt() - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlat = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lat += dlat
-
-            shift = 0
-            result = 0
-            do {
-                b = encoded[index++].toInt() - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lng += dlng
-
-            val p = LatLng(
-                lat.toDouble() / 1E5,
-                lng.toDouble() / 1E5
-            )
-            poly.add(p)
+            checkGPSState()
+        } else {
+            //詢問要求獲取權限
+            requestLocationPermission()
         }
-
-        return poly
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        // declare bounds object to fit whole route in screen
-        val LatLongB = LatLngBounds.Builder()
-
-        // Add markers
-        val sydney = LatLng(-34.0, 151.0)
-        val opera = LatLng(-33.9320447, 151.1597271)
-
-
+    private fun checkGPSState() {
+        val locationManager = mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder(mContext)
+                .setTitle("GPS 尚未開啟")
+                .setMessage("使用此功能需要開啟 GSP 定位功能")
+                .setPositiveButton("前往開啟",
+                    DialogInterface.OnClickListener { _, _ ->
+                        startActivityForResult(
+                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_ENABLE_GPS
+                        )
+                    })
+                .setNegativeButton("取消", null)
+                .show()
+        } else {
+            Toast.makeText(activity, "已獲取到位置權限且GPS已開啟，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
+            getDeviceLocation()
+        }
     }
 
+    fun getDeviceLocation() {
+        try {
+            if (locationPermissionGranted
+            ) {
+                val locationRequest = LocationRequest()
+                locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                //更新頻率
+                locationRequest.interval = 1000
+                //更新次數，若沒設定，會持續更新
+                //locationRequest.numUpdates = 1
+                mLocationProviderClient.requestLocationUpdates(
+                    locationRequest,
+                    object : LocationCallback() {
+                        override fun onLocationResult(p0: LocationResult) {
+                            p0 ?: return
+                            Log.d(
+                                "HKT",
+                                "緯度:${p0.lastLocation?.latitude} , 經度:${p0.lastLocation?.longitude} "
+
+                            )
+//                            var startlatitude = p0.lastLocation?.latitude!!
+//                            var startlongitude = p0.lastLocation?.longitude!!
+                            startLocationFromBuyerPosition =
+                                startLocation(p0.lastLocation?.latitude!!,
+                                    p0.lastLocation?.longitude!!
+                                )
+                            googleMap?.run {
+//                                moveCameraOnMap(latLng = startLocationFromBuyerPosition)
+                                activity?.let {
+                                    drawRouteOnMap(
+                                        getString(R.string.google_map_api_key), //your API key
+                                        source = startLocationFromBuyerPosition, // Source from where you want to draw path
+                                        destination = stopLocationToSalerPosition, // destination to where you want to draw path
+                                        context = it //Activity context
+                                    )
+                                }
+                                val distance = calculateDistance(startLocationFromBuyerPosition.latitude,startLocationFromBuyerPosition.longitude,stopLocationToSalerPosition.latitude,stopLocationToSalerPosition.longitude)
+                                Logger.d("distance $distance")
+                            }
+
+                            // self location ready -> use googleMap do something
+                        }
+                    },
+                    null
+                )
+
+            } else {
+                getLocationPermission()
+            }
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
+    }
+
+
+
+    private fun requestLocationPermission() {
+        Logger.d("requestLocationPermission")
+        if (activity?.let {
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    it, Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } == true
+        ) {
+            AlertDialog.Builder(requireActivity())
+                .setMessage("此應用程式，需要位置權限才能正常使用")
+                .setPositiveButton("確定") { _, _ ->
+                    ActivityCompat.requestPermissions(
+                        requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_LOCATION_PERMISSION
+                    )
+                }
+                .setNegativeButton("取消") { _, _ -> requestLocationPermission() }
+                .show()
+        } else {
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_LOCATION_PERMISSION
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        Logger.d("onRequestPermissionsResult")
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        //已獲取到權限
+                        locationPermissionGranted = true
+                        //todo checkGPSState()
+                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                        if (!activity?.let {
+                                ActivityCompat.shouldShowRequestPermissionRationale(
+                                    it,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                )
+                            }!!
+                        ) {
+                            //權限被永久拒絕
+                            Toast.makeText(activity, "位置權限已被關閉，功能將會無法正常使用", Toast.LENGTH_SHORT)
+                                .show()
+
+                            activity?.let {
+                                AlertDialog.Builder(it)
+                                    .setTitle("開啟位置權限")
+                                    .setMessage("此應用程式，位置權限已被關閉，需開啟才能正常使用")
+                                    .setPositiveButton("確定") { _, _ ->
+                                        val intent =
+                                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                                        startActivityForResult(intent, REQUEST_LOCATION_PERMISSION)
+                                    }
+                                    .setNegativeButton("取消") { _, _ -> requestLocationPermission() }
+                                    .show()
+                            }
+                        } else {
+                            //權限被拒絕
+                            Toast.makeText(activity, "位置權限被拒絕，功能將會無法正常使用", Toast.LENGTH_SHORT)
+                                .show()
+                            requestLocationPermission()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Logger.d("onActivityResult")
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                getLocationPermission()
+            }
+        }
+    }
 }

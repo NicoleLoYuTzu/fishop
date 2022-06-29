@@ -44,6 +44,10 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
         get() = _fishToday
 
 
+//    var fishAddress = FishToday()
+
+
+
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
 
@@ -144,5 +148,90 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
         }
 
     }
+
+    private var _sellerLocations = MutableLiveData<List<SellerLocation>>()
+
+    val sellerLocations: LiveData<List<SellerLocation>>
+        get() = _sellerLocations
+
+
+
+    fun getAllSellerAddressResult(ownerIds: List<String>) {
+        coroutineScope.launch {
+            Logger.d("getGoogleMapResult")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.getAllSellerAddressResult(ownerIds)
+            Logger.d("repository.getGoogleMap()")
+            Logger.d("getGoogleMap result $result")
+
+            _sellerLocations.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+
+        }
+    }
+
+//    private var _getDistance = MutableLiveData<List<SellerLocation>>()
+//
+//    val getDistance: LiveData<List<SellerLocation>>
+//        get() = _getDistance
+//    fun getDistanceResult(location: String) {
+//        coroutineScope.launch {
+//            Logger.d("getGoogleMapResult")
+//
+//            _status.value = LoadApiStatus.LOADING
+//
+//            val result = repository.getDistanceResult(location)
+//            Logger.d("repository.getGoogleMap()")
+//            Logger.d("getGoogleMap result $result")
+//
+//            _getDistance.value = when (result) {
+//                is Result1.Success -> {
+//                    _error.value = null
+//                    _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result1.Fail -> {
+//                    _error.value = result.error
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                is Result1.Error -> {
+//                    _error.value = result.exception.toString()
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//            _refreshStatus.value = false
+//
+//        }
+//    }
 }
 

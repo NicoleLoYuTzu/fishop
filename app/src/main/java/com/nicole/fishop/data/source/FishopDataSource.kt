@@ -17,4 +17,7 @@ interface FishopDataSource {
     suspend fun getChatRecord():Result1<ChatRecord>
 
     suspend fun getGoogleMap(location: String):Result1<SellerLocation>
+
+    suspend fun getAllSellerAddressResult(ownerId: List<String>):Result1<List<SellerLocation>>
+
 }
