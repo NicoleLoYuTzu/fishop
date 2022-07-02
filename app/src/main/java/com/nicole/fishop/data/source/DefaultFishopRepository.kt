@@ -1,5 +1,7 @@
 package com.nicole.fishop.data.source
 
+import androidx.lifecycle.LiveData
+import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.data.*
 
 class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):FishopRepository{
@@ -33,5 +35,13 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
 
     override suspend fun getAllSellerAddressResult(ownerId: List<String>): Result1<List<SellerLocation>> {
         return remoteDataSource.getAllSellerAddressResult(ownerId)
+    }
+
+    override suspend fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>): Result1<Boolean> {
+        return remoteDataSource.setTodayFishRecord(fishToday,Categories)
+    }
+
+    override suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>{
+        return remoteDataSource.setUserAcountType(users,viewModel)
     }
 }

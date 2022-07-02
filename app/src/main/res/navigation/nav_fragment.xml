@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_fragment"
-    app:startDestination="@id/FishSellerFragment">
+    app:startDestination="@id/startDialog">
     <fragment
         android:id="@+id/FishSellerFragment"
         android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
@@ -67,5 +67,36 @@
     <action
         android:id="@+id/action_to_salerChatFragment"
         app:destination="@id/salerChatFragment" />
+    <dialog
+        android:id="@+id/startDialog"
+        android:name="com.nicole.fishop.StartDialog"
+        android:label="activity_start_dialog"
+        tools:layout="@layout/activity_start_dialog" />
+
+    <action
+        android:id="@+id/action_startDialog_to_fishSellerFragment"
+        app:destination="@id/FishSellerFragment" />
+
+    <action
+        android:id="@+id/action_startDialog_to_fishBuyerFragment"
+        app:destination="@id/FishBuyerFragment" />
+
+    <action
+        android:id="@+id/action_startDialog_to_mainActivity"
+        app:destination="@id/mainActivity" />
+
+
+    <dialog
+        android:id="@+id/loginDialog"
+        android:name="com.nicole.fishop.login.LoginDialog"
+        android:label="LoginDialog" />
+
+    <action
+        android:id="@+id/action_to_loginDialog"
+        app:destination="@id/loginDialog" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.nicole.fishop.MainActivity"
+        android:label="MainActivity" />
 
 </navigation>

@@ -13,7 +13,6 @@ data class FishTodayCategory(
     var saleprice: String = "",
     var unit: String = "",
     var yuan: String = "",
-    var name: String = "",
     var date: String = "",
     var tfId:String = "",
 ) : Parcelable

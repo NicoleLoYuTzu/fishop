@@ -1,5 +1,6 @@
 package com.nicole.fishop.data.source
 
+import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.data.*
 
 interface FishopDataSource {
@@ -20,4 +21,7 @@ interface FishopDataSource {
 
     suspend fun getAllSellerAddressResult(ownerId: List<String>):Result1<List<SellerLocation>>
 
+    suspend  fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>): Result1<Boolean>
+
+    suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>
 }

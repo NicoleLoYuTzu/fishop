@@ -15,4 +15,8 @@
     </string-array>
 
     <string name="google_map_api_key"></string>
+    <string name="checkbox">checkbox</string>
+    <string name="login_title">請先登入會員</string>
+    <string name="login_description">登入會員後即可使用個人功能。</string>
+    <string name="login_google_text">Google 登入</string>
 </resources>

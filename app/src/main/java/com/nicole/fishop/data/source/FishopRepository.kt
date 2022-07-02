@@ -1,5 +1,6 @@
 package com.nicole.fishop.data.source
 
+import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.data.*
 import com.nicole.fishop.util.Logger
 
@@ -20,6 +21,10 @@ interface FishopRepository {
     suspend fun getGoogleMap(location: String):Result1<SellerLocation>
 
     suspend fun getAllSellerAddressResult(location: List<String>):Result1<List<SellerLocation>>
+
+    suspend fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>): Result1<Boolean>
+
+    suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>
 
 
 }

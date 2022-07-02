@@ -3,7 +3,12 @@ package com.nicole.fishop.data.source.remote
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.FirebaseFirestore
+import com.nicole.fishop.FishopApplication
+import com.nicole.fishop.MainViewModel
+import com.nicole.fishop.R
 import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopDataSource
 import com.nicole.fishop.util.Logger
@@ -273,11 +278,103 @@ object FishopRemoteDataSource : FishopDataSource {
 
         }
 
+    override suspend fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>): Result1<Boolean> = suspendCoroutine { continuation ->
+        val fishTodays = FirebaseFirestore.getInstance().collection(PATH_EVERYDAYFISHES)
+        val document = fishTodays.document()
+
+        fishToday.id = document.id
+        fishToday.date = getNow()
+        fishToday.time = System.currentTimeMillis().toString()
+        Logger.i("fishToday.id ${fishToday.id}")
+        document
+            .set(fishToday)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("setTodayFishRecord: $fishTodays")
+
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        return@addOnCompleteListener
+                    }
+                }
+            }
+
+
+        val fishTodayCategories = FirebaseFirestore.getInstance().collection(PATH_FISHESCOLLECTION)
+        for(i in Categories){
+            var count = Categories.size
+            val fishTodayCategoriesDocument = fishTodayCategories.document()
+            i.id = fishTodayCategoriesDocument.id
+            document.collection(PATH_FISHESCOLLECTION).document(fishTodayCategoriesDocument.id).set(i).addOnCompleteListener {
+                    task ->
+                if (task.isSuccessful) {
+                    Logger.i("fishTodayCategoriesDocument.id ${fishTodayCategoriesDocument.id}")
+                    Logger.i("setTodayFishRecord: $fishTodays")
+                    Logger.i("i $i")
+                    count-=1
+                    if(count==0){
+                    continuation.resume(Result1.Success(true))
+                    }
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result1.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+        }
+    }
+
+    override suspend fun setUserAcountType(users: Users,viewModel:MainViewModel): Result1<Boolean> =  suspendCoroutine { continuation ->
+            val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
+            val document = userStart.document()
+        users.id = document.id
+        document
+            .set(users)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("users.id: ${users.id}")
+                    Logger.i("setTodayFishRecord: $userStart")
+                    viewModel.user.value.let {
+                        it?.accountType=users.accountType
+                        it?.id=users.id
+                    }
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        return@addOnCompleteListener
+                    }
+                }
+            }
+    }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun getNowDate(time: Long): String {
         return if (android.os.Build.VERSION.SDK_INT >= 24) {
             SimpleDateFormat("yyyy/MM/dd").format(time)
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getNow(): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("yyyy/MM/dd").format(Date())
         } else {
             val tms = Calendar.getInstance()
             tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +

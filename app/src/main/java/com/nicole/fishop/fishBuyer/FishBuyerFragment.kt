@@ -66,6 +66,12 @@ class FishBuyerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        mContext = requireActivity()
+        mLocationProviderClient =
+            activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+
+        getLocationPermission()
+
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
 //        viewModel.getFishTodayFilterResult("")
@@ -107,11 +113,6 @@ class FishBuyerFragment : Fragment() {
             }
         )
 
-        mContext = requireActivity()
-        mLocationProviderClient =
-            activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
-
-        getLocationPermission()
         /**
          * Set up search view with list view to show the user enter text
          */
@@ -135,7 +136,6 @@ class FishBuyerFragment : Fragment() {
         viewModel.sellerLocations.observe(viewLifecycleOwner) {
             Logger.i("LIVEDATA SELLERLOCATION = $it")
         }
-
 
         viewModel.startLocation.observe(viewLifecycleOwner, Observer {
 

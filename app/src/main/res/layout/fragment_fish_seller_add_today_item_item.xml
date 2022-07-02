@@ -6,6 +6,15 @@
         <variable
             name="title"
             type="String"/>
+        <variable
+            name="viewModel"
+            type="com.nicole.fishop.fishSeller.AddTodayCategoryViewModel" />
+        <variable
+            name="viewHolder"
+            type="com.nicole.fishop.fishSeller.AddTodayCategoryItemAdapter.CategoryItemViewHolder" />
+        <variable
+            name="fishTodayCategory"
+            type="com.nicole.fishop.data.FishTodayCategory" />
     </data>
 
 
@@ -21,7 +30,7 @@
             android:buttonTint="#000000"
             android:scaleX="0.7"
             android:scaleY="0.7"
-            android:text="CheckBox"
+            android:text="@string/checkbox"
             android:textAlignment="viewStart"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
