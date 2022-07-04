@@ -2,7 +2,6 @@ package com.nicole.fishop.fishSeller
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayItemItemBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
@@ -21,7 +21,10 @@ import java.util.*
 
 class AddTodayCategoryFragment : Fragment() {
 
-    private val viewModel by viewModels<AddTodayCategoryViewModel> { getVmFactory() }
+    private val viewModel by viewModels<AddTodayCategoryViewModel> {
+        getVmFactory(
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +34,7 @@ class AddTodayCategoryFragment : Fragment() {
         val binding = FragmentFishSellerAddTodayBinding.inflate(inflater)
 
         binding.viewModel = viewModel
-        binding.recyclerView.adapter = AddTodayCategoryItemAdapter()
+        binding.recyclerView.adapter = AddTodayCategoryItemAdapter(viewModel)
 
 //        viewModel.fishtodayItem.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 //            (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(a)
@@ -42,24 +45,52 @@ class AddTodayCategoryFragment : Fragment() {
             (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(it)
         })
 
-
-        binding.textViewToday.text= getNow()
+        binding.textViewToday.text = getNow()
         binding.buttonSave.setOnClickListener {
-            AlertDialog.Builder(context)
-                .setTitle("確定儲存?")
-                .setPositiveButton("確定"){ dialog, _ ->
-                    Toast.makeText(context, "已儲存", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                    findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentAddTodayToFishSellerFragment())
-                }
-                .setNeutralButton("取消"){ dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            if (viewModel.fishTodayCategories.isEmpty()) {
+                AlertDialog.Builder(context)
+                    .setTitle("您沒有填入任何資料, 是否忘記勾選?")
+                    .setPositiveButton("返回") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            } else {
+                AlertDialog.Builder(context)
+                    .setTitle("確定儲存?")
+                    .setPositiveButton("確定") { dialog, _ ->
+                        viewModel.fishToday.name = "我新增的"
+                        viewModel.setTodayFishRecord(
+                            viewModel.fishToday,
+                            viewModel.fishTodayCategories
+                        )
+
+                        Logger.d("viewModel.fishTodayCategories ${viewModel.fishTodayCategories}")
+                        Toast.makeText(context, "已儲存", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentAddTodayToFishSellerFragment())
+                    }
+                    .setNeutralButton("取消") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
         }
         binding.buttonBack.setOnClickListener {
-//            findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentToFishSellerFragmentAddToday())
-            findNavController().popBackStack()
+            if (viewModel.fishTodayCategories.isNotEmpty()) {
+                AlertDialog.Builder(context)
+                    .setTitle("資料尚未儲存, 確定要返回? (若返回則資料將遺失)")
+                    .setPositiveButton("確定返回") { dialog, _ ->
+                        dialog.dismiss()
+                        findNavController().navigate(NavFragmentDirections.actionFishSellerFragmentAddTodayToFishSellerFragment())
+                    }
+                    .setNeutralButton("取消") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            } else {
+
+                findNavController().popBackStack()
+            }
         }
 
 

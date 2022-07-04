@@ -3,9 +3,16 @@ package com.nicole.fishop.data.source.remote
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.nicole.fishop.FishopApplication
+import com.nicole.fishop.MainViewModel
+import com.nicole.fishop.R
 import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopDataSource
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -231,24 +238,191 @@ object FishopRemoteDataSource : FishopDataSource {
         }
 
     override suspend fun getChatRecord(): Result1<ChatRecord> =
-    suspendCoroutine { continuation ->
+        suspendCoroutine { continuation ->
 
-    }
+        }
 
     private const val PATH_USERS = "Users"
     override suspend fun getGoogleMap(sellerId: String): Result1<SellerLocation> =
-    suspendCoroutine {continuation->
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereEqualTo("id", sellerId)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                    var sellerLocation = SellerLocation()
+                    for (document2 in SellerInfo.result!!) {
+                        sellerLocation = document2.toObject(SellerLocation::class.java)
+                    }
+                    continuation.resume(Result1.Success(sellerLocation))
+                }
+
+        }
+
+    override suspend fun getAllSellerAddressResult(sellerId: List<String>): Result1<List<SellerLocation>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereIn("id", sellerId)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                    Logger.d("sellerId => $sellerId")
+                    var sellersLocation = mutableListOf<SellerLocation>()
+                    var sellerLocation = SellerLocation()
+                    for (document2 in SellerInfo.result!!) {
+                        sellerLocation = document2.toObject(SellerLocation::class.java)
+                        sellersLocation.add(sellerLocation)
+                    }
+                    continuation.resume(Result1.Success(sellersLocation))
+                }
+
+        }
+
+    override suspend fun setTodayFishRecord(
+        fishToday: FishToday,
+        Categories: List<FishTodayCategory>
+    ): Result1<Boolean> = suspendCoroutine { continuation ->
+        val fishTodays = FirebaseFirestore.getInstance().collection(PATH_EVERYDAYFISHES)
+        val document = fishTodays.document()
+
+        fishToday.id = document.id
+        fishToday.date = getNow()
+        fishToday.time = System.currentTimeMillis().toString()
+        Logger.i("fishToday.id ${fishToday.id}")
+        document
+            .set(fishToday)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("setTodayFishRecord: $fishTodays")
+
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        return@addOnCompleteListener
+                    }
+                }
+            }
+
+
+        val fishTodayCategories = FirebaseFirestore.getInstance().collection(PATH_FISHESCOLLECTION)
+        for (i in Categories) {
+            var count = Categories.size
+            val fishTodayCategoriesDocument = fishTodayCategories.document()
+            i.id = fishTodayCategoriesDocument.id
+            document.collection(PATH_FISHESCOLLECTION).document(fishTodayCategoriesDocument.id)
+                .set(i).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Logger.i("fishTodayCategoriesDocument.id ${fishTodayCategoriesDocument.id}")
+                        Logger.i("setTodayFishRecord: $fishTodays")
+                        Logger.i("i $i")
+                        count -= 1
+                        if (count == 0) {
+                            continuation.resume(Result1.Success(true))
+                        }
+                    } else {
+                        task.exception?.let {
+
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            continuation.resume(Result1.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+    }
+
+//    override suspend fun setUserAcountType(
+//        users: Users,
+//        viewModel: MainViewModel
+//    ): Result1<Boolean> = suspendCoroutine { continuation ->
+//        val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
+//        val document = userStart.document()
+//        users.id = document.id
+//        document
+//            .set(users)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Logger.i("users.id: ${users.id}")
+//                    Logger.i("setTodayFishRecord: $userStart")
+//                    viewModel.user.value.let {
+//                        it?.accountType = users.accountType
+//                        it?.id = users.id
+//                    }
+//                } else {
+//                    task.exception?.let {
+//
+//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+//                        return@addOnCompleteListener
+//                    }
+//                }
+//            }
+//    }
+
+    override suspend fun userSignIn(users: Users): Result1<Boolean> = suspendCoroutine {
+        val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
+        val document = userStart.document()
+        users.id = document.id
+        document
+            .set(users)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("users.id: ${users.id}")
+                    Logger.i("userStart: $userStart")
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        return@addOnCompleteListener
+                    }
+                }
+            }
+    }
+
+    override suspend fun getSalerInfo(users: Users): Result1<Users> = suspendCoroutine {
+//        36rzFkt6jRyei8GYjz6X
+            continuation ->
+
         FirebaseFirestore.getInstance()
             .collectionGroup(PATH_USERS)
-            .whereEqualTo("id", "3TfIP4L6w9Q9Zqs1bnb0")
+            .whereEqualTo("id", "36rzFkt6jRyei8GYjz6X")
             .get()
-            .addOnCompleteListener {SellerInfo ->
+            .addOnCompleteListener { SellerInfo ->
                 Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                var salerInfo = Users()
+                for (document2 in SellerInfo.result!!) {
+                    salerInfo = document2.toObject(Users::class.java)
+                }
+                continuation.resume(Result1.Success(salerInfo))
+                Logger.i("salerInfo => ${salerInfo}")
+            }
 
-            }
-//        continuation.resume(Result1.Success())
-            }
+    }
+
+
 }
+
+//    override suspend fun getSalerInfo(users: UserManager): Result1<UserManager> = suspendCoroutine { continuation ->
+////            FirebaseFirestore.getInstance()
+////                .collectionGroup(PATH_USERS)
+////                .whereEqualTo("email", users.user?.email)
+////                .get()
+////                .addOnCompleteListener { SellerInfo ->
+////                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+////                    Logger.d("sellerId => $sellerId")
+////                    var sellersLocation = mutableListOf<SellerLocation>()
+////                    var sellerLocation = SellerLocation()
+////                    for (document2 in SellerInfo.result!!) {
+////                        sellerLocation = document2.toObject(SellerLocation::class.java)
+////                        sellersLocation.add(sellerLocation)
+////                    }
+////                    continuation.resume(Result1.Success(sellersLocation))
+////                }
+//
+//        }
 
 @SuppressLint("SimpleDateFormat")
 private fun getNowDate(time: Long): String {
@@ -265,3 +439,21 @@ private fun getNowDate(time: Long): String {
                 tms.get(Calendar.SECOND).toString()
     }
 }
+
+@SuppressLint("SimpleDateFormat")
+fun getNow(): String {
+    return if (android.os.Build.VERSION.SDK_INT >= 24) {
+        SimpleDateFormat("yyyy/MM/dd").format(Date())
+    } else {
+        val tms = Calendar.getInstance()
+        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
+    }
+}
+
+

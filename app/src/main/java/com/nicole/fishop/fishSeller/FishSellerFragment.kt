@@ -1,6 +1,5 @@
 package com.nicole.fishop.fishSeller
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.fishBuyer.FishBuyerGoogleMapArgs
 import com.nicole.fishop.util.Logger
 
 
@@ -24,7 +24,9 @@ class FishSellerFragment() : Fragment() {
     }
 
 
-    private val viewModel by viewModels<FishSellerViewModel> { getVmFactory() }
+    private val viewModel by viewModels<FishSellerViewModel> { getVmFactory(
+    )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

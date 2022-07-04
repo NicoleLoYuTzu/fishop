@@ -7,7 +7,7 @@ sealed class AddTodayItem {
 
     abstract val id: Long
 
-    data class CategoryName(val category: String) : AddTodayItem() {
+    data class CategoryName(val categoryName: String) : AddTodayItem() {
         override val id: Long = -1
     }
     data class CategoryTitle(val title: String) : AddTodayItem() {

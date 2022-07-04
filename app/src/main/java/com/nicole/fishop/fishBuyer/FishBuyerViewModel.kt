@@ -3,6 +3,7 @@ package com.nicole.fishop.fishBuyer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
 import com.nicole.fishop.data.*
@@ -38,15 +39,17 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
         get() = _error
 
 
-    private var _fishToday = MutableLiveData<List<FishToday>>()
+    val startLocation = MutableLiveData<LatLng>()
+
+
+
+    var _fishToday = MutableLiveData<List<FishToday>>()
 
     val fishToday: LiveData<List<FishToday>>
         get() = _fishToday
 
-    private var _sellerLocation = MutableLiveData<List<SellerLocation>>()
 
-    val sellerLocation: LiveData<List<SellerLocation>>
-        get() = _sellerLocation
+//    var fishAddress = FishToday()
 
 
 
@@ -59,6 +62,19 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    private val _navigateToGoogleMap = MutableLiveData<FishToday>()
+
+    val navigateToGoogleMap: LiveData<FishToday>
+        get() = _navigateToGoogleMap
+
+    fun navigateToGoogleMap(fishToday: FishToday) {
+        _navigateToGoogleMap.value = fishToday
+    }
+
+    fun onGoogleMapNavigated() {
+        _navigateToGoogleMap.value = null
+    }
 
     init {
         getFishTodayAllResult()
@@ -138,17 +154,65 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 
     }
 
-    fun getGoogleMapResult(location: String) {
+     var _sellerLocations = MutableLiveData<List<SellerLocation>>()
+
+    val sellerLocations: LiveData<List<SellerLocation>>
+        get() = _sellerLocations
+
+
+
+    fun getAllSellerAddressResult(ownerIds: List<String>) {
         coroutineScope.launch {
-            Logger.d("getFishTodayFilterResult")
+            Logger.d("getGoogleMapResult")
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getGoogleMap(location)
+            val result = repository.getAllSellerAddressResult(ownerIds)
             Logger.d("repository.getGoogleMap()")
             Logger.d("getGoogleMap result $result")
 
-//            _sellerLocation.value = when (result) {
+            _sellerLocations.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+
+        }
+    }
+
+//    private var _getDistance = MutableLiveData<List<SellerLocation>>()
+//
+//    val getDistance: LiveData<List<SellerLocation>>
+//        get() = _getDistance
+//    fun getDistanceResult(location: String) {
+//        coroutineScope.launch {
+//            Logger.d("getGoogleMapResult")
+//
+//            _status.value = LoadApiStatus.LOADING
+//
+//            val result = repository.getDistanceResult(location)
+//            Logger.d("repository.getGoogleMap()")
+//            Logger.d("getGoogleMap result $result")
+//
+//            _getDistance.value = when (result) {
 //                is Result1.Success -> {
 //                    _error.value = null
 //                    _status.value = LoadApiStatus.DONE
@@ -171,10 +235,8 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 //                }
 //            }
 //            _refreshStatus.value = false
-
-        }
-
-    }
-
-
+//
+//        }
+//    }
 }
+

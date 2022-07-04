@@ -8,5 +8,13 @@ import java.sql.Timestamp
 
 @Parcelize
 data class Users(
-    var id: String,
+    var id: String?=null,
+    var accountType: String?=null,
+    var address: String?=null,
+    var name: String?=null,
+    var phone: String?=null,
+    var businessTime: String?=null,
+    var email: String?= null,
+    var businessEndTime: String? = null,
+    var businessDay:List<String>? = emptyList()
 ) : Parcelable

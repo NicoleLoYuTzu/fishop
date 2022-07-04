@@ -5,14 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.nicole.fishop.R
+import androidx.fragment.app.viewModels
 import com.nicole.fishop.databinding.FragmentProfileBuyerBinding
+import com.nicole.fishop.ext.getVmFactory
 
 
 class ProfileBuyerFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val viewModel by viewModels<ProfileBuyerViewModel> {
+        getVmFactory(
+        )
     }
 
     override fun onCreateView(
@@ -21,6 +23,10 @@ class ProfileBuyerFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentProfileBuyerBinding.inflate(inflater)
+
+
+
+
         return binding.root
     }
 

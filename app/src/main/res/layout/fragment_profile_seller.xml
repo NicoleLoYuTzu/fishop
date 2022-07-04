@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fishBuyer.ProfileSellerFragment">
+    tools:context=".profile.ProfileSalerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_shopname" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView_address"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,9 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView_address"
+            app:layout_constraintStart_toEndOf="@+id/textView_address"
+            app:layout_constraintTop_toTopOf="@+id/textView_address" />
 
         <TextView
             android:id="@+id/textView14"
@@ -61,10 +61,10 @@
             android:layout_marginTop="25dp"
             android:text="聯絡電話 : "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_address" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/textView_phone"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,9 +82,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="3dp"
             android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView15"
-            app:layout_constraintStart_toEndOf="@+id/textView15"
-            app:layout_constraintTop_toTopOf="@+id/textView15" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
+            app:layout_constraintStart_toEndOf="@+id/textView_phone"
+            app:layout_constraintTop_toTopOf="@+id/textView_phone" />
 
         <TextView
             android:id="@+id/textView17"
@@ -93,40 +93,31 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
-            android:text="營業時間 : "
+            android:text="營業日: "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_phone" />
 
         <TextView
             android:id="@+id/textView18"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:text="星期"
+            android:text="星期一"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Tuesday"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <TextView
-            android:id="@+id/textView_businessTime"
+            android:id="@+id/textView_Tuesday"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="一、二、三、四、五、六"
-            app:layout_constraintBottom_toBottomOf="@+id/textView18"
-            app:layout_constraintStart_toEndOf="@+id/textView18"
-            app:layout_constraintTop_toTopOf="@+id/textView18" />
-
-        <TextView
-            android:id="@+id/textView20"
-            style="@style/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
-            android:text="05:00~13:00"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="星期二"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Wednesday"
+            app:layout_constraintStart_toStartOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
@@ -134,12 +125,151 @@
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginStart="40dp"
             android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_businessTime"
-            app:layout_constraintStart_toEndOf="@+id/textView_businessTime"
-            app:layout_constraintTop_toTopOf="@+id/textView_businessTime" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Mondaystatus"
+            app:layout_constraintStart_toEndOf="@+id/textView_Mondaystatus"
+            app:layout_constraintTop_toTopOf="@+id/textView_Mondaystatus" />
+
+        <TextView
+            android:id="@+id/textView_Mondaystatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintStart_toEndOf="@+id/textView18"
+            app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+        <TextView
+            android:id="@+id/textView_Tuesdaystatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Tuesday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Tuesday" />
+
+        <TextView
+            android:id="@+id/textView_WednesdayStatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Wednesday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Wednesday" />
+
+        <TextView
+            android:id="@+id/textView_ThursdayStatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Thursday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Thursday" />
+
+        <TextView
+            android:id="@+id/textView_FridayStatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Friday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Friday" />
+
+        <TextView
+            android:id="@+id/textView_SaturdayStatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Saturday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Saturday" />
+
+        <TextView
+            android:id="@+id/textView_SundayStatus"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="休息"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Sunday"
+            app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toTopOf="@+id/textView_Sunday" />
+
+        <TextView
+            android:id="@+id/textView_Wednesday"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="星期三"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Thursday"
+            app:layout_constraintEnd_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Tuesday" />
+
+        <TextView
+            android:id="@+id/textView_Thursday"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="星期四"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Friday"
+            app:layout_constraintEnd_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Wednesday" />
+
+        <TextView
+            android:id="@+id/textView_Friday"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="星期五"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Saturday"
+            app:layout_constraintEnd_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Thursday" />
+
+        <TextView
+            android:id="@+id/textView_Saturday"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="星期六"
+            app:layout_constraintBottom_toTopOf="@+id/textView_Sunday"
+            app:layout_constraintEnd_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Friday" />
+
+        <TextView
+            android:id="@+id/textView_Sunday"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="星期日"
+            app:layout_constraintEnd_toEndOf="@+id/textView_Tuesday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textView_Tuesday"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Saturday" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

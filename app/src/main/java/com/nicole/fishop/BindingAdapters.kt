@@ -10,6 +10,9 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
+import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.AddTodayItem
 import com.nicole.fishop.fishSeller.AddTodayCategoryItemAdapter
@@ -27,4 +30,3 @@ fun bindRecyclerViewWithHomeItems(recyclerView: RecyclerView, homeItems: List<Ad
         }
     }
 }
-

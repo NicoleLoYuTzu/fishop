@@ -9,6 +9,10 @@
             name="category"
             type="com.nicole.fishop.data.Category" />
         <variable name="viewModel" type="com.nicole.fishop.fishSeller.AddTodayCategoryViewModel"/>
+
+<!--        <variable-->
+<!--            name="ItemBinding"-->
+<!--            type="" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
