@@ -4,8 +4,7 @@
     <item
         android:id="@+id/FishSellerFragment"
         android:icon="@drawable/fishibottomnavigation"
-        android:title=""
-        />
+        android:title="" />
 
     <item
         android:id="@+id/FishBuyerFragment"

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fishop">
         <activity
-            android:name=".StartDialog"
+            android:name=".login.StartDialog"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.

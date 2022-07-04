@@ -45,7 +45,6 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
 
 
             binding.imageViewChat.setOnClickListener {
-                findNavController(binding.root).navigate(NavFragmentDirections.actionToLoginDialog())
 //                findNavController(binding.root).navigate(NavFragmentDirections.actionToBuyerChatFragment())
             }
             binding.textViewChat.setOnClickListener {

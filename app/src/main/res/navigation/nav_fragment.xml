@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/ProfileSellerFragment"
-        android:name="com.nicole.fishop.profile.ProfileSellerFragment"
+        android:name="com.nicole.fishop.profile.ProfileSalerFragment"
         android:label="ProfileSellerFragment" />
 
 
@@ -69,7 +69,7 @@
         app:destination="@id/salerChatFragment" />
     <dialog
         android:id="@+id/startDialog"
-        android:name="com.nicole.fishop.StartDialog"
+        android:name="com.nicole.fishop.login.StartDialog"
         android:label="activity_start_dialog"
         tools:layout="@layout/activity_start_dialog" />
 
@@ -86,17 +86,26 @@
         app:destination="@id/mainActivity" />
 
 
-    <dialog
-        android:id="@+id/loginDialog"
-        android:name="com.nicole.fishop.login.LoginDialog"
-        android:label="LoginDialog" />
-
-    <action
-        android:id="@+id/action_to_loginDialog"
-        app:destination="@id/loginDialog" />
     <activity
         android:id="@+id/mainActivity"
         android:name="com.nicole.fishop.MainActivity"
         android:label="MainActivity" />
+    <fragment
+        android:id="@+id/profileSalerEditFragment"
+        android:name="com.nicole.fishop.profile.ProfileSalerEditFragment"
+        android:label="fragment_profile_buyer_edit"
+        tools:layout="@layout/fragment_profile_buyer_edit" />
+
+    <action
+        android:id="@+id/action_startDialog_to_profileSalerEditFragment"
+        app:destination="@id/profileSalerEditFragment" />
+
+    <action
+        android:id="@+id/action_profileBuyerEditFragment_to_profileSellerFragment"
+        app:destination="@id/ProfileSellerFragment" />
+    <fragment
+        android:id="@+id/profileBuyerFragment"
+        android:name="com.nicole.fishop.profile.ProfileBuyerFragment"
+        android:label="ProfileBuyerFragment" />
 
 </navigation>
