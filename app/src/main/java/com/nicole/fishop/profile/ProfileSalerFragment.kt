@@ -35,82 +35,78 @@ class ProfileSalerFragment : Fragment() {
         val binding = FragmentProfileSellerBinding.inflate(inflater)
         Log.d("Nicole", "ProfileSalerFragment onCreateView")
 
-        viewModel.getOk.observe(viewLifecycleOwner, Observer {getOk->
-            if (getOk) {
-                viewModel.users.observe(viewLifecycleOwner, Observer {user->
-                    binding.textViewAddress.text = user.address
-                    binding.textViewPhone.text = user.phone
-                    binding.textViewShopname.text = user.name
-                    Logger.i("viewModel.users ${viewModel.users.value}")
-                    val startTime = user.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
-                    val stopTime = user.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
-                    if (user.businessDay?.contains("星期一") == true) {
-                        binding.textViewMondaystatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewMondaystatus.text = "休息"
-                    }
 
-                    if (user.businessDay?.contains("星期二") == true) {
-                        binding.textViewTuesdaystatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewTuesdaystatus.text = "休息"
-                    }
-
-                    if (user.businessDay?.contains("星期三") == true) {
-                        binding.textViewWednesdayStatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewWednesdayStatus.text = "休息"
-                    }
-
-                    if (user.businessDay?.contains("星期四") == true) {
-                        binding.textViewThursdayStatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewThursdayStatus.text = "休息"
-                    }
-
-                    if (user.businessDay?.contains("星期五") == true) {
-                        binding.textViewFridayStatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewFridayStatus.text = "休息"
-                    }
-
-                    if (user.businessDay?.contains("星期六") == true) {
-                        binding.textViewSaturdayStatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewSaturdayStatus.text = "休息"
-                    }
-
-                    if (user.businessDay?.contains("星期日") == true) {
-                        binding.textViewSundayStatus.text = "$startTime ~ $stopTime"
-                    } else {
-                        binding.textViewSundayStatus.text = "休息"
-                    }
-
-
-                })
+        viewModel.users.observe(viewLifecycleOwner, Observer { user ->
+            binding.textViewAddress.text = user.address
+            binding.textViewPhone.text = user.phone
+            binding.textViewShopname.text = user.name
+            Logger.i("viewModel.users ${viewModel.users.value}")
+            val startTime = user.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
+            val stopTime = user.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
+            if (user.businessDay?.contains("星期一") == true) {
+                binding.textViewMondaystatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewMondaystatus.text = "休息"
             }
+
+            if (user.businessDay?.contains("星期二") == true) {
+                binding.textViewTuesdaystatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewTuesdaystatus.text = "休息"
+            }
+
+            if (user.businessDay?.contains("星期三") == true) {
+                binding.textViewWednesdayStatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewWednesdayStatus.text = "休息"
+            }
+
+            if (user.businessDay?.contains("星期四") == true) {
+                binding.textViewThursdayStatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewThursdayStatus.text = "休息"
+            }
+
+            if (user.businessDay?.contains("星期五") == true) {
+                binding.textViewFridayStatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewFridayStatus.text = "休息"
+            }
+
+            if (user.businessDay?.contains("星期六") == true) {
+                binding.textViewSaturdayStatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewSaturdayStatus.text = "休息"
+            }
+
+            if (user.businessDay?.contains("星期日") == true) {
+                binding.textViewSundayStatus.text = "$startTime ~ $stopTime"
+            } else {
+                binding.textViewSundayStatus.text = "休息"
+            }
+
+
         })
 
 
+    return binding.root
+}
 
-        return binding.root
+@SuppressLint("SimpleDateFormat")
+private fun getNowTime(time: Long): String {
+    return if (android.os.Build.VERSION.SDK_INT >= 24) {
+        SimpleDateFormat("HH:mm").format(time)
+    } else {
+        val tms = Calendar.getInstance()
+        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
     }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun getNowTime(time: Long): String {
-        return if (android.os.Build.VERSION.SDK_INT >= 24) {
-            SimpleDateFormat("HH:mm").format(time)
-        } else {
-            val tms = Calendar.getInstance()
-            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                    tms.get(Calendar.MONTH).toString() + "/" +
-                    tms.get(Calendar.YEAR).toString() + " " +
-                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                    tms.get(Calendar.MINUTE).toString() + ":" +
-                    tms.get(Calendar.SECOND).toString()
-        }
-    }
+}
 
 
 }

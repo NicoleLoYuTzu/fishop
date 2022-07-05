@@ -14,10 +14,12 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/frame_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,37 +38,34 @@
             <TextView
                 android:id="@+id/textView_date"
                 style="@style/date"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="28dp"
                 android:text="2022/6/17"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewTime"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:textSize="15sp"
                 app:layout_constraintStart_toEndOf="@+id/imageViewDate"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewTime"
-                android:layout_width="49dp"
-                android:layout_height="58dp"
-                android:layout_marginStart="40dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
                 android:elevation="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView_date"
-                app:layout_constraintEnd_toStartOf="@+id/textView_time"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textView_date"
                 app:layout_constraintTop_toTopOf="@+id/textView_date"
+                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/chronometer" />
 
             <ImageView
                 android:id="@+id/imageViewDate"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="36dp"
                 android:elevation="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView_date"
-                app:layout_constraintEnd_toStartOf="@+id/textView_date"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView_date"
+                app:layout_constraintVertical_bias="0.571"
                 app:srcCompat="@drawable/schedule" />
 
             <TextView
@@ -74,55 +73,40 @@
                 style="@style/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:text="01:26"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewTime"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageViewTime"
-                app:layout_constraintTop_toTopOf="@+id/imageViewTime" />
-
-            <TextView
-                android:id="@+id/textView5"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="當日魚類 : "
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewTime"
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
                 android:foregroundGravity="center"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
-                app:layout_constraintHorizontal_bias="0.126"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView_date"
                 app:layout_constraintVertical_bias="1.0"
                 tools:listitem="@layout/fragment_fish_seller_item_item" />
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="53dp"
-                android:layout_height="39dp"
-                android:layout_marginTop="13dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView5"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_width="34dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_date"
+                app:layout_constraintTop_toTopOf="@+id/recyclerView"
                 app:srcCompat="@drawable/fishipage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

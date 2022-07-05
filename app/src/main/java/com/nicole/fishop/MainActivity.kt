@@ -54,11 +54,12 @@ class MainActivity : AppCompatActivity() {
             if (it) {
                 if (UserManager.user?.accountType == "buyer") {
                     turnMode(Mode.BUYER.index)
-                }else if(UserManager.user?.accountType == "saler"){
+                } else if (UserManager.user?.accountType == "saler") {
                     turnMode(Mode.SELLER.index)
                 }
             }
         })
+        binding.activityMainBottomNavigationView.inflateMenu(R.menu.nav_menu_seller)
 
         findNavController(R.id.activity_main_nav_host_fragment)
             .addOnDestinationChangedListener { navController: NavController, destination, _ ->
@@ -83,20 +84,21 @@ class MainActivity : AppCompatActivity() {
                         profileTitle.text = "今日漁貨"
                         fishop.visibility = View.INVISIBLE
                     }
-//                R.id.ProfileBuyerFragment -> {
-//                    bottomNavigationView.visibility = View.VISIBLE
-//                    toolbar.visibility = View.VISIBLE
-//                    profileTitle.visibility = View.VISIBLE
-//                    profileTitle.text = "聊天室"
-//                    fishop.visibility = View.INVISIBLE
-//                }
-                    R.id.ProfileSellerFragment -> {
+
+                    R.id.ProfileBuyerFragment -> {
                         bottomNavigationView.visibility = View.VISIBLE
                         toolbar.visibility = View.VISIBLE
-                        profileTitle.visibility = View.INVISIBLE
-                        fishop.visibility = View.VISIBLE
+                        profileTitle.visibility = View.VISIBLE
+                        profileTitle.text = "我的檔案"
+                        fishop.visibility = View.INVISIBLE
                     }
-                    R.id.BuyerChatFragment -> {
+                    R.id.ProfileSellerFragment -> {
+                        bottomNavigationView.visibility = View.VISIBLE
+                        toolbar.visibility = View.GONE
+                        profileTitle.visibility = View.GONE
+                        fishop.visibility = View.GONE
+                    }
+                    R.id.ChatFragment -> {
                         bottomNavigationView.visibility = View.VISIBLE
                         toolbar.visibility = View.GONE
                         profileTitle.visibility = View.INVISIBLE

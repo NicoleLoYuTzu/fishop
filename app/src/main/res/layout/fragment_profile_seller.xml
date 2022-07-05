@@ -6,15 +6,59 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#A1C4D5">
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button_revisePhone"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|right"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+        <Button
+            android:id="@+id/button_reviseBusinessDay"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|right"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="@+id/textView17"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+        <ImageView
+            android:id="@+id/imageView22"
+            android:layout_width="21dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/featherpen"
+            app:layout_constraintBottom_toBottomOf="@+id/button_revisePhone"
+            app:layout_constraintStart_toStartOf="@+id/button_revisePhone"
+            app:layout_constraintTop_toTopOf="@+id/button_revisePhone" />
+
+        <ImageView
+            android:id="@+id/imageView23"
+            android:layout_width="21dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/featherpen"
+            app:layout_constraintBottom_toBottomOf="@+id/button_reviseBusinessDay"
+            app:layout_constraintStart_toStartOf="@+id/button_reviseBusinessDay"
+            app:layout_constraintTop_toTopOf="@+id/button_reviseBusinessDay" />
 
         <TextView
             android:id="@+id/textView_shopname"
             style="@style/date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="#A1C4D5"
             android:gravity="center"
             android:text="文章水產店"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,89 +70,65 @@
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:text="地址 :　"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_shopname" />
+            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/textView_address"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:text="桃園市八德區XXXXXX"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-        <TextView
-            android:id="@+id/textView13"
-            style="@style/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_address"
-            app:layout_constraintStart_toEndOf="@+id/textView_address"
-            app:layout_constraintTop_toTopOf="@+id/textView_address" />
 
         <TextView
             android:id="@+id/textView14"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="3dp"
             android:text="聯絡電話 : "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_address" />
+            app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+            app:layout_constraintStart_toEndOf="@+id/imageView19"
+            app:layout_constraintTop_toTopOf="@+id/imageView19" />
 
         <TextView
             android:id="@+id/textView_phone"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:text="0912345678"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-        <TextView
-            android:id="@+id/textView16"
-            style="@style/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="3dp"
-            android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
-            app:layout_constraintStart_toEndOf="@+id/textView_phone"
-            app:layout_constraintTop_toTopOf="@+id/textView_phone" />
 
         <TextView
             android:id="@+id/textView17"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
             android:text="營業日: "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_phone" />
+            app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+            app:layout_constraintStart_toEndOf="@+id/imageView20"
+            app:layout_constraintTop_toTopOf="@+id/imageView20" />
 
         <TextView
             android:id="@+id/textView18"
             style="@style/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
             android:text="星期一"
             app:layout_constraintBottom_toTopOf="@+id/textView_Tuesday"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView17"
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <TextView
@@ -121,17 +141,6 @@
             app:layout_constraintBottom_toTopOf="@+id/textView_Wednesday"
             app:layout_constraintStart_toStartOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-        <TextView
-            android:id="@+id/textView21"
-            style="@style/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:text="修改"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_Mondaystatus"
-            app:layout_constraintStart_toEndOf="@+id/textView_Mondaystatus"
-            app:layout_constraintTop_toTopOf="@+id/textView_Mondaystatus" />
 
         <TextView
             android:id="@+id/textView_Mondaystatus"
@@ -275,13 +284,68 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_Saturday" />
 
         <ImageView
-            android:id="@+id/imageView16"
-            android:layout_width="53dp"
-            android:layout_height="43dp"
-            android:src="@drawable/wave_profile"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_shopname"
-            app:layout_constraintEnd_toStartOf="@+id/textView_shopname"
-            app:layout_constraintTop_toTopOf="@+id/textView_shopname" />
+            android:id="@+id/imageView8"
+            android:layout_width="81dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_shopname"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
+            android:src="@drawable/home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/telephone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_address" />
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/appointment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_phone" />
+
+        <Button
+            android:id="@+id/button_reviseAddress"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|right"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView11"
+            app:layout_constraintVertical_bias="0.285" />
+
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="21dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/featherpen"
+            app:layout_constraintBottom_toBottomOf="@+id/button_reviseAddress"
+            app:layout_constraintStart_toStartOf="@+id/button_reviseAddress"
+            app:layout_constraintTop_toTopOf="@+id/button_reviseAddress"
+            app:layout_constraintVertical_bias="0.352" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

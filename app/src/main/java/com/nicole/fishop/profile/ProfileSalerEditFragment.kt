@@ -156,7 +156,12 @@ class ProfileSalerEditFragment : Fragment() {
 
 
                         dialog.dismiss()
-                        findNavController().navigate(NavFragmentDirections.actionProfileBuyerEditFragmentToProfileSellerFragment())
+                        viewModel.getOk.observe(
+                            viewLifecycleOwner, androidx.lifecycle.Observer {
+                                findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
+                            }
+                        )
+
                     }
                     .setNeutralButton("取消") { dialog, _ ->
                         dialog.dismiss()

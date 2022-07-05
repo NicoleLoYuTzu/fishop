@@ -47,21 +47,17 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
     val users: LiveData<Users>
         get() = _users
 
-     val getOk = MutableLiveData<Boolean>()
 
     init {
 //        userManager.value?.user?.let { getSalerInfo(it) }
-        runBlocking {
-            delay(5000)
-            UserManager.user?.let { getSalerInfo(it) }
-            Logger.d("UserManager.user ${UserManager.user}")
-            Logger.d("delay")
-        }
+        UserManager.user?.let { getSalerInfo(it) }
+        Logger.d("UserManager.user ${UserManager.user}")
+        Logger.d("delay")
 
         Logger.d("init")
     }
 
-    fun getSalerInfo(users: Users){
+    fun getSalerInfo(users: Users) {
         coroutineScope.launch {
             Logger.d("getSalerInfo")
             _status.value = LoadApiStatus.LOADING
@@ -72,7 +68,6 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Logger.d("success")
-                    getOk.value = true
                     result.data
                 }
                 is Result1.Fail -> {

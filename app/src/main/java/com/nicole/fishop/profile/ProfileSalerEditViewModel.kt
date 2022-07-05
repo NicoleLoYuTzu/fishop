@@ -42,7 +42,7 @@ class ProfileSalerEditViewModel(private val repository: FishopRepository) : View
     val users: LiveData<Users>
         get() = _users
 
-
+    val getOk = MutableLiveData<Boolean>()
 
 //    init {
 //        getSalerInfo()
@@ -58,6 +58,7 @@ class ProfileSalerEditViewModel(private val repository: FishopRepository) : View
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Logger.d("success")
+                    getOk.value = true
                 }
                 is Result1.Fail -> {
                     _error.value = result.error

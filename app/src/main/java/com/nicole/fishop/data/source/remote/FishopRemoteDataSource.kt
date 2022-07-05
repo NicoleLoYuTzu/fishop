@@ -84,6 +84,7 @@ object FishopRemoteDataSource : FishopDataSource {
         suspendCoroutine { continuation ->
             FirebaseFirestore.getInstance()
                 .collection(PATH_EVERYDAYFISHES)
+                .orderBy("time",Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener { everydayFishes ->
                     if (everydayFishes.isSuccessful) {
@@ -440,7 +441,9 @@ object FishopRemoteDataSource : FishopDataSource {
         suspendCoroutine { continuation ->
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_USERS)
-                .whereEqualTo("id", users.id)
+                .whereEqualTo("email", users.email)
+//               懶得一直刪, 先全部都找同一筆資料
+//                .whereEqualTo("id", users.id)
                 .get()
                 .addOnCompleteListener { SellerInfo ->
                     Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
@@ -460,6 +463,7 @@ object FishopRemoteDataSource : FishopDataSource {
         FirebaseFirestore.getInstance()
             .collectionGroup(PATH_USERS)
             .whereEqualTo("email", users.email)
+//            .whereEqualTo("email", "a4207486@gmail.com")
             .get()
             .addOnCompleteListener { SellerInfo ->
                 Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")

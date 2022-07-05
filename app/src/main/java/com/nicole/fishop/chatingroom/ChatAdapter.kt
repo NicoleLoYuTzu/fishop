@@ -1,19 +1,15 @@
-package com.nicole.fishop.chatingroom.buyer
+package com.nicole.fishop.chatingroom
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nicole.fishop.R
-import com.nicole.fishop.data.AddTodayItem
 import com.nicole.fishop.data.ChatRecord
 import com.nicole.fishop.databinding.*
 import com.nicole.fishop.util.Logger
 
-class BuyerChatAdapter() :
+class ChatAdapter() :
     ListAdapter<ChatRecord, RecyclerView.ViewHolder>(DiffCallback) {
 
 

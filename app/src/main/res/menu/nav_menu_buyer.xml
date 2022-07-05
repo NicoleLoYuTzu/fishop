@@ -5,17 +5,17 @@
 
     <item
         android:id="@+id/FishBuyerFragment"
-        android:icon="@drawable/nav_item_color_state"
-        android:title=""/>
+        android:icon="@drawable/nav_fish_icon_color_state"
+        android:title="當日漁貨"/>
 
     <item
-        android:id="@+id/BuyerChatFragment"
-        android:icon="@drawable/ic_menu_profile_drawable_selector"
-        android:title=""/>
+        android:id="@+id/ChatFragment"
+        android:icon="@drawable/nav_chat_icon_color_state"
+        android:title="聊天室"/>
 
     <item
-        android:id="@+id/ProfileSellerFragment"
-        android:icon="@drawable/ic_menu_profile_drawable_selector"
-        android:title=""/>
+        android:id="@+id/ProfileBuyerFragment"
+        android:icon="@drawable/nav_user_icon_color_state"
+        android:title="主頁"/>
 
 </menu>

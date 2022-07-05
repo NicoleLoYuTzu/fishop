@@ -63,10 +63,6 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
 //    }
 
 
-    private val _user = MutableLiveData<Users>()
-
-    val user: LiveData<Users>
-        get() = _user
 
     // Handle navigation to login success
     private val _navigateToLoginSuccess = MutableLiveData<Users>()
@@ -81,27 +77,22 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
             Logger.d("userSignIn")
             _status.value = LoadApiStatus.LOADING
             // It will return Result object after Deferred flow
-            _user.value = when (val result = repository.userSignIn(users)) {
+            when (val result = repository.userSignIn(users)) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    Logger.d("_user.value ${_user.value}")
-                    result.data
                 }
                 is Result1.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
-                    null
                 }
                 is Result1.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
-                    null
                 }
                 else -> {
                     _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
-                    null
                 }
             }
         }

@@ -171,7 +171,7 @@ class StartDialog() : AppCompatDialogFragment() {
                 user?.email = email
                 user?.name = account?.displayName
                 //先不要建立資料
-                user?.let { viewModel.userSignIn(it) }
+//                user?.let { viewModel.userSignIn(it) }
                 viewModel.userManager.value = UserManager
                 Logger.i(" user.value $user")
                 Logger.d("UserManager.userToken ${UserManager.userToken}")

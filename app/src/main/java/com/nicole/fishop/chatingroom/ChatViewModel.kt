@@ -1,4 +1,4 @@
-package com.nicole.fishop.chatingroom.buyer
+package com.nicole.fishop.chatingroom
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class BuyerChatViewModel (private val repository: FishopRepository) : ViewModel() {
+class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()

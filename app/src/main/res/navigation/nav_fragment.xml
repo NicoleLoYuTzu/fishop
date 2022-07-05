@@ -20,14 +20,10 @@
         android:label="FishBuyerFragment" />
 
     <fragment
-        android:id="@+id/BuyerChatFragment"
-        android:name="com.nicole.fishop.chatingroom.buyer.BuyerChatFragment"
-        android:label="BuyerChatFragment" />
+        android:id="@+id/ChatFragment"
+        android:name="com.nicole.fishop.chatingroom.ChatFragment"
+        android:label="ChatFragment" />
 
-    <fragment
-        android:id="@+id/ProfileSellerFragment"
-        android:name="com.nicole.fishop.profile.ProfileSalerFragment"
-        android:label="ProfileSellerFragment" />
 
 
     <action
@@ -51,22 +47,12 @@
     <action
         android:id="@+id/action_to_fishBuyerGoogleMap"
         app:destination="@id/fishBuyerGoogleMap" />
-    <fragment
-        android:id="@+id/buyerChatFragment"
-        android:name="com.nicole.fishop.chatingroom.buyer.BuyerChatFragment"
-        android:label="BuyerChatFragment" />
-    <fragment
-        android:id="@+id/salerChatFragment"
-        android:name="com.nicole.fishop.chatingroom.saler.SalerChatFragment"
-        android:label="SalerChatFragment" />
+
 
     <action
-        android:id="@+id/action_to_buyerChatFragment"
-        app:destination="@id/buyerChatFragment" />
+        android:id="@+id/action_to_ChatFragment"
+        app:destination="@id/ChatFragment" />
 
-    <action
-        android:id="@+id/action_to_salerChatFragment"
-        app:destination="@id/salerChatFragment" />
     <dialog
         android:id="@+id/startDialog"
         android:name="com.nicole.fishop.login.StartDialog"
@@ -91,21 +77,30 @@
         android:name="com.nicole.fishop.MainActivity"
         android:label="MainActivity" />
     <fragment
-        android:id="@+id/profileSalerEditFragment"
+        android:id="@+id/ProfileSalerEditFragment"
         android:name="com.nicole.fishop.profile.ProfileSalerEditFragment"
         android:label="fragment_profile_Saler_edit"
         tools:layout="@layout/fragment_profile_saler_edit" />
 
     <action
         android:id="@+id/action_startDialog_to_profileSalerEditFragment"
-        app:destination="@id/profileSalerEditFragment" />
+        app:destination="@id/ProfileSalerEditFragment" />
 
     <action
-        android:id="@+id/action_profileBuyerEditFragment_to_profileSellerFragment"
+        android:id="@+id/action_profileSalerEditFragment_to_profileSellerFragment"
         app:destination="@id/ProfileSellerFragment" />
+
     <fragment
-        android:id="@+id/profileBuyerFragment"
+        android:id="@+id/ProfileBuyerFragment"
         android:name="com.nicole.fishop.profile.ProfileBuyerFragment"
-        android:label="ProfileBuyerFragment" />
+        android:label="fragment_profile_buyer"
+        tools:layout="@layout/fragment_profile_buyer" />
+
+
+    <fragment
+        android:id="@+id/ProfileSellerFragment"
+        android:name="com.nicole.fishop.profile.ProfileSalerFragment"
+        android:label="fragment_profile_seller"
+        tools:layout="@layout/fragment_profile_seller" />
 
 </navigation>

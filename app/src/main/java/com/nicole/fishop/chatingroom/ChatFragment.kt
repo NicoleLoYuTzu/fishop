@@ -1,4 +1,4 @@
-package com.nicole.fishop.chatingroom.saler
+package com.nicole.fishop.chatingroom
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nicole.fishop.R
+import com.nicole.fishop.databinding.FragmentChatBuyerBinding
 
 
-class SalerChatFragment : Fragment() {
+class ChatFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,9 @@ class SalerChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_saler, container, false)
+        val binding = FragmentChatBuyerBinding.inflate(layoutInflater)
+        binding.recyclerView.adapter=
+        return binding.root
     }
 
 
