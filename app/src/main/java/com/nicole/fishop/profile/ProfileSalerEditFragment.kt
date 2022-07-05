@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
-import com.nicole.fishop.databinding.FragmentProfileBuyerEditBinding
+import com.nicole.fishop.databinding.FragmentProfileSalerEditBinding
+import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.StartDialogViewModel
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
@@ -21,24 +24,40 @@ import java.util.*
 
 class ProfileSalerEditFragment : Fragment() {
 
+    private val StartDialogviewModel by viewModels<StartDialogViewModel> {
+        getVmFactory(
+        )
+    }
+
+
+    private val viewModel by viewModels<ProfileSalerEditViewModel> {
+        getVmFactory(
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Logger.i("FragmentProfileSalerEditBinding onCreate")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = FragmentProfileBuyerEditBinding.inflate(inflater)
+        val binding = FragmentProfileSalerEditBinding.inflate(inflater)
         binding.editTextStartTime.transformIntoTimePicker(requireContext(), "HH:mm")
         binding.editTextStopTime.transformIntoTimePicker(requireContext(), "HH:mm")
 
 
-
+        Logger.i("FragmentProfileSalerEditBinding onCreateView")
 
         val businessDay: List<String> = emptyList()
 
         val mutableArray = businessDay.toMutableList()
 
-
-
+        binding.textViewEmail.text = "Hello! ${UserManager.user?.name}!"
 
         binding.checkBoxMonday.setOnCheckedChangeListener { compoundButton, b ->
             //星期一
@@ -109,26 +128,30 @@ class ProfileSalerEditFragment : Fragment() {
         }
 
 
-
-
-
 //        Logger.d("onCreateView businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
         binding.buttonSave.setOnClickListener {
             context?.let { it1 ->
                 AlertDialog.Builder(it1)
                     .setTitle("確定儲存?")
                     .setPositiveButton("確定") { dialog, _ ->
+                        val startTime = binding.editTextStartTime.text.toString()
+                        val stopTime = binding.editTextStopTime.text.toString()
+                        val startTimeToLong = startTime.toTimeLong()
+                        val stopTimeToLong = stopTime.toTimeLong()
                         UserManager.user.let {
-                            val startTime = binding.editTextStartTime.text.toString()
-                            val stopTime = binding.editTextStopTime.text.toString()
-                            val startTimeToLong = startTime.toTimeLong()
-                            val stopTimeToLong = stopTime.toTimeLong()
                             Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
                             it?.businessDay = mutableArray
                             it?.businessEndTime = stopTimeToLong.toString()
                             it?.businessTime = startTimeToLong.toString()
                             it?.name = binding.editTextShopname.text.toString()
                             it?.phone = binding.editTextPhone.text.toString()
+                            it?.address = binding.editTextAddress.text.toString()
+                            Logger.i("buttonSave UserManager it $it")
+                            if (it != null) {
+                                viewModel.setSalerInfo(it)
+                                Logger.i(" viewModel.setSalerInfo it $it")
+                            }
+
                         }
 
 
@@ -141,16 +164,6 @@ class ProfileSalerEditFragment : Fragment() {
                     .show()
             }
         }
-
-
-        binding.textViewEmail.text = "Hello! ${UserManager.user?.name}!"
-
-
-
-
-
-
-
 
         return binding.root
     }

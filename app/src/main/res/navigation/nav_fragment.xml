@@ -93,8 +93,8 @@
     <fragment
         android:id="@+id/profileSalerEditFragment"
         android:name="com.nicole.fishop.profile.ProfileSalerEditFragment"
-        android:label="fragment_profile_buyer_edit"
-        tools:layout="@layout/fragment_profile_buyer_edit" />
+        android:label="fragment_profile_Saler_edit"
+        tools:layout="@layout/fragment_profile_saler_edit" />
 
     <action
         android:id="@+id/action_startDialog_to_profileSalerEditFragment"

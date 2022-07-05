@@ -1,5 +1,6 @@
 package com.nicole.fishop.profile
 
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +12,9 @@ import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
+import java.util.logging.Handler
 
 class ProfileSalerViewModel(private val repository: FishopRepository) : ViewModel() {
 
@@ -47,13 +47,18 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
     val users: LiveData<Users>
         get() = _users
 
+     val getOk = MutableLiveData<Boolean>()
+
     init {
 //        userManager.value?.user?.let { getSalerInfo(it) }
-        UserManager.user?.let { getSalerInfo(it) }
+        runBlocking {
+            delay(5000)
+            UserManager.user?.let { getSalerInfo(it) }
+            Logger.d("UserManager.user ${UserManager.user}")
+            Logger.d("delay")
+        }
+
         Logger.d("init")
-
-        Logger.d("UserManager.user ${UserManager.user}")
-
     }
 
     fun getSalerInfo(users: Users){
@@ -67,7 +72,7 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Logger.d("success")
-
+                    getOk.value = true
                     result.data
                 }
                 is Result1.Fail -> {

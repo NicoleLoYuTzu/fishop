@@ -46,11 +46,15 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
 //        return remoteDataSource.setUserAcountType(users,viewModel)
 //    }
 
-    override suspend fun userSignIn(users: Users): Result1<Boolean> {
+    override suspend fun userSignIn(users: Users): Result1<Users> {
         return remoteDataSource.userSignIn(users)
     }
 
     override suspend fun getSalerInfo(users: Users): Result1<Users>{
         return remoteDataSource.getSalerInfo(users)
+    }
+
+    override suspend fun setSalerInfo(users: Users):  Result1<Boolean>{
+        return remoteDataSource.setSalerInfo(users)
     }
 }

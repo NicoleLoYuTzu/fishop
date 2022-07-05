@@ -34,57 +34,63 @@ class ProfileSalerFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentProfileSellerBinding.inflate(inflater)
         Log.d("Nicole", "ProfileSalerFragment onCreateView")
-        viewModel.users.observe(viewLifecycleOwner, Observer {
-            binding.textViewAddress.text = it.address
-            binding.textViewPhone.text = it.phone
-            binding.textViewShopname.text = it.name
-            Logger.i("viewModel.users ${viewModel.users.value}")
-            val startTime = it.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
-            val stopTime = it.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
-            if (it.businessDay?.contains("星期一") == true) {
-                binding.textViewMondaystatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewMondaystatus.text = "休息"
+
+        viewModel.getOk.observe(viewLifecycleOwner, Observer {getOk->
+            if (getOk) {
+                viewModel.users.observe(viewLifecycleOwner, Observer {user->
+                    binding.textViewAddress.text = user.address
+                    binding.textViewPhone.text = user.phone
+                    binding.textViewShopname.text = user.name
+                    Logger.i("viewModel.users ${viewModel.users.value}")
+                    val startTime = user.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
+                    val stopTime = user.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
+                    if (user.businessDay?.contains("星期一") == true) {
+                        binding.textViewMondaystatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewMondaystatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期二") == true) {
+                        binding.textViewTuesdaystatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewTuesdaystatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期三") == true) {
+                        binding.textViewWednesdayStatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewWednesdayStatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期四") == true) {
+                        binding.textViewThursdayStatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewThursdayStatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期五") == true) {
+                        binding.textViewFridayStatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewFridayStatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期六") == true) {
+                        binding.textViewSaturdayStatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewSaturdayStatus.text = "休息"
+                    }
+
+                    if (user.businessDay?.contains("星期日") == true) {
+                        binding.textViewSundayStatus.text = "$startTime ~ $stopTime"
+                    } else {
+                        binding.textViewSundayStatus.text = "休息"
+                    }
+
+
+                })
             }
-
-            if (it.businessDay?.contains("星期二") == true) {
-                binding.textViewTuesdaystatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewTuesdaystatus.text = "休息"
-            }
-
-            if (it.businessDay?.contains("星期三") == true) {
-                binding.textViewWednesdayStatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewWednesdayStatus.text = "休息"
-            }
-
-            if (it.businessDay?.contains("星期四") == true) {
-                binding.textViewThursdayStatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewThursdayStatus.text = "休息"
-            }
-
-            if (it.businessDay?.contains("星期五") == true) {
-                binding.textViewFridayStatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewFridayStatus.text = "休息"
-            }
-
-            if (it.businessDay?.contains("星期六") == true) {
-                binding.textViewSaturdayStatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewSaturdayStatus.text = "休息"
-            }
-
-            if (it.businessDay?.contains("星期日") == true) {
-                binding.textViewSundayStatus.text = "$startTime ~ $stopTime"
-            } else {
-                binding.textViewSundayStatus.text = "休息"
-            }
-
-
         })
+
 
 
         return binding.root

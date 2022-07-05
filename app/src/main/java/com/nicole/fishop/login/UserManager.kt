@@ -1,6 +1,7 @@
 package com.nicole.fishop.login
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +11,7 @@ import com.nicole.fishop.data.Users
 
 
 /**
- * Created by Wayne Chen in Jul. 2019.
+ * Created by Nicole Lo in July. 2022.
  */
 object UserManager {
 
@@ -83,4 +84,5 @@ object UserManager {
             }
         }
     }
+
 }

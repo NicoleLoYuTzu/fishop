@@ -26,7 +26,9 @@ interface FishopDataSource {
 
 //    suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>
 
-    suspend fun userSignIn(users: Users): Result1<Boolean>
+    suspend fun userSignIn(users: Users): Result1<Users>
 
     suspend fun getSalerInfo(users: Users): Result1<Users>
+
+    suspend fun setSalerInfo(users: Users):  Result1<Boolean>
 }

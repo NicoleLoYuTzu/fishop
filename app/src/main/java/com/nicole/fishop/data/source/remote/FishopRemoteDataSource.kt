@@ -145,6 +145,14 @@ object FishopRemoteDataSource : FishopDataSource {
                         }
 
                         continuation.resume(Result1.Success(list))
+                    } else {
+                        todayFishes.exception?.let {
+
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            continuation.resume(Result1.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
 
@@ -190,6 +198,20 @@ object FishopRemoteDataSource : FishopDataSource {
                                             Logger.d("continuation.resume list) $list}")
                                             continuation.resume(Result1.Success(list))
                                         }
+                                    } else {
+                                        fishes.exception?.let {
+
+                                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                                            continuation.resume(Result1.Error(it))
+                                            return@addOnCompleteListener
+                                        }
+                                        continuation.resume(
+                                            Result1.Fail(
+                                                FishopApplication.instance.getString(
+                                                    R.string.you_know_nothing
+                                                )
+                                            )
+                                        )
                                     }
                                 }
                         }
@@ -220,15 +242,31 @@ object FishopRemoteDataSource : FishopDataSource {
                             .whereIn("id", listOf(fishTodayCategory.tfId))
                             .get()
                             .addOnCompleteListener { todaySeller ->
-                                var fishTodaySeller = FishToday()
-                                for (document2 in todaySeller.result!!) {
-                                    Logger.d("getFishTodayFilterAll document1.data => ${document1.data}")
-                                    fishTodaySeller = document2.toObject(FishToday::class.java)
-                                    fishTodaySeller.category = listOf(fishTodayCategory)
+                                if (todaySeller.isSuccessful) {
+                                    var fishTodaySeller = FishToday()
+                                    for (document2 in todaySeller.result!!) {
+                                        Logger.d("getFishTodayFilterAll document1.data => ${document1.data}")
+                                        fishTodaySeller = document2.toObject(FishToday::class.java)
+                                        fishTodaySeller.category = listOf(fishTodayCategory)
+                                    }
+                                    list.add(fishTodaySeller)
+                                    continuation.resume(Result1.Success(list))
+                                    Logger.d("getFishTodayFilterAll continuation.resume list) $list}")
+                                } else {
+                                    todaySeller.exception?.let {
+
+                                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                                        continuation.resume(Result1.Error(it))
+                                        return@addOnCompleteListener
+                                    }
+                                    continuation.resume(
+                                        Result1.Fail(
+                                            FishopApplication.instance.getString(
+                                                R.string.you_know_nothing
+                                            )
+                                        )
+                                    )
                                 }
-                                list.add(fishTodaySeller)
-                                continuation.resume(Result1.Success(list))
-                                Logger.d("getFishTodayFilterAll continuation.resume list) $list}")
                             }
                     }
                 }
@@ -250,12 +288,22 @@ object FishopRemoteDataSource : FishopDataSource {
                 .whereEqualTo("id", sellerId)
                 .get()
                 .addOnCompleteListener { SellerInfo ->
-                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
-                    var sellerLocation = SellerLocation()
-                    for (document2 in SellerInfo.result!!) {
-                        sellerLocation = document2.toObject(SellerLocation::class.java)
+                    if (SellerInfo.isSuccessful) {
+                        Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                        var sellerLocation = SellerLocation()
+                        for (document2 in SellerInfo.result!!) {
+                            sellerLocation = document2.toObject(SellerLocation::class.java)
+                        }
+                        continuation.resume(Result1.Success(sellerLocation))
+                    } else {
+                        SellerInfo.exception?.let {
+
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            continuation.resume(Result1.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                    continuation.resume(Result1.Success(sellerLocation))
                 }
 
         }
@@ -269,13 +317,23 @@ object FishopRemoteDataSource : FishopDataSource {
                 .addOnCompleteListener { SellerInfo ->
                     Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
                     Logger.d("sellerId => $sellerId")
-                    var sellersLocation = mutableListOf<SellerLocation>()
-                    var sellerLocation = SellerLocation()
-                    for (document2 in SellerInfo.result!!) {
-                        sellerLocation = document2.toObject(SellerLocation::class.java)
-                        sellersLocation.add(sellerLocation)
+                    if (SellerInfo.isSuccessful) {
+                        var sellersLocation = mutableListOf<SellerLocation>()
+                        var sellerLocation = SellerLocation()
+                        for (document2 in SellerInfo.result!!) {
+                            sellerLocation = document2.toObject(SellerLocation::class.java)
+                            sellersLocation.add(sellerLocation)
+                        }
+                        continuation.resume(Result1.Success(sellersLocation))
+                    } else {
+                        SellerInfo.exception?.let {
+
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            continuation.resume(Result1.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                    continuation.resume(Result1.Success(sellersLocation))
                 }
 
         }
@@ -335,75 +393,143 @@ object FishopRemoteDataSource : FishopDataSource {
         }
     }
 
-//    override suspend fun setUserAcountType(
-//        users: Users,
-//        viewModel: MainViewModel
-//    ): Result1<Boolean> = suspendCoroutine { continuation ->
-//        val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
-//        val document = userStart.document()
-//        users.id = document.id
-//        document
-//            .set(users)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    Logger.i("users.id: ${users.id}")
-//                    Logger.i("setTodayFishRecord: $userStart")
-//                    viewModel.user.value.let {
-//                        it?.accountType = users.accountType
-//                        it?.id = users.id
-//                    }
-//                } else {
-//                    task.exception?.let {
-//
-//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-//                        return@addOnCompleteListener
-//                    }
-//                }
-//            }
-//    }
 
-    override suspend fun userSignIn(users: Users): Result1<Boolean> = suspendCoroutine {
-        val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
-        val document = userStart.document()
-        users.id = document.id
-        document
-            .set(users)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Logger.i("users.id: ${users.id}")
-                    Logger.i("userStart: $userStart")
-                } else {
-                    task.exception?.let {
+    override suspend fun userSignIn(users: Users): Result1<Users> =
+        suspendCoroutine { continuation ->
+            val userStart = FirebaseFirestore.getInstance().collection(PATH_USERS)
+            val document = userStart.document()
+            users.id = document.id
+            document
+                .set(users)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Logger.i("users.id: ${users.id}")
+                        Logger.i("userStart: $userStart")
+//                    var salerInfo = Users()
+//                        salerInfo = task.toObject(Users::class.java)
+                        FirebaseFirestore.getInstance()
+                            .collectionGroup(PATH_USERS)
+                            .whereEqualTo("id", users.id)
+                            .get()
+                            .addOnCompleteListener { SellerInfo ->
+                                if (SellerInfo.isSuccessful) {
+                                    var salerInfo = Users()
+                                    for (document2 in SellerInfo.result!!) {
+                                        salerInfo = document2.toObject(Users::class.java)
+                                        Logger.i("salerInfo $salerInfo")
+                                    }
+                                    continuation.resume(Result1.Success(salerInfo))
+                                } else {
+                                    SellerInfo.exception?.let {
+                                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                                        return@addOnCompleteListener
+                                    }
+                                }
+                            }
+                    } else {
+                        task.exception?.let {
 
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-                        return@addOnCompleteListener
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            return@addOnCompleteListener
+                        }
                     }
                 }
-            }
-    }
+        }
 
-    override suspend fun getSalerInfo(users: Users): Result1<Users> = suspendCoroutine {
+    override suspend fun getSalerInfo(users: Users): Result1<Users> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereEqualTo("id", users.id)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+                    Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+                    var salerInfo = Users()
+                    for (document2 in SellerInfo.result!!) {
+                        salerInfo = document2.toObject(Users::class.java)
+                    }
+                    continuation.resume(Result1.Success(salerInfo))
+                    Logger.i("getSalerInfo salerInfo => ${salerInfo}")
+                }
+
+        }
+
+    override suspend fun setSalerInfo(users: Users): Result1<Boolean> = suspendCoroutine {
 //        36rzFkt6jRyei8GYjz6X
             continuation ->
-
         FirebaseFirestore.getInstance()
             .collectionGroup(PATH_USERS)
-            .whereEqualTo("id", "36rzFkt6jRyei8GYjz6X")
+            .whereEqualTo("email", users.email)
             .get()
             .addOnCompleteListener { SellerInfo ->
                 Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
-                var salerInfo = Users()
-                for (document2 in SellerInfo.result!!) {
-                    salerInfo = document2.toObject(Users::class.java)
-                }
-                continuation.resume(Result1.Success(salerInfo))
-                Logger.i("salerInfo => ${salerInfo}")
-            }
+                for (oldDocument in SellerInfo.result) {
+                    Logger.i("oldDocument $oldDocument")
+                    Logger.i("SellerInfo.result ${SellerInfo.result}")
+                    val oldUsers = oldDocument.toObject(Users::class.java)
+                    Logger.i("oldUsers => $oldUsers")
 
+                    oldUsers.id?.let {
+                        FirebaseFirestore.getInstance()
+                            .collection(PATH_USERS)
+                            .document(it)
+                            .update(
+                                mapOf(
+                                    "address" to users.address,
+                                    "businessTime" to users.businessTime,
+                                    "businessEndTime" to users.businessEndTime,
+                                    "name" to users.name,
+                                    "phone" to users.phone,
+                                    "businessDay" to users.businessDay,
+                                )
+                            )
+                            .addOnCompleteListener { result ->
+                                if (result.isSuccessful) {
+                                    Logger.i(" oldUsers.email => ${oldUsers.email}")
+                                    Logger.i("setSalerInfo result.result => ${result.result}")
+                                    continuation.resume(Result1.Success(true))
+                                } else {
+                                    result.exception?.let {
+
+                                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                                        return@addOnCompleteListener
+                                    }
+                                }
+                            }
+
+                    }
+                }
+            }
+//          刪除無效資料
+//        FirebaseFirestore.getInstance()
+//            .collectionGroup(PATH_USERS)
+//            .whereEqualTo("address", null)
+//            .get()
+//            .addOnCompleteListener { SellerInfo ->
+//                Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
+//                for (oldDocument in SellerInfo.result) {
+//                    Logger.i("oldDocument $oldDocument")
+//                    Logger.i("SellerInfo.result ${SellerInfo.result}")
+//                    val oldUsers = oldDocument.toObject(Users::class.java)
+//                    oldUsers.id?.let {
+//                        FirebaseFirestore.getInstance()
+//                            .collection(PATH_USERS)
+//                            .document(it)
+//                            .delete()
+//                            .addOnCompleteListener { result ->
+//                                Logger.i(" oldUsers.email => ${oldUsers.email}")
+//                                if (result.isSuccessful) {
+//                                    Logger.i("result.result => ${result.result}")
+//                                }
+//                            }
+//
+//                    }
+//
+//                }
+//                continuation.resume(Result1.Success(true))
+//            }
     }
 
-
-}
 
 //    override suspend fun getSalerInfo(users: UserManager): Result1<UserManager> = suspendCoroutine { continuation ->
 ////            FirebaseFirestore.getInstance()
@@ -424,35 +550,36 @@ object FishopRemoteDataSource : FishopDataSource {
 //
 //        }
 
-@SuppressLint("SimpleDateFormat")
-private fun getNowDate(time: Long): String {
-    return if (android.os.Build.VERSION.SDK_INT >= 24) {
-        SimpleDateFormat("yyyy/MM/dd").format(time)
-    } else {
-        val tms = Calendar.getInstance()
-        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                tms.get(Calendar.MONTH).toString() + "/" +
-                tms.get(Calendar.YEAR).toString() + " " +
-                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                tms.get(Calendar.MINUTE).toString() + ":" +
-                tms.get(Calendar.SECOND).toString()
+    @SuppressLint("SimpleDateFormat")
+    private fun getNowDate(time: Long): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("yyyy/MM/dd").format(time)
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
     }
-}
 
-@SuppressLint("SimpleDateFormat")
-fun getNow(): String {
-    return if (android.os.Build.VERSION.SDK_INT >= 24) {
-        SimpleDateFormat("yyyy/MM/dd").format(Date())
-    } else {
-        val tms = Calendar.getInstance()
-        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                tms.get(Calendar.MONTH).toString() + "/" +
-                tms.get(Calendar.YEAR).toString() + " " +
-                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                tms.get(Calendar.MINUTE).toString() + ":" +
-                tms.get(Calendar.SECOND).toString()
+    @SuppressLint("SimpleDateFormat")
+    fun getNow(): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("yyyy/MM/dd").format(Date())
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
     }
 }
 

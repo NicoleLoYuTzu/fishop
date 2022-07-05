@@ -12,11 +12,14 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.nicole.fishop.MainActivity
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.R
@@ -38,6 +41,7 @@ class StartDialog() : AppCompatDialogFragment() {
         getVmFactory(
         )
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +77,9 @@ class StartDialog() : AppCompatDialogFragment() {
                         .setTitle("確定成為買家?")
                         .setPositiveButton("確定") { dialog, _ ->
                             user?.accountType = "buyer"
-
+                            ViewModelProvider(requireActivity()).get(MainViewModel::class.java).apply {
+                                newUser.value = true
+                            }
                             dialog.dismiss()
 //                        findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
 //                        findNavController().navigate(NavFragmentDirections.actionStartDialogToMainActivity())
@@ -93,6 +99,9 @@ class StartDialog() : AppCompatDialogFragment() {
                         .setTitle("確定成為賣家?")
                         .setPositiveButton("確定") { dialog, _ ->
                             user?.accountType = "saler"
+                            ViewModelProvider(requireActivity()).get(MainViewModel::class.java).apply {
+                                newUser.value = true
+                            }
                             dialog.dismiss()
                         }
                         .setNeutralButton("取消") { dialog, _ ->
@@ -113,16 +122,23 @@ class StartDialog() : AppCompatDialogFragment() {
 
         viewModel.userManager.observe(this, Observer {
             if (it.user?.accountType == "buyer") {
+//                if (dismiss().equals(true)) {
+//                    val navController = activity?.let { it1 -> Navigation.findNavController(it1, R.id.nav_fragment) }
+//                    navController?.navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
+//                }
                 dismiss()
                 findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
             } else if (it.user?.accountType == "saler") {
+//                if (dismiss().equals(true)) {
+//                    val navController = activity?.let { it1 -> Navigation.findNavController(it1, R.id.nav_fragment) }
+//                    navController?.navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
+//                }
                 dismiss()
+
                 findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
             }
         }
         )
-
-
 
 
         return binding.root
@@ -155,7 +171,7 @@ class StartDialog() : AppCompatDialogFragment() {
                 user?.email = email
                 user?.name = account?.displayName
                 //先不要建立資料
-//                user?.let { viewModel.userSignIn(it) }
+                user?.let { viewModel.userSignIn(it) }
                 viewModel.userManager.value = UserManager
                 Logger.i(" user.value $user")
                 Logger.d("UserManager.userToken ${UserManager.userToken}")
