@@ -74,7 +74,7 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
             _status.value = LoadApiStatus.LOADING
 
             val result = UserManager.user?.let { repository.getSalerChatRecordResult(it)}
-            Logger.d("repository.getChatRecordResult()")
+            Logger.d("repository.getSalerChatRecordResult()")
             Logger.d("result $result")
 
             _chatRecord.value = when (result) {
@@ -110,7 +110,7 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
             _status.value = LoadApiStatus.LOADING
 
             val result = UserManager.user?.let { repository.getBuyerChatRecordResult(it) }
-            Logger.d("repository.getChatRecordResult()")
+            Logger.d("repository.getBuyerChatRecordResult()")
             Logger.d("result $result")
 
             _chatRecord.value = when (result) {

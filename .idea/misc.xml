@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/nicolelo/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.2046875" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/bg_edit_chat_text_selector.xml" value="0.187" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/ic_menu_profile_drawable_selector.xml" value="0.106" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/nav_chat_icon_color_state.xml" value="0.1" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/nav_fish_icon_color_state.xml" value="0.1185" />
@@ -12,6 +13,7 @@
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable-v24/nav_user_icon_color_state.xml" value="0.1" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_dialog_corner.xml" value="0.17" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_edit_text_focused.xml" value="0.1375" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_edit_text_selector.xml" value="0.2215" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_edit_text_unfocused.xml" value="0.1375" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_editmessege_inchatroom.xml" value="0.244" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_edittext_selector.xml" value="0.259" />

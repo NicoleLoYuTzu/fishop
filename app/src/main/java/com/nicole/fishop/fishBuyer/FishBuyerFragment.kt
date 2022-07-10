@@ -218,7 +218,7 @@ class FishBuyerFragment : Fragment() {
             } == PackageManager.PERMISSION_GRANTED
         ) {
             //已獲取到權限
-            Toast.makeText(activity, "已獲取到位置權限，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(activity, "已獲取到位置權限，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
             locationPermissionGranted = true
 
             checkGPSState()
@@ -242,7 +242,7 @@ class FishBuyerFragment : Fragment() {
                 .setNegativeButton("取消", null)
                 .show()
         } else {
-            Toast.makeText(activity, "已獲取到位置權限且GPS已開啟，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(activity, "已獲取到位置權限且GPS已開啟，可以準備開始獲取經緯度", Toast.LENGTH_SHORT).show()
             getDeviceLocation()
         }
     }

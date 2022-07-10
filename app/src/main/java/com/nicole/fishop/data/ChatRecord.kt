@@ -16,5 +16,6 @@ data class ChatRecord(
     var lastsenderName: String = "",
     var salerName: String ="",
     var buyerName: String = "",
-    var salerPhoto: String = ""
+    var salerPhoto: String = "",
+    var buyerPhoto:String =""
 ) : Parcelable

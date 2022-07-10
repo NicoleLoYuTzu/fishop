@@ -16,7 +16,8 @@ data class FishToday(
     var name: String = "",
     var category: List<FishTodayCategory> = emptyList(),
     var distance: Long = 0,
-    var date: String =""
+    var date: String ="",
+    var buyerId: String = ""
 ) : Parcelable{
 
 }

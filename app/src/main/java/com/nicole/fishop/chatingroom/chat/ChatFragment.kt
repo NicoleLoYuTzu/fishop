@@ -7,6 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.nicole.fishop.NavFragmentDirections
+import com.nicole.fishop.chatingroom.chatbox.ChatBoxFragmentArgs
+import com.nicole.fishop.chatingroom.chatbox.ChatBoxViewModel
+import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.databinding.FragmentChatBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.login.UserManager
@@ -19,7 +24,6 @@ class ChatFragment : Fragment() {
         getVmFactory(
         )
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +44,26 @@ class ChatFragment : Fragment() {
 //        }
 
 
-        binding.recyclerView.adapter = ChatAdapter()
+        binding.recyclerView.adapter = ChatAdapter( ChatAdapter.OnClickListener {
+            if (UserManager.user?.accountType == "buyer"){
+                val fishToday = FishToday()
+                Logger.i(" binding.recyclerView.adapter it ${it}")
+                Logger.i(" binding.recyclerView.adapter it.saler ${it.saler}")
+                fishToday.ownerId = it.saler
+                fishToday.name = it.salerName
+                findNavController().navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
+            }else if(UserManager.user?.accountType == "saler"){
+                val fishToday = FishToday()
+                fishToday.ownerId = UserManager.user!!.id.toString()
+                fishToday.name = it.buyerName
+                fishToday.buyerId = it.buyer
+                fishToday.ownPhoto = it.buyerPhoto
+                Logger.i("fishToday ${fishToday}")
+                findNavController().navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
+            }
+
+
+        })
 
         viewModel.chatRecord.observe(viewLifecycleOwner, Observer {
 

@@ -8,54 +8,62 @@
         android:id="@+id/FishSellerFragment"
         android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
         android:label="FishSellerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment" />
 
     <fragment
         android:id="@+id/FishSellerFragmentAddToday"
         android:name="com.nicole.fishop.fishSeller.AddTodayCategoryFragment"
-        android:label="FishSellerFragmentAddToday" />
+        android:label="FishSellerFragmentAddToday"
+        app:popUpTo="@id/nav_fragment" />
 
     <fragment
         android:id="@+id/FishBuyerFragment"
+        app:popUpTo="@id/nav_fragment"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerFragment"
         android:label="FishBuyerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        />
 
     <fragment
         android:id="@+id/ChatFragment"
         android:name="com.nicole.fishop.chatingroom.chat.ChatFragment"
         android:label="ChatFragment"
-        app:popUpTo="@id/nav_fragment"/>
-
+        app:popUpTo="@id/nav_fragment" />
 
 
     <action
-            android:id="@+id/action_fishSellerFragment_to_fishSellerFragmentAddToday"
-            app:destination="@id/FishSellerFragmentAddToday" />
+        android:id="@+id/action_fishSellerFragment_to_fishSellerFragmentAddToday"
+        app:destination="@id/FishSellerFragmentAddToday"
+        app:popUpTo="@id/nav_fragment" />
 
     <action
         android:id="@+id/action_fishSellerFragmentAddToday_to_fishSellerFragment"
-        app:destination="@id/FishSellerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment"
+        app:destination="@id/FishSellerFragment" />
+
     <fragment
         android:id="@+id/fishBuyerGoogleMap"
+        app:popUpTo="@id/nav_fragment"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerGoogleMap"
         android:label="fragment_fish_buyer_google_map"
         tools:layout="@layout/fragment_fish_buyer_google_map">
 
-        <argument android:name="addressKey"
+        <argument
+            android:name="addressKey"
             app:argType="com.nicole.fishop.data.FishToday"
-            app:nullable="false"/>
+            app:nullable="false" />
     </fragment>
 
     <action
         android:id="@+id/action_to_fishBuyerGoogleMap"
+        app:popUpTo="@id/nav_fragment"
         app:destination="@id/fishBuyerGoogleMap" />
+
+
 
 
     <action
         android:id="@+id/action_to_ChatBoxFragment"
-        app:destination="@id/ChatBoxFragment" >
+        app:destination="@id/ChatBoxFragment">
 
     </action>
 
@@ -63,7 +71,8 @@
         android:id="@+id/startDialog"
         android:name="com.nicole.fishop.login.StartDialog"
         android:label="activity_start_dialog"
-        tools:layout="@layout/activity_start_dialog" >
+        app:popUpTo="@id/nav_fragment"
+        tools:layout="@layout/activity_start_dialog">
 
         <action
             android:id="@+id/action_startDialog_to_mainActivity"
@@ -72,47 +81,53 @@
 
     <action
         android:id="@+id/action_startDialog_to_fishSellerFragment"
-        app:destination="@id/FishSellerFragment" />
+        app:destination="@id/FishSellerFragment"
+        app:popUpTo="@id/nav_fragment" />
 
     <action
         android:id="@+id/action_startDialog_to_fishBuyerFragment"
         app:destination="@id/FishBuyerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment"
+        app:popUpToInclusive="true" />
 
     <activity
         android:id="@+id/mainActivity"
         android:name="com.nicole.fishop.MainActivity"
-        android:label="MainActivity" />
+        android:label="MainActivity"
+        app:popUpTo="@id/nav_fragment" />
 
     <action
         android:id="@+id/action_mainActivity_to_startDialog"
-        app:destination="@id/startDialog" />
+        app:destination="@id/startDialog"
+        app:popUpTo="@id/nav_fragment" />
 
     <fragment
         android:id="@+id/ProfileSalerEditFragment"
         android:name="com.nicole.fishop.profile.ProfileSalerEditFragment"
         android:label="fragment_profile_Saler_edit"
+        app:popUpTo="@id/nav_fragment"
         tools:layout="@layout/fragment_profile_saler_edit" />
 
     <action
         android:id="@+id/action_startDialog_to_profileSalerEditFragment"
         app:destination="@id/ProfileSalerEditFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment" />
 
     <action
         android:id="@+id/action_startDialog_to_profileSalerFragment"
         app:destination="@id/ProfileSellerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment" />
 
     <action
         android:id="@+id/action_profileSalerEditFragment_to_profileSellerFragment"
         app:destination="@id/ProfileSellerFragment"
-        app:popUpTo="@id/nav_fragment"/>
+        app:popUpTo="@id/nav_fragment" />
 
     <fragment
         android:id="@+id/ProfileBuyerFragment"
         android:name="com.nicole.fishop.profile.ProfileBuyerFragment"
         android:label="fragment_profile_buyer"
+        app:popUpTo="@id/nav_fragment"
         tools:layout="@layout/fragment_profile_buyer" />
 
 
@@ -120,15 +135,18 @@
         android:id="@+id/ProfileSellerFragment"
         android:name="com.nicole.fishop.profile.ProfileSalerFragment"
         android:label="fragment_profile_seller"
+        app:popUpTo="@id/nav_fragment"
         tools:layout="@layout/fragment_profile_seller" />
     <fragment
         android:id="@+id/ChatBoxFragment"
         android:name="com.nicole.fishop.chatingroom.chatbox.ChatBoxFragment"
         android:label="fragment_chat_box"
+        app:popUpTo="@id/nav_fragment"
         tools:layout="@layout/fragment_chat_box">
-        <argument android:name="otherPeopleIdKey"
+        <argument
+            android:name="otherPeopleIdKey"
             app:argType="com.nicole.fishop.data.FishToday"
-            app:nullable="false"/>
+            app:nullable="false" />
     </fragment>
 
 </navigation>

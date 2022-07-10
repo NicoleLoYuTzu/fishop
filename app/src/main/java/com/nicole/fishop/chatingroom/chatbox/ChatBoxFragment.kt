@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.data.ChatBoxRecord
 import com.nicole.fishop.data.ChatRecord
+import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.FragmentChatBoxBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.login.UserManager
@@ -67,17 +68,34 @@ class ChatBoxFragment : Fragment() {
                 if (FishopApplication.instance.isLiveDataDesign()) {
                     viewModel.getLiveChat(it.id)
                 } else {
-                    UserManager.user?.let { it1 ->
-                        viewModel.getBuyerChatBoxRecordResult(
-                            salerInfo,
-                            it1
-                        )
+                    if (UserManager.user?.accountType=="buyer") {
+                        UserManager.user?.let { it1 ->
+                            viewModel.getBuyerChatBoxRecordResult(
+                                salerInfo,
+                                it1
+                            )
+                        }
                     }
+
+                    if (UserManager.user?.accountType=="saler"){
+                        viewModel._addChatroom.value.let { _addChatroom->
+
+                            val user = Users()
+                            user.id = _addChatroom?.buyer
+
+                            viewModel.getSalerChatBoxRecordResult(salerInfo,user)
+
+                        }
+
+                    }
+
                 }
                 Logger.i(" //如果買家檢查後有房間的話, 就去要對話紀錄")
                 //如果沒有房間的話, 就去開房間
             } else {
-                viewModel.addChatroom()
+                if (UserManager.user?.accountType == "buyer") {
+                    viewModel.addChatroom()
+                }
                 viewModel.checkHasRoom()
                 Logger.i("如果沒有房間的話, 就去開房間 viewModel.addChatroom()")
             }
@@ -119,6 +137,22 @@ class ChatBoxFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
             Logger.i("viewModel.chatItem.observe $it")
+
+            if (UserManager.user?.accountType == "saler"){
+                viewModel._addChatroom.value.let {
+                    val user = Users()
+                    user.id = it?.buyer
+                    Logger.i("salerInfo $salerInfo,user=>$user")
+
+                    viewModel.getSalerChatBoxRecordResult(salerInfo,user)
+
+                }
+
+            }
+
+
+
+
         })
 
 //        viewModel.liveChatItem.observe(viewLifecycleOwner, Observer {
@@ -144,7 +178,7 @@ class ChatBoxFragment : Fragment() {
                     chatRecord.lastchatTime = System.currentTimeMillis().toString()
                     chatRecord.lastsenderName = UserManager.user?.name.toString()
                     chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
-                    chatRecord.salerPhoto = salerInfo.ownPhoto
+                    chatRecord.salerPhoto = salerInfo.ownPhoto.toString()
 
 
                     //訊息不是空的才發出去
