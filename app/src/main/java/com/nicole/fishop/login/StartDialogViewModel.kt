@@ -3,10 +3,12 @@ package com.nicole.fishop.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.common.internal.AccountType
 import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.R
+import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.Users
@@ -27,17 +29,12 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
         get() = _status
 
     // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String>()
+    private val _error = MutableLiveData<String?>()
 
-    val error: LiveData<String>
+    val error: MutableLiveData<String?>
         get() = _error
 
     var userManager = MutableLiveData<UserManager>()
-
-
-
-
-
 
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -49,56 +46,106 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-//    private val _navigateToGoogleMap = MutableLiveData<FishToday>()
-//
-//    val navigateToGoogleMap: LiveData<FishToday>
-//        get() = _navigateToGoogleMap
-//
-//    fun navigateToGoogleMap(fishToday: FishToday) {
-//        _navigateToGoogleMap.value = fishToday
-//    }
-//
-//    fun onGoogleMapNavigated() {
-//        _navigateToGoogleMap.value = null
-//    }
+    private val _userswithId = MutableLiveData<Users>()
+    val userswithId: LiveData<Users>
+        get() = _userswithId
 
 
-    private val _user = MutableLiveData<Users>()
+    fun checkBuyerAccount(accountType: String,googleId: String) {
 
-    val user: LiveData<Users>
-        get() = _user
+        coroutineScope.launch {
+            Logger.d("checkAccount")
+            _status.value = LoadApiStatus.LOADING
+            val result = repository.checkBuyerAccount(accountType,googleId)
+            // It will return Result object after Deferred flow
+            _userswithId.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
 
-    // Handle navigation to login success
-    private val _navigateToLoginSuccess = MutableLiveData<Users>()
 
-    val navigateToLoginSuccess: LiveData<Users>
-        get() = _navigateToLoginSuccess
+    fun checkSalerAccount(accountType: String,googleId: String) {
+
+        coroutineScope.launch {
+            Logger.d("checkAccount")
+            _status.value = LoadApiStatus.LOADING
+            val result = repository.checkSalerAccount(accountType,googleId)
+            // It will return Result object after Deferred flow
+            _userswithId.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
 
 
+
+    //put email,name,accountType
     fun userSignIn(users: Users) {
 
         coroutineScope.launch {
             Logger.d("userSignIn")
             _status.value = LoadApiStatus.LOADING
-            Logger.d("user => $user")
+            val result = repository.userSignIn(users)
             // It will return Result object after Deferred flow
-            when (val result = repository.userSignIn(users)) {
+            _userswithId.value = when (result) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    Logger.d("success")
+                    result.data
                 }
                 is Result1.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
                 is Result1.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
                 else -> {
                     _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.nicole.fishop.profile
 
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +12,9 @@ import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
+import java.util.logging.Handler
 
 class ProfileSalerViewModel(private val repository: FishopRepository) : ViewModel() {
 
@@ -47,16 +47,23 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
     val users: LiveData<Users>
         get() = _users
 
+
     init {
 //        userManager.value?.user?.let { getSalerInfo(it) }
-        UserManager.user?.let { getSalerInfo(it) }
-        Logger.d("init")
+        if (UserManager.user?.address!=null) {
+            UserManager.user?.let { getSalerInfo(it) }
+        }else if (UserManager.user?.address==null){
+            getSalerOldInfo()
+        }
+
 
         Logger.d("UserManager.user ${UserManager.user}")
+        Logger.d("delay")
 
+        Logger.d("init")
     }
 
-    fun getSalerInfo(users: Users){
+    fun getSalerInfo(users: Users) {
         coroutineScope.launch {
             Logger.d("getSalerInfo")
             _status.value = LoadApiStatus.LOADING
@@ -67,7 +74,6 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Logger.d("success")
-
                     result.data
                 }
                 is Result1.Fail -> {
@@ -88,5 +94,43 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
             }
         }
     }
+
+    fun getSalerOldInfo() {
+        coroutineScope.launch {
+            Logger.d("getSalerInfo")
+            _status.value = LoadApiStatus.LOADING
+            Logger.d("users => $users")
+
+            _users.value = when (val result =
+                UserManager.user?.accountType?.let { UserManager.user!!.email?.let { it1 ->
+                    repository.checkSalerAccount(it,
+                        it1
+                    )
+                } }) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    Logger.d("success")
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
 
 }

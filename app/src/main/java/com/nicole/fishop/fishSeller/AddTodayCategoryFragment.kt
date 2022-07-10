@@ -14,6 +14,7 @@ import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayItemItemBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,11 +59,17 @@ class AddTodayCategoryFragment : Fragment() {
                 AlertDialog.Builder(context)
                     .setTitle("確定儲存?")
                     .setPositiveButton("確定") { dialog, _ ->
-                        viewModel.fishToday.name = "我新增的"
-                        viewModel.setTodayFishRecord(
-                            viewModel.fishToday,
-                            viewModel.fishTodayCategories
-                        )
+                        viewModel.fishToday.name = UserManager.user?.name.toString()
+                        viewModel.fishToday.ownPhoto = UserManager.user?.picture.toString()
+                        viewModel.fishToday.ownerId = UserManager.user?.id.toString()
+
+                        UserManager.user?.let { it1 ->
+                            viewModel.setTodayFishRecord(
+                                viewModel.fishToday,
+                                viewModel.fishTodayCategories,
+                                it1
+                            )
+                        }
 
                         Logger.d("viewModel.fishTodayCategories ${viewModel.fishTodayCategories}")
                         Toast.makeText(context, "已儲存", Toast.LENGTH_SHORT).show()

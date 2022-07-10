@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.nicole.fishop.data.PhotoStringToUrl.bindImageWithCircleCrop
 import com.nicole.fishop.databinding.FragmentProfileBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.UserManager
 
 
 class ProfileBuyerFragment : Fragment() {
@@ -23,6 +25,16 @@ class ProfileBuyerFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentProfileBuyerBinding.inflate(inflater)
+
+
+        UserManager.user.let {
+            bindImageWithCircleCrop(binding.imageViewMine, it?.picture)
+        }
+
+        binding.textViewName.text= UserManager.user?.name
+
+        binding.textViewEmail.text = UserManager.user?.email
+
 
 
 

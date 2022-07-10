@@ -7,10 +7,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SellerLocation(
     var accountType: String = "",
-    var address: String = "",
-    var id: String = "",
-    var name: String = "",
-    var phone: String = "",
+    var address: String? = "",
+    var id: String? = "",
+    var name: String? = "",
+    var phone: String? = "",
 ) : Parcelable {
 
 }

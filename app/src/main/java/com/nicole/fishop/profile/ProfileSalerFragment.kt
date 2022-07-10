@@ -7,12 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.request.RequestOptions
+import com.nicole.fishop.GlideApp
+import com.nicole.fishop.R
+import com.nicole.fishop.data.TimeChangFormat
 import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.FragmentProfileSellerBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import com.nicole.fishop.util.Logger.d
 import com.nicole.fishop.util.Logger.i
@@ -34,50 +42,56 @@ class ProfileSalerFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentProfileSellerBinding.inflate(inflater)
         Log.d("Nicole", "ProfileSalerFragment onCreateView")
-        viewModel.users.observe(viewLifecycleOwner, Observer {
-            binding.textViewAddress.text = it.address
-            binding.textViewPhone.text = it.phone
-            binding.textViewShopname.text = it.name
+
+
+        viewModel.users.observe(viewLifecycleOwner, Observer { user ->
+            binding.textViewAddress.text = user.address
+            binding.textViewPhone.text = user.phone
+            binding.textViewShopname.text = user.name
+            TimeChangFormat.bindImageWithCircleCrop(binding.imageViewMine, user.picture)
+
+            UserManager.user?.name = viewModel.users.value?.name
+
             Logger.i("viewModel.users ${viewModel.users.value}")
-            val startTime = it.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
-            val stopTime = it.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
-            if (it.businessDay?.contains("星期一") == true) {
+            val startTime = user.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
+            val stopTime = user.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
+            if (user.businessDay?.contains("星期一") == true) {
                 binding.textViewMondaystatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewMondaystatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期二") == true) {
+            if (user.businessDay?.contains("星期二") == true) {
                 binding.textViewTuesdaystatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewTuesdaystatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期三") == true) {
+            if (user.businessDay?.contains("星期三") == true) {
                 binding.textViewWednesdayStatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewWednesdayStatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期四") == true) {
+            if (user.businessDay?.contains("星期四") == true) {
                 binding.textViewThursdayStatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewThursdayStatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期五") == true) {
+            if (user.businessDay?.contains("星期五") == true) {
                 binding.textViewFridayStatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewFridayStatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期六") == true) {
+            if (user.businessDay?.contains("星期六") == true) {
                 binding.textViewSaturdayStatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewSaturdayStatus.text = "休息"
             }
 
-            if (it.businessDay?.contains("星期日") == true) {
+            if (user.businessDay?.contains("星期日") == true) {
                 binding.textViewSundayStatus.text = "$startTime ~ $stopTime"
             } else {
                 binding.textViewSundayStatus.text = "休息"

@@ -15,6 +15,11 @@ class MainViewModel(private val fishopRepository: FishopRepository) : ViewModel(
     val user: LiveData<Users>
         get() = _user
 
+
+   var newUser = MutableLiveData<Boolean>()
+
+
+
     fun setupUser(user: Users) {
 
         _user.value = user

@@ -102,12 +102,12 @@ class AddTodayCategoryViewModel(private val repository: FishopRepository) : View
         getFishAllResult()
     }
 
-    fun setTodayFishRecord(TodayFishRecord: FishToday, Categories: List<FishTodayCategory>){
+    fun setTodayFishRecord(TodayFishRecord: FishToday, Categories: List<FishTodayCategory>,User: Users){
         coroutineScope.launch {
             Logger.d("setTodayFishRecord")
             _status.value = LoadApiStatus.LOADING
             Logger.d("fishTodayCategories => $fishTodayCategories")
-            when (val result = repository.setTodayFishRecord(TodayFishRecord,Categories)) {
+            when (val result = repository.setTodayFishRecord(TodayFishRecord,Categories,User)) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

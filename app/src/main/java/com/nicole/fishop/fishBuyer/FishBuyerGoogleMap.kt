@@ -21,10 +21,13 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.maps.route.extensions.drawRouteOnMap
 import com.maps.route.extensions.moveCameraOnMap
 import com.nicole.fishop.R
@@ -36,7 +39,7 @@ import com.nicole.fishop.util.Logger
 import java.util.*
 
 
-class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
+class FishBuyerGoogleMap() : Fragment(),GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
 
     private var startLocationFromBuyerPosition: LatLng = startLocation(0.0, 0.0)
@@ -91,12 +94,18 @@ class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
             googleMap?.run {
                 moveCameraOnMap(latLng = stopLocationToSalerPosition)
             }
+            googleMap?.addMarker(
+                MarkerOptions().position(stopLocationToSalerPosition).draggable(true).title(it.name)
+            )
+            googleMap?.setOnMarkerClickListener(this)
 
         }
         )
 
         return binding.root
     }
+
+
 
     fun calculateDistance(startlatitude: Double,startlongitude: Double, stoplatitude: Double,stoplongitude: Double): Float {
 
@@ -131,9 +140,19 @@ class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         // map ready
+        val defaultLocation = LatLng(25.0338483, 121.5645283)
         googleMap = map
+        googleMap!!.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                defaultLocation, 6f
+            )
+        )
+
+
+
 
     }
+
 
     fun getLocationPermission() {
         Logger.d("getLocationPermission")
@@ -318,5 +337,15 @@ class FishBuyerGoogleMap() : Fragment(), OnMapReadyCallback {
                 getLocationPermission()
             }
         }
+    }
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+
+        viewModel.sellerLocation.value?.let {
+            it.name = p0.title
+        }
+        return false
+
+
     }
 }

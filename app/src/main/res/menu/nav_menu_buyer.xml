@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/FishBuyerFragment"
+        android:icon="@drawable/nav_fish_icon_color_state"
+        android:title="當日漁貨"/>
+
+    <item
+        android:id="@+id/ChatFragment"
+        android:icon="@drawable/nav_chat_icon_color_state"
+        android:title="聊天室"/>
+
+    <item
+        android:id="@+id/ProfileBuyerFragment"
+        android:icon="@drawable/nav_user_icon_color_state"
+        android:title="個人"/>
+
+</menu>
