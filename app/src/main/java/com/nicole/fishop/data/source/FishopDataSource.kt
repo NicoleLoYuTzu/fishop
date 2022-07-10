@@ -27,6 +27,10 @@ interface FishopDataSource {
 
 //    suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>
 
+    suspend fun checkBuyerAccount(googleId: String, email: String): Result1<Users>
+
+    suspend fun checkSalerAccount(accountType: String,email: String): Result1<Users>
+
     suspend fun userSignIn(users: Users): Result1<Users>
 
     suspend fun getSalerInfo(users: Users): Result1<Users>

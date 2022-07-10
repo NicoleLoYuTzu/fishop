@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.nicole.fishop.GlideApp
 import com.nicole.fishop.R
+import com.nicole.fishop.data.TimeChangFormat
 import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.FragmentProfileSellerBinding
 import com.nicole.fishop.ext.getVmFactory
@@ -42,28 +43,12 @@ class ProfileSalerFragment : Fragment() {
         val binding = FragmentProfileSellerBinding.inflate(inflater)
         Log.d("Nicole", "ProfileSalerFragment onCreateView")
 
-        @BindingAdapter("imageUrlWithCircleCrop")
-        fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
-            imgUrl?.let {
-                val imgUri = it.toUri().buildUpon().build()
-                GlideApp.with(imgView.context)
-                    .load(imgUri)
-                    .circleCrop()
-                    .apply(
-                        RequestOptions()
-                            .placeholder(R.drawable.fishileft)
-                            .error(R.drawable.fish)
-                    )
-                    .into(imgView)
-            }
-        }
-
 
         viewModel.users.observe(viewLifecycleOwner, Observer { user ->
             binding.textViewAddress.text = user.address
             binding.textViewPhone.text = user.phone
             binding.textViewShopname.text = user.name
-            bindImageWithCircleCrop(binding.imageViewMine, user.picture)
+            TimeChangFormat.bindImageWithCircleCrop(binding.imageViewMine, user.picture)
 
             UserManager.user?.name = viewModel.users.value?.name
 

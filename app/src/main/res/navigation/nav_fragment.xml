@@ -100,6 +100,11 @@
         app:popUpTo="@id/nav_fragment"/>
 
     <action
+        android:id="@+id/action_startDialog_to_profileSalerFragment"
+        app:destination="@id/ProfileSellerFragment"
+        app:popUpTo="@id/nav_fragment"/>
+
+    <action
         android:id="@+id/action_profileSalerEditFragment_to_profileSellerFragment"
         app:destination="@id/ProfileSellerFragment"
         app:popUpTo="@id/nav_fragment"/>

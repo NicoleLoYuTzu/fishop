@@ -86,8 +86,11 @@ object FishopRemoteDataSource : FishopDataSource {
                 .get()
                 .addOnCompleteListener { everydayFishes ->
                     val emptyList = listOf<FishRecord>()
-                    if (everydayFishes.result.isEmpty){
+                    Logger.d("ownerId ${User.id}")
+                    if (everydayFishes.result.isEmpty) {
                         continuation.resume(Result1.Success(emptyList))
+
+                        Logger.d("continuation.resume(Result1.Success(emptyList))")
                     }
 
 
@@ -231,9 +234,12 @@ object FishopRemoteDataSource : FishopDataSource {
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_FISHESCOLLECTION)
                 .whereEqualTo("category", fish)
-                .whereEqualTo("date", "2022/07/06")
+                .whereEqualTo("date", getNowDate(System.currentTimeMillis()))
                 .get()
                 .addOnCompleteListener { todayCategory ->
+                    var count = todayCategory.result.size()
+                    Logger.d("getFishTodayFilterAll count $count}")
+
                     var list = mutableListOf<FishToday>()
                     Logger.d("category ${fish} ")
                     Logger.d("todayCategory.documents ${todayCategory.result.documents} ")
@@ -241,35 +247,40 @@ object FishopRemoteDataSource : FishopDataSource {
                     for (document1 in todayCategory.result!!) {
                         Logger.d("document1.data => ${document1.data}")
                         val fishTodayCategory = document1.toObject(FishTodayCategory::class.java)
+
+
                         FirebaseFirestore.getInstance()
-                            .collectionGroup(PATH_EVERYDAYFISHES)
-                            .whereIn("id", listOf(fishTodayCategory.tfId))
+                            .collection(PATH_EVERYDAYFISHES)
+                            .whereIn("ownerId", listOf(fishTodayCategory.tfId))
                             .get()
                             .addOnCompleteListener { todaySeller ->
+                                Logger.d("fishTodayCategory.tfId=> ${fishTodayCategory.tfId}")
                                 if (todaySeller.isSuccessful) {
                                     var fishTodaySeller = FishToday()
+                                    Logger.d("getFishTodayFilterAll todaySeller => ${todaySeller.result}")
+                                    Logger.d("getFishTodayFilterAll todaySeller.documents => ${todaySeller.result.documents}")
+                                    Logger.d("getFishTodayFilterAll fishTodayCategory.tfId => ${fishTodayCategory.tfId}")
                                     for (document2 in todaySeller.result!!) {
                                         Logger.d("getFishTodayFilterAll document1.data => ${document1.data}")
                                         fishTodaySeller = document2.toObject(FishToday::class.java)
                                         fishTodaySeller.category = listOf(fishTodayCategory)
+                                        Logger.d("  for (document2 in todaySeller.result!!) getFishTodayFilterAll fishTodaySeller $fishTodaySeller}")
                                     }
                                     list.add(fishTodaySeller)
-                                    continuation.resume(Result1.Success(list))
+                                    count -= 1
+
+                                    if (count == 0) {
+                                        continuation.resume(Result1.Success(list))
+                                    }
+                                    Logger.d("getFishTodayFilterAll fishTodaySeller $fishTodaySeller}")
                                     Logger.d("getFishTodayFilterAll continuation.resume list) $list}")
                                 } else {
                                     todaySeller.exception?.let {
 
                                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-                                        continuation.resume(Result1.Error(it))
+//                                        continuation.resume(Result1.Error(it))
                                         return@addOnCompleteListener
                                     }
-                                    continuation.resume(
-                                        Result1.Fail(
-                                            FishopApplication.instance.getString(
-                                                R.string.you_know_nothing
-                                            )
-                                        )
-                                    )
                                 }
                             }
                     }
@@ -399,6 +410,72 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
     }
+
+    override suspend fun checkBuyerAccount(accountType: String,email: String): Result1<Users> =
+        suspendCoroutine { continuation ->
+
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereEqualTo("email", email)
+                .whereEqualTo("accountType",accountType)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+
+                    Logger.i("accountType $accountType, email => $email")
+
+                    if (SellerInfo.result.isEmpty){
+                        val salerInfoIsEmpty = Users()
+                        continuation.resume(Result1.Success(salerInfoIsEmpty))
+                    }
+
+                    if (SellerInfo.isSuccessful) {
+                        for (document2 in SellerInfo.result!!) {
+                            val salerInfo = document2.toObject(Users::class.java)
+                            Logger.i("salerInfo $salerInfo")
+                            continuation.resume(Result1.Success(salerInfo))
+                        }
+
+                    } else {
+                        SellerInfo.exception?.let {
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            return@addOnCompleteListener
+                        }
+                    }
+                }
+        }
+
+    override suspend fun checkSalerAccount(accountType: String,email: String): Result1<Users> =
+        suspendCoroutine { continuation ->
+
+            FirebaseFirestore.getInstance()
+                .collectionGroup(PATH_USERS)
+                .whereEqualTo("email", email)
+                .whereEqualTo("accountType",accountType)
+                .get()
+                .addOnCompleteListener { SellerInfo ->
+
+                    Logger.i("accountType $accountType, email => $email")
+
+                    if (SellerInfo.result.isEmpty){
+                        val salerInfoIsEmpty = Users()
+                        continuation.resume(Result1.Success(salerInfoIsEmpty))
+                    }
+
+                    if (SellerInfo.isSuccessful) {
+                        for (document2 in SellerInfo.result!!) {
+                            val salerInfo = document2.toObject(Users::class.java)
+                            Logger.i("salerInfo $salerInfo")
+                            continuation.resume(Result1.Success(salerInfo))
+                        }
+
+                    } else {
+                        SellerInfo.exception?.let {
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            return@addOnCompleteListener
+                        }
+                    }
+                }
+        }
 
 
     override suspend fun userSignIn(users: Users): Result1<Users> =

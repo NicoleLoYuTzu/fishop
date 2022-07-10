@@ -1,10 +1,7 @@
 package com.nicole.fishop.data.source
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.data.*
-import com.nicole.fishop.login.UserManager
 
 class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):FishopRepository{
     override suspend fun getUsersInfo(): Result1<Users> {
@@ -46,6 +43,14 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
 //    override suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>{
 //        return remoteDataSource.setUserAcountType(users,viewModel)
 //    }
+
+    override suspend fun checkBuyerAccount(accountType: String,email: String): Result1<Users>{
+        return remoteDataSource.checkBuyerAccount(accountType,email)
+    }
+
+    override suspend fun checkSalerAccount(accountType: String,email: String): Result1<Users>{
+        return remoteDataSource.checkSalerAccount(accountType,email)
+    }
 
     override suspend fun userSignIn(users: Users): Result1<Users> {
         return remoteDataSource.userSignIn(users)

@@ -25,6 +25,7 @@ import com.nicole.fishop.R
 import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.ActivityStartDialogBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.UserManager.accountType
 import com.nicole.fishop.login.UserManager.user
 import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.delay
@@ -144,12 +145,24 @@ class StartDialog() : AppCompatDialogFragment() {
                 UserManager.user?.id=it.id
                 Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
                 findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
-            }else if(it.id!=null && it.accountType == "saler"){
+            }else if(it.id!=null && it.accountType == "saler" && it.address==null){
                 dismiss()
                 UserManager.user?.id=it.id
                 Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
                 findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
             }
+
+            if (it.accountType == "saler" && it.address!=null){
+                UserManager.user?.id =it.id
+                findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerFragment())
+            }
+
+
+            if (it.email == null){
+                user?.let { viewModel.userSignIn(it) }
+            }
+
+            Logger.i(" viewModel.userswithId.observe ${viewModel.userswithId.value}")
         })
 
         return binding.root
@@ -176,7 +189,7 @@ class StartDialog() : AppCompatDialogFragment() {
                 val account = task.getResult(ApiException::class.java)
                 val email = account?.email
                 val token = account?.idToken
-                val id = account?.id
+
                 val picture = account?.photoUrl.toString()
 
                 Logger.i("givemepass , email:$email, token:$token")
@@ -187,7 +200,13 @@ class StartDialog() : AppCompatDialogFragment() {
                 user?.email = email
                 user?.name = account?.displayName
                 //先不要建立資料
-                user?.let { viewModel.userSignIn(it) }
+                if (UserManager.accountType=="buyer") {
+                    user?.email?.let { viewModel.checkBuyerAccount("buyer",it) }
+                }
+
+                if (UserManager.accountType=="saler"){
+                    user?.email?.let { viewModel.checkSalerAccount("saler",it) }
+                }
 
                 //userManager的值分辨買賣家來跳轉頁面
                 viewModel.userManager.value = UserManager

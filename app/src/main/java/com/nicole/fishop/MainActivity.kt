@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         Logger.i("MainActivity onCreate")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-//                FirebaseFirestore.getInstance()
+//        FirebaseFirestore.getInstance()
 //            .collectionGroup("Users")
 //            .whereEqualTo("email", "a4207486@gmail.com")
 //            .get()

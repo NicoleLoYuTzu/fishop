@@ -61,6 +61,8 @@ class AddTodayCategoryFragment : Fragment() {
                     .setPositiveButton("確定") { dialog, _ ->
                         viewModel.fishToday.name = UserManager.user?.name.toString()
                         viewModel.fishToday.ownPhoto = UserManager.user?.picture.toString()
+                        viewModel.fishToday.ownerId = UserManager.user?.id.toString()
+
                         UserManager.user?.let { it1 ->
                             viewModel.setTodayFishRecord(
                                 viewModel.fishToday,

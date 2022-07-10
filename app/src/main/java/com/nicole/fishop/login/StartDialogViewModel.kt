@@ -3,6 +3,7 @@ package com.nicole.fishop.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.common.internal.AccountType
 import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.MainViewModel
@@ -48,6 +49,73 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
     private val _userswithId = MutableLiveData<Users>()
     val userswithId: LiveData<Users>
         get() = _userswithId
+
+
+    fun checkBuyerAccount(accountType: String,googleId: String) {
+
+        coroutineScope.launch {
+            Logger.d("checkAccount")
+            _status.value = LoadApiStatus.LOADING
+            val result = repository.checkBuyerAccount(accountType,googleId)
+            // It will return Result object after Deferred flow
+            _userswithId.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
+
+    fun checkSalerAccount(accountType: String,googleId: String) {
+
+        coroutineScope.launch {
+            Logger.d("checkAccount")
+            _status.value = LoadApiStatus.LOADING
+            val result = repository.checkSalerAccount(accountType,googleId)
+            // It will return Result object after Deferred flow
+            _userswithId.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
 
 
     //put email,name,accountType

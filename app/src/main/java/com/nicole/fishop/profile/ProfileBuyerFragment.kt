@@ -31,6 +31,10 @@ class ProfileBuyerFragment : Fragment() {
             bindImageWithCircleCrop(binding.imageViewMine, it?.picture)
         }
 
+        binding.textViewName.text= UserManager.user?.name
+
+        binding.textViewEmail.text = UserManager.user?.email
+
 
 
 

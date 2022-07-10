@@ -50,7 +50,13 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
 
     init {
 //        userManager.value?.user?.let { getSalerInfo(it) }
-        UserManager.user?.let { getSalerInfo(it) }
+        if (UserManager.user?.address!=null) {
+            UserManager.user?.let { getSalerInfo(it) }
+        }else if (UserManager.user?.address==null){
+            getSalerOldInfo()
+        }
+
+
         Logger.d("UserManager.user ${UserManager.user}")
         Logger.d("delay")
 
@@ -88,5 +94,43 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
             }
         }
     }
+
+    fun getSalerOldInfo() {
+        coroutineScope.launch {
+            Logger.d("getSalerInfo")
+            _status.value = LoadApiStatus.LOADING
+            Logger.d("users => $users")
+
+            _users.value = when (val result =
+                UserManager.user?.accountType?.let { UserManager.user!!.email?.let { it1 ->
+                    repository.checkSalerAccount(it,
+                        it1
+                    )
+                } }) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    Logger.d("success")
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
 
 }

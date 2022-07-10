@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.ChatRecord
 import com.nicole.fishop.data.TimeChangFormat
 import com.nicole.fishop.databinding.*
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,7 +22,11 @@ class ChatAdapter() :
 
         fun bind(chatRecord: ChatRecord) {
 
-            binding.textViewName.text = chatRecord.salerName
+            if (UserManager.user?.accountType == "buyer") {
+                binding.textViewName.text = chatRecord.salerName
+            }else if(UserManager.user?.accountType == "saler"){
+                binding.textViewName.text = chatRecord.buyerName
+            }
             binding.textViewContext.text = chatRecord.lastchat
             TimeChangFormat.bindImageWithCircleCrop(binding.imageView6,chatRecord.salerPhoto)
             Logger.i("chatRecord => ${chatRecord}")

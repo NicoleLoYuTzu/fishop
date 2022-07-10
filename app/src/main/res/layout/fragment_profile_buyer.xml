@@ -50,7 +50,7 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
-                android:id="@+id/textView_address"
+                android:id="@+id/textView_name"
                 style="@style/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,9 +99,9 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/userprofile"
-                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_email"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_address" />
+                app:layout_constraintTop_toTopOf="@+id/textView_name" />
 
             <ImageView
                 android:id="@+id/imageView19"
@@ -121,9 +121,9 @@
                 android:background="@android:color/transparent"
                 android:gravity="center|right"
                 android:text="修改"
-                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_email"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_address"
+                app:layout_constraintTop_toTopOf="@+id/textView_name"
                 app:layout_constraintVertical_bias="0.285" />
 
             <ImageView
@@ -138,7 +138,7 @@
                 app:layout_constraintVertical_bias="0.352" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/textView_email"
                 style="@style/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,8 +146,8 @@
                 android:text="A4207486@gmail.com"
                 android:textSize="15sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView18"
-                app:layout_constraintStart_toStartOf="@+id/textView_address"
-                app:layout_constraintTop_toBottomOf="@+id/textView_address" />
+                app:layout_constraintStart_toStartOf="@+id/textView_name"
+                app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 
             <TextView
                 android:id="@+id/textView13"
