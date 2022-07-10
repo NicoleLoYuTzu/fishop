@@ -168,6 +168,7 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
             _status.value = LoadApiStatus.LOADING
 
             val result = repository.getAllSellerAddressResult(ownerIds)
+            Logger.i("ownerIds $ownerIds")
             Logger.d("repository.getGoogleMap()")
             Logger.d("getGoogleMap result $result")
 

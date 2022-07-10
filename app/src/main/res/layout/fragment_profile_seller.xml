@@ -4,6 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".profile.ProfileSalerFragment">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.nicole.fishop.profile.ProfileSalerViewModel" />
+
+
+        <variable
+            name="UserManager"
+            type="com.nicole.fishop.login.UserManager" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -83,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="桃園市八德區XXXXXX"
+            android:text="- - - - - - - - - - - - - - - "
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -105,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="0912345678"
+            android:text="- - - - - - - - - - - - - - -"
             app:layout_constraintStart_toStartOf="@+id/textView14"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -148,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView18"
             app:layout_constraintStart_toEndOf="@+id/textView18"
             app:layout_constraintTop_toTopOf="@+id/textView18" />
@@ -159,7 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Tuesday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Tuesday" />
@@ -170,7 +182,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Wednesday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Wednesday" />
@@ -181,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Thursday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Thursday" />
@@ -192,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Friday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Friday" />
@@ -203,7 +215,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Saturday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Saturday" />
@@ -214,7 +226,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="休息"
+            android:text="- -"
             app:layout_constraintBottom_toBottomOf="@+id/textView_Sunday"
             app:layout_constraintStart_toEndOf="@+id/textView_Tuesday"
             app:layout_constraintTop_toTopOf="@+id/textView_Sunday" />
@@ -284,14 +296,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_Saturday" />
 
         <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="81dp"
-            android:layout_height="74dp"
+            android:id="@+id/imageView_mine"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_shopname"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_shopname" />
 
         <ImageView
             android:id="@+id/imageView18"
@@ -301,7 +313,7 @@
             android:layout_marginTop="36dp"
             android:src="@drawable/home"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView_mine" />
 
         <ImageView
             android:id="@+id/imageView19"

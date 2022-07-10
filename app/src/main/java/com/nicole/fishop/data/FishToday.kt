@@ -11,9 +11,10 @@ import java.util.*
 data class FishToday(
     var id: String = "",
     var ownerId: String = "",
+    var ownPhoto: String = "",
     var time: String = "",
     var name: String = "",
-    @Exclude var category: List<FishTodayCategory> = emptyList(),
+    var category: List<FishTodayCategory> = emptyList(),
     var distance: Long = 0,
     var date: String =""
 ) : Parcelable{

@@ -14,12 +14,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.nicole.fishop.MainActivity
+import com.google.firebase.firestore.auth.User
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.R
@@ -47,6 +46,9 @@ class StartDialog() : AppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
+        Logger.i("onCreate")
+
+
     }
 
 
@@ -55,9 +57,9 @@ class StartDialog() : AppCompatDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-//        preferences = this.requireActivity()
-//            .getSharedPreferences("pref", Context.MODE_PRIVATE)
+        Logger.i("onCreateView")
 
+        Logger.i("UserManager.userToken ${UserManager.userToken}")
 
         binding = ActivityStartDialogBinding.inflate(inflater, container, false)
 
@@ -68,6 +70,8 @@ class StartDialog() : AppCompatDialogFragment() {
                 R.anim.anim_slide_up
             )
         )
+
+
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.checkBoxBuyer.setOnCheckedChangeListener { compoundButton, b ->
@@ -120,32 +124,40 @@ class StartDialog() : AppCompatDialogFragment() {
             }
         }
 
-        viewModel.userManager.observe(this, Observer {
-            if (it.user?.accountType == "buyer") {
-//                if (dismiss().equals(true)) {
-//                    val navController = activity?.let { it1 -> Navigation.findNavController(it1, R.id.nav_fragment) }
-//                    navController?.navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
-//                }
-                dismiss()
-                findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
-            } else if (it.user?.accountType == "saler") {
-//                if (dismiss().equals(true)) {
-//                    val navController = activity?.let { it1 -> Navigation.findNavController(it1, R.id.nav_fragment) }
-//                    navController?.navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
-//                }
-                dismiss()
+        //不創id的版本
+//        viewModel.userManager.observe(this, Observer {
+//            if (it.user?.accountType == "buyer") {
+//                dismiss()
+//                findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
+//            } else if (it.user?.accountType == "saler") {
+//                dismiss()
+//
+//                findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
+//            }
+//        }
+//        )
 
+////      這個是檢查到有id回來配到資料後再配進去給UserManager, 偵測到是甚麼模式就跳什麼分頁
+        viewModel.userswithId.observe(this, Observer {
+            if (it.id!=null&&it.accountType == "buyer"){
+                dismiss()
+                UserManager.user?.id=it.id
+                Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
+                findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
+            }else if(it.id!=null && it.accountType == "saler"){
+                dismiss()
+                UserManager.user?.id=it.id
+                Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
                 findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
             }
-        }
-        )
-
+        })
 
         return binding.root
     }
 
     private fun signIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                //從google service json的client id
             .requestIdToken("44039700708-qg19e235nofihjbsjkrv3efsklst64o8.apps.googleusercontent.com")
             .requestEmail()
             .build()
@@ -164,14 +176,20 @@ class StartDialog() : AppCompatDialogFragment() {
                 val account = task.getResult(ApiException::class.java)
                 val email = account?.email
                 val token = account?.idToken
+                val id = account?.id
+                val picture = account?.photoUrl.toString()
 
                 Logger.i("givemepass , email:$email, token:$token")
-
                 UserManager.userToken = token
+                UserManager.user?.picture =picture
+                UserManager.accountType = user?.accountType
+                Logger.i("UserManager.userToken ${UserManager.userToken}")
                 user?.email = email
                 user?.name = account?.displayName
                 //先不要建立資料
-//                user?.let { viewModel.userSignIn(it) }
+                user?.let { viewModel.userSignIn(it) }
+
+                //userManager的值分辨買賣家來跳轉頁面
                 viewModel.userManager.value = UserManager
                 Logger.i(" user.value $user")
                 Logger.d("UserManager.userToken ${UserManager.userToken}")

@@ -78,7 +78,7 @@
                 app:srcCompat="@drawable/chatinchat" />
 
             <TextView
-                android:id="@+id/textView_chat"
+                android:id="@+id/textView_Chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

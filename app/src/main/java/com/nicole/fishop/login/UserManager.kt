@@ -2,6 +2,8 @@ package com.nicole.fishop.login
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
+import android.net.UrlQuerySanitizer
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +25,32 @@ object UserManager {
     var user: Users?=Users()
 //        get() = _user
 
+
+
     var userToken: String? = null
+        get() = FishopApplication.instance
+            .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
+            .getString(USER_TOKEN, null)
+        set(value) {
+            field = when (value) {
+                null -> {
+                    FishopApplication.instance
+                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+                        .remove(USER_TOKEN)
+                        .apply()
+                    null
+                }
+                else -> {
+                    FishopApplication.instance
+                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+                        .putString(USER_TOKEN, value)
+                        .apply()
+                    value
+                }
+            }
+        }
+
+    var accountType: String? = null
         get() = FishopApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
             .getString(USER_TOKEN, null)

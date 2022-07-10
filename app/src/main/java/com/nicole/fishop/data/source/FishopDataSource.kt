@@ -1,5 +1,6 @@
 package com.nicole.fishop.data.source
 
+import androidx.lifecycle.MutableLiveData
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.data.*
 import com.nicole.fishop.login.UserManager
@@ -8,7 +9,7 @@ interface FishopDataSource {
 
     suspend fun getUsersInfo(): Result1<Users>
 
-    suspend fun getFishRecord(): Result1<List<FishRecord>>
+    suspend fun getFishRecord(User: Users): Result1<List<FishRecord>>
 
     suspend fun getFishAll(): Result1<List<Category>>
 
@@ -20,9 +21,9 @@ interface FishopDataSource {
 
     suspend fun getGoogleMap(location: String):Result1<SellerLocation>
 
-    suspend fun getAllSellerAddressResult(ownerId: List<String>):Result1<List<SellerLocation>>
+    suspend fun getAllSellerAddressResult(salerId: List<String>):Result1<List<SellerLocation>>
 
-    suspend  fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>): Result1<Boolean>
+    suspend  fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>,User: Users): Result1<Boolean>
 
 //    suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>
 
@@ -31,4 +32,20 @@ interface FishopDataSource {
     suspend fun getSalerInfo(users: Users): Result1<Users>
 
     suspend fun setSalerInfo(users: Users):  Result1<Boolean>
+
+    suspend fun getChatBoxRecord(salerFishToday: FishToday,user: Users):  Result1<List<ChatBoxRecord>>
+
+    suspend fun getSalerChatRecordResult(user: Users):  Result1<List<ChatRecord>>
+
+    suspend fun getBuyerChatRecordResult(user: Users):  Result1<List<ChatRecord>>
+
+    suspend fun addChatroom(chatRecord: ChatRecord):  Result1<ChatRecord>
+
+    suspend fun sendChat(chatRoomId: String,chat: ChatBoxRecord):  Result1<Boolean>
+
+    suspend fun sendLastChat(chatRoomId: String,chat: ChatRecord):  Result1<ChatRecord>
+
+    suspend fun checkHasRoom(salerId: String,userId: String):  Result1<ChatRecord>
+
+    fun getLiveChat(chatRoomId: String): MutableLiveData<List<ChatBoxRecord>>
 }

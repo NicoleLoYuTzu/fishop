@@ -45,10 +45,12 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
 
 
             binding.imageViewChat.setOnClickListener {
-                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatFragment())
+                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
+                Logger.i("FishBuyerAdapter fishToday $fishToday")
             }
             binding.textViewChat.setOnClickListener {
-                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatFragment())
+                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
+                Logger.i("FishBuyerAdapter fishToday $fishToday")
             }
             binding.RecyclerViewTodayfish.adapter = FishBuyerAdapterItem()
             (binding.RecyclerViewTodayfish.adapter as FishBuyerAdapterItem).submitList(fishToday.category)

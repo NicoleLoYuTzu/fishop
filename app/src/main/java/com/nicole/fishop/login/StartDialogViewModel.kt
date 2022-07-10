@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.R
+import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.Users
@@ -34,11 +35,6 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
 
     var userManager = MutableLiveData<UserManager>()
 
-
-
-
-
-
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
 
@@ -49,50 +45,39 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-//    private val _navigateToGoogleMap = MutableLiveData<FishToday>()
-//
-//    val navigateToGoogleMap: LiveData<FishToday>
-//        get() = _navigateToGoogleMap
-//
-//    fun navigateToGoogleMap(fishToday: FishToday) {
-//        _navigateToGoogleMap.value = fishToday
-//    }
-//
-//    fun onGoogleMapNavigated() {
-//        _navigateToGoogleMap.value = null
-//    }
+    private val _userswithId = MutableLiveData<Users>()
+    val userswithId: LiveData<Users>
+        get() = _userswithId
 
 
-
-    // Handle navigation to login success
-    private val _navigateToLoginSuccess = MutableLiveData<Users>()
-
-    val navigateToLoginSuccess: LiveData<Users>
-        get() = _navigateToLoginSuccess
-
-    //put email,name,token
+    //put email,name,accountType
     fun userSignIn(users: Users) {
 
         coroutineScope.launch {
             Logger.d("userSignIn")
             _status.value = LoadApiStatus.LOADING
+            val result = repository.userSignIn(users)
             // It will return Result object after Deferred flow
-            when (val result = repository.userSignIn(users)) {
+            _userswithId.value = when (result) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    result.data
                 }
                 is Result1.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
                 is Result1.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
                 else -> {
                     _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
+                    null
                 }
             }
         }

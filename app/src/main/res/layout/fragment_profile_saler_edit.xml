@@ -27,10 +27,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
                             android:text="請輸入店名 : "
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView_email" />
+                            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
                         <TextView
                             android:id="@+id/textView19"
@@ -38,7 +37,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="請輸入店家地址 : "
+                            android:text="請輸入聯絡電話 : "
                             app:layout_constraintStart_toStartOf="@+id/editText_shopname"
                             app:layout_constraintTop_toBottomOf="@+id/editText_shopname" />
 
@@ -48,9 +47,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="請輸入連絡電話 : "
-                            app:layout_constraintStart_toStartOf="@+id/editText_address"
-                            app:layout_constraintTop_toBottomOf="@+id/editText_address" />
+                            android:text="請輸入地址 : "
+                            app:layout_constraintStart_toStartOf="@+id/editText_phone"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_phone" />
 
                         <TextView
                             android:id="@+id/textView23"
@@ -59,8 +58,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:text="請選擇營業日 : "
-                            app:layout_constraintStart_toStartOf="@+id/editText_phone"
-                            app:layout_constraintTop_toBottomOf="@+id/editText_phone" />
+                            app:layout_constraintStart_toStartOf="@+id/editText_address"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_address" />
 
                         <CheckBox
                             android:id="@+id/checkBox_Tuesday"
@@ -114,6 +113,7 @@
                             android:id="@+id/checkBox_Thursday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="17dp"
                             android:text="星期四"
                             app:layout_constraintEnd_toStartOf="@+id/checkBox_Friday"
@@ -126,6 +126,7 @@
                             android:id="@+id/checkBox_Sunday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
                             android:text="星期日"
                             app:layout_constraintBottom_toBottomOf="@+id/checkBox_Saturday"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -149,35 +150,41 @@
                         <EditText
                             android:id="@+id/editText_shopname"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_edit_text_selector"
                             android:ems="10"
-                            android:hint="請輸入店名於此"
                             android:inputType="textPersonName"
-                            app:layout_constraintStart_toStartOf="@+id/textView8"
+                            android:paddingStart="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView8"
-                            tools:ignore="TouchTargetSizeCheck" />
-
-                        <EditText
-                            android:id="@+id/editText_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:ems="10"
-                            android:hint="請輸入店家地址於此"
-                            android:inputType="textPersonName"
-                            app:layout_constraintStart_toStartOf="@+id/textView19"
-                            app:layout_constraintTop_toBottomOf="@+id/textView19"
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <EditText
                             android:id="@+id/editText_phone"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_edit_text_selector"
                             android:ems="10"
-                            android:hint="請輸入連絡電話"
+                            android:inputType="number"
+                            android:paddingStart="8dp"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/textView19"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                        <EditText
+                            android:id="@+id/editText_address"
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/bg_edit_text_selector"
+                            android:ems="10"
                             android:inputType="textPersonName"
+                            android:paddingStart="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/textView22"
                             app:layout_constraintTop_toBottomOf="@+id/textView22"
                             tools:ignore="TouchTargetSizeCheck" />
@@ -195,11 +202,12 @@
                         <EditText
                             android:id="@+id/editTextStartTime"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="15dp"
+                            android:background="@drawable/bg_edit_text_selector"
                             android:ems="10"
-                            android:hint="請輸入店家營業起始時間"
                             android:inputType="textPersonName"
+                            android:paddingStart="8dp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView25"
                             app:layout_constraintStart_toEndOf="@+id/textView25"
                             app:layout_constraintTop_toTopOf="@+id/textView25"
@@ -228,11 +236,12 @@
                         <EditText
                             android:id="@+id/editTextStopTime"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="15dp"
+                            android:background="@drawable/bg_edit_text_selector"
                             android:ems="10"
-                            android:hint="請輸入店家結束營業時間"
                             android:inputType="textPersonName"
+                            android:paddingStart="8dp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView26"
                             app:layout_constraintStart_toEndOf="@+id/textView26"
                             app:layout_constraintTop_toTopOf="@+id/textView26"
@@ -243,24 +252,76 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:layout_marginEnd="20dp"
                             android:layout_marginBottom="16dp"
+                            android:backgroundTint="@android:color/transparent"
+                            android:gravity="center|right"
                             android:text="儲存"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/editTextStopTime"
                             app:layout_constraintVertical_bias="1.0" />
 
-                        <TextView
-                            android:id="@+id/textView_email"
-                            style="@style/date"
-                            android:layout_width="wrap_content"
+
+                        <RelativeLayout
+
+                            android:id="@+id/relativeLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="Hello! XXX~"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/imageView16"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/shark"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                                <TextView
+                                    android:id="@+id/textView_email"
+                                    style="@style/date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignTop="@+id/imageView16"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginTop="18dp"
+                                    android:layout_toEndOf="@+id/imageView16"
+                                    android:ellipsize="marquee"
+                                    android:fadingEdge="horizontal"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:marqueeRepeatLimit="marquee_forever"
+                                    android:scrollHorizontally="true"
+                                    android:singleLine="true"
+                                    android:text="@string/hello_xxx"
+                                    android:textAlignment="center"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView16"
+
+                                    app:layout_constraintTop_toTopOf="@+id/imageView16" />
+
+                                <requestFocus />
+
+
+
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView17"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/sharksave"
+                            app:layout_constraintBottom_toBottomOf="@+id/button_save"
+                            app:layout_constraintStart_toStartOf="@+id/button_save"
+                            app:layout_constraintTop_toTopOf="@+id/button_save" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

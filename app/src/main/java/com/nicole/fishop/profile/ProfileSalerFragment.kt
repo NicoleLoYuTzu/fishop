@@ -7,12 +7,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.request.RequestOptions
+import com.nicole.fishop.GlideApp
+import com.nicole.fishop.R
 import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.FragmentProfileSellerBinding
 import com.nicole.fishop.ext.getVmFactory
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import com.nicole.fishop.util.Logger.d
 import com.nicole.fishop.util.Logger.i
@@ -35,11 +42,31 @@ class ProfileSalerFragment : Fragment() {
         val binding = FragmentProfileSellerBinding.inflate(inflater)
         Log.d("Nicole", "ProfileSalerFragment onCreateView")
 
+        @BindingAdapter("imageUrlWithCircleCrop")
+        fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
+            imgUrl?.let {
+                val imgUri = it.toUri().buildUpon().build()
+                GlideApp.with(imgView.context)
+                    .load(imgUri)
+                    .circleCrop()
+                    .apply(
+                        RequestOptions()
+                            .placeholder(R.drawable.fishileft)
+                            .error(R.drawable.fish)
+                    )
+                    .into(imgView)
+            }
+        }
+
 
         viewModel.users.observe(viewLifecycleOwner, Observer { user ->
             binding.textViewAddress.text = user.address
             binding.textViewPhone.text = user.phone
             binding.textViewShopname.text = user.name
+            bindImageWithCircleCrop(binding.imageViewMine, user.picture)
+
+            UserManager.user?.name = viewModel.users.value?.name
+
             Logger.i("viewModel.users ${viewModel.users.value}")
             val startTime = user.businessTime?.let { it1 -> getNowTime(it1.toLong()) }
             val stopTime = user.businessEndTime?.let { it1 -> getNowTime(it1.toLong()) }
@@ -89,24 +116,24 @@ class ProfileSalerFragment : Fragment() {
         })
 
 
-    return binding.root
-}
-
-@SuppressLint("SimpleDateFormat")
-private fun getNowTime(time: Long): String {
-    return if (android.os.Build.VERSION.SDK_INT >= 24) {
-        SimpleDateFormat("HH:mm").format(time)
-    } else {
-        val tms = Calendar.getInstance()
-        tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                tms.get(Calendar.MONTH).toString() + "/" +
-                tms.get(Calendar.YEAR).toString() + " " +
-                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                tms.get(Calendar.MINUTE).toString() + ":" +
-                tms.get(Calendar.SECOND).toString()
+        return binding.root
     }
-}
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getNowTime(time: Long): String {
+        return if (android.os.Build.VERSION.SDK_INT >= 24) {
+            SimpleDateFormat("HH:mm").format(time)
+        } else {
+            val tms = Calendar.getInstance()
+            tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
+        }
+    }
 
 
 }

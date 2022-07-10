@@ -7,7 +7,8 @@
     <fragment
         android:id="@+id/FishSellerFragment"
         android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
-        android:label="FishSellerFragment" />
+        android:label="FishSellerFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
     <fragment
         android:id="@+id/FishSellerFragmentAddToday"
@@ -17,12 +18,14 @@
     <fragment
         android:id="@+id/FishBuyerFragment"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerFragment"
-        android:label="FishBuyerFragment" />
+        android:label="FishBuyerFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
     <fragment
         android:id="@+id/ChatFragment"
-        android:name="com.nicole.fishop.chatingroom.ChatFragment"
-        android:label="ChatFragment" />
+        android:name="com.nicole.fishop.chatingroom.chat.ChatFragment"
+        android:label="ChatFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
 
 
@@ -32,7 +35,8 @@
 
     <action
         android:id="@+id/action_fishSellerFragmentAddToday_to_fishSellerFragment"
-        app:destination="@id/FishSellerFragment" />
+        app:destination="@id/FishSellerFragment"
+        app:popUpTo="@id/nav_fragment"/>
     <fragment
         android:id="@+id/fishBuyerGoogleMap"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerGoogleMap"
@@ -50,14 +54,21 @@
 
 
     <action
-        android:id="@+id/action_to_ChatFragment"
-        app:destination="@id/ChatFragment" />
+        android:id="@+id/action_to_ChatBoxFragment"
+        app:destination="@id/ChatBoxFragment" >
+
+    </action>
 
     <dialog
         android:id="@+id/startDialog"
         android:name="com.nicole.fishop.login.StartDialog"
         android:label="activity_start_dialog"
-        tools:layout="@layout/activity_start_dialog" />
+        tools:layout="@layout/activity_start_dialog" >
+
+        <action
+            android:id="@+id/action_startDialog_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </dialog>
 
     <action
         android:id="@+id/action_startDialog_to_fishSellerFragment"
@@ -65,17 +76,18 @@
 
     <action
         android:id="@+id/action_startDialog_to_fishBuyerFragment"
-        app:destination="@id/FishBuyerFragment" />
-
-    <action
-        android:id="@+id/action_startDialog_to_mainActivity"
-        app:destination="@id/mainActivity" />
-
+        app:destination="@id/FishBuyerFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
     <activity
         android:id="@+id/mainActivity"
         android:name="com.nicole.fishop.MainActivity"
         android:label="MainActivity" />
+
+    <action
+        android:id="@+id/action_mainActivity_to_startDialog"
+        app:destination="@id/startDialog" />
+
     <fragment
         android:id="@+id/ProfileSalerEditFragment"
         android:name="com.nicole.fishop.profile.ProfileSalerEditFragment"
@@ -84,11 +96,13 @@
 
     <action
         android:id="@+id/action_startDialog_to_profileSalerEditFragment"
-        app:destination="@id/ProfileSalerEditFragment" />
+        app:destination="@id/ProfileSalerEditFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
     <action
         android:id="@+id/action_profileSalerEditFragment_to_profileSellerFragment"
-        app:destination="@id/ProfileSellerFragment" />
+        app:destination="@id/ProfileSellerFragment"
+        app:popUpTo="@id/nav_fragment"/>
 
     <fragment
         android:id="@+id/ProfileBuyerFragment"
@@ -102,5 +116,14 @@
         android:name="com.nicole.fishop.profile.ProfileSalerFragment"
         android:label="fragment_profile_seller"
         tools:layout="@layout/fragment_profile_seller" />
+    <fragment
+        android:id="@+id/ChatBoxFragment"
+        android:name="com.nicole.fishop.chatingroom.chatbox.ChatBoxFragment"
+        android:label="fragment_chat_box"
+        tools:layout="@layout/fragment_chat_box">
+        <argument android:name="otherPeopleIdKey"
+            app:argType="com.nicole.fishop.data.FishToday"
+            app:nullable="false"/>
+    </fragment>
 
 </navigation>

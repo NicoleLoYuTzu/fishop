@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import com.nicole.fishop.factory.ViewModelFactory
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.data.FishToday
+import com.nicole.fishop.factory.ChatBoxViewModelFactory
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -15,7 +16,12 @@ fun Fragment.getVmFactory(): ViewModelFactory {
     val repository = (requireContext().applicationContext as FishopApplication).repository
     return ViewModelFactory(repository)
 }
-fun Fragment.getVmFactory(addressKey: FishToday): ViewModelFactory {
+//fun Fragment.getVmFactory(addressKey: FishToday): ViewModelFactory {
+//    val repository = (requireContext().applicationContext as FishopApplication).repository
+//    return ViewModelFactory(repository)
+//}
+
+fun Fragment.getVmFactory(fishToday: FishToday): ChatBoxViewModelFactory {
     val repository = (requireContext().applicationContext as FishopApplication).repository
-    return ViewModelFactory(repository)
+    return ChatBoxViewModelFactory(fishToday,repository)
 }

@@ -9,6 +9,7 @@ import com.nicole.fishop.data.FishCategory
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.source.FishopRepository
+import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.CoroutineScope
@@ -33,9 +34,9 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
 
 
     // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String>()
+    private val _error = MutableLiveData<String?>()
 
-    val error: LiveData<String>
+    val error: MutableLiveData<String?>
         get() = _error
 
 
@@ -69,7 +70,7 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getFishRecord()
+            val result = UserManager.user?.let { repository.getFishRecord(it) }
             Logger.d("repository.getFishRecord()")
             Logger.d("result $result")
 

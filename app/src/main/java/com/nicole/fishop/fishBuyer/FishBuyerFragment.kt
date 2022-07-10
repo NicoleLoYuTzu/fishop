@@ -75,21 +75,23 @@ class FishBuyerFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
 //        viewModel.getFishTodayFilterResult("")
+
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
             (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
             (binding.recyclerView.adapter as FishBuyerAdapter).notifyDataSetChanged()
             //把所有owernerId帶入
 
-            val ownerIds = mutableListOf<String>()
-            for (i in it) {
-                Logger.d("i.ownerId ${i.ownerId} , i => $i")
-                ownerIds.add(i.ownerId)
-            }
+                val ownerIds = mutableListOf<String>()
+                for (i in it) {
+                    Logger.d("i.ownerId ${i.ownerId} , i => $i")
+                    ownerIds.add(i.ownerId)
+                }
 
-            viewModel.getAllSellerAddressResult(ownerIds)
-            Logger.d("ownerIds $ownerIds ")
+                viewModel.getAllSellerAddressResult(ownerIds)
+                Logger.d("ownerIds $ownerIds ")
 
-            Logger.d(" viewModel.fishToday.observe $it ")
+                Logger.d(" viewModel.fishToday.observe $it ")
+
         })
 
 
@@ -135,28 +137,49 @@ class FishBuyerFragment : Fragment() {
 
         viewModel.sellerLocations.observe(viewLifecycleOwner) {
             Logger.i("LIVEDATA SELLERLOCATION = $it")
+//            viewModel.sellerLocations.value?.let { locations ->
+//                for (location in locations) {
+//
+//                    Logger.i("location = $location")
+//                    Logger.i("location.name = ${location.name}")
+//
+//                    val distance = getDistance(location)
+//                    Logger.d("distance => $distance")
+//
+//                    val foundToday = viewModel.fishToday.value?.find {
+//                        it.ownerId == location.id
+//                    }
+//                    Logger.d("foundToday => $foundToday")
+//                    foundToday?.distance = distance.toLong()
+//                    Logger.d("foundToday after assign => $foundToday")
+//                }
+//                viewModel._fishToday.value = viewModel._fishToday.value
+//            }
+
+
         }
 
         viewModel.startLocation.observe(viewLifecycleOwner, Observer {
 
-                viewModel.sellerLocations.value?.let { locations ->
-                    for (location in locations) {
+            viewModel.sellerLocations.value?.let { locations ->
+                for (location in locations) {
 
-                        Logger.i("location = $location")
-                        Logger.i("location.name = ${location.name}")
+                    Logger.i("location = $location")
+                    Logger.i("location.name = ${location.name}")
 
-                        val distance = getDistance(location)
-                        Logger.d("distance => $distance")
+                    val distance = getDistance(location)
+                    Logger.d("distance => $distance")
 
-                        val foundToday = viewModel.fishToday.value?.find {
-                            it.ownerId == location.id
-                        }
-                        Logger.d("foundToday => $foundToday")
-                        foundToday?.distance = distance.toLong()
-                        Logger.d("foundToday after assign => $foundToday")
+                    val foundToday = viewModel.fishToday.value?.find {
+                        it.ownerId == location.id
                     }
-                    viewModel._fishToday.value = viewModel._fishToday.value
+                    Logger.d("foundToday => $foundToday")
+                    foundToday?.distance = distance.toLong()
+                    Logger.d("foundToday after assign => $foundToday")
                 }
+                viewModel._fishToday.value = viewModel._fishToday.value
+            }
+
 
         })
 
@@ -364,22 +387,22 @@ class FishBuyerFragment : Fragment() {
     fun getDistance(sellerLocation: SellerLocation): Float {
 
 
-            val geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
-            val addressLocation: List<Address> =
-                geoCoder!!.getFromLocationName(sellerLocation.address, 1)
-            Logger.i("addressLocation $addressLocation")
-            val distance = calculateDistance(
-                startLocationFromBuyerPosition.latitude,
-                startLocationFromBuyerPosition.longitude,
-                addressLocation[0].latitude,
-                addressLocation[0].longitude
-            )
-            Logger.d("it.address=>  ${sellerLocation.address} distance =>${distance}米")
-            Logger.d("addressLocation[0].latitude ${addressLocation[0].latitude}")
-            Logger.d("addressLocation[0].longitude ${addressLocation[0].longitude}")
+        val geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
+        val addressLocation: List<Address> =
+            geoCoder!!.getFromLocationName(sellerLocation.address, 1)
+        Logger.i("addressLocation $addressLocation")
+        val distance = calculateDistance(
+            startLocationFromBuyerPosition.latitude,
+            startLocationFromBuyerPosition.longitude,
+            addressLocation[0].latitude,
+            addressLocation[0].longitude
+        )
+        Logger.d("it.address=>  ${sellerLocation.address} distance =>${distance}米")
+        Logger.d("addressLocation[0].latitude ${addressLocation[0].latitude}")
+        Logger.d("addressLocation[0].longitude ${addressLocation[0].longitude}")
 
-            Logger.d("startLocationFromBuyerPosition.latitude, ${startLocationFromBuyerPosition.latitude}")
-            Logger.d("startLocationFromBuyerPosition.longitude, ${startLocationFromBuyerPosition.longitude}")
+        Logger.d("startLocationFromBuyerPosition.latitude, ${startLocationFromBuyerPosition.latitude}")
+        Logger.d("startLocationFromBuyerPosition.longitude, ${startLocationFromBuyerPosition.longitude}")
 
 
         return distance

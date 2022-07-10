@@ -1,15 +1,22 @@
 package com.nicole.fishop.profile
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
@@ -57,7 +64,9 @@ class ProfileSalerEditFragment : Fragment() {
 
         val mutableArray = businessDay.toMutableList()
 
-        binding.textViewEmail.text = "Hello! ${UserManager.user?.name}!"
+        binding.textViewEmail.text =
+            " 〰️〰️\uD83D\uDC20Hello! ${UserManager.user?.name}\uD83D\uDC1F 〰️〰️〰️〰️〰️〰️\uD83D\uDC20〰️〰️〰️\uD83D\uDC1F〰️〰️〰️\uD83D\uDC21〰️〰️〰️ Hello! ${UserManager.user?.name} 〰️〰️〰️\uD83D\uDC20〰️〰️〰️\uD83D\uDC1F〰️〰️〰️\uD83D\uDC21〰️〰️〰️"
+
 
         binding.checkBoxMonday.setOnCheckedChangeListener { compoundButton, b ->
             //星期一
@@ -138,29 +147,46 @@ class ProfileSalerEditFragment : Fragment() {
                         val stopTime = binding.editTextStopTime.text.toString()
                         val startTimeToLong = startTime.toTimeLong()
                         val stopTimeToLong = stopTime.toTimeLong()
-                        UserManager.user.let {
-                            Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
-                            it?.businessDay = mutableArray
-                            it?.businessEndTime = stopTimeToLong.toString()
-                            it?.businessTime = startTimeToLong.toString()
-                            it?.name = binding.editTextShopname.text.toString()
-                            it?.phone = binding.editTextPhone.text.toString()
-                            it?.address = binding.editTextAddress.text.toString()
-                            Logger.i("buttonSave UserManager it $it")
-                            if (it != null) {
-                                viewModel.setSalerInfo(it)
-                                Logger.i(" viewModel.setSalerInfo it $it")
-                            }
 
+
+                        val checkADDRESS = checkAddress(binding.editTextAddress.text.toString())
+                        Logger.i("checkADDRESS=> $checkADDRESS")
+
+                        if (checkADDRESS.isNotEmpty()) {
+                            UserManager.user.let {
+                                Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
+                                it?.businessDay = mutableArray
+                                it?.businessEndTime = stopTimeToLong.toString()
+                                it?.businessTime = startTimeToLong.toString()
+                                it?.name = binding.editTextShopname.text.toString()
+                                it?.phone = binding.editTextPhone.text.toString()
+                                it?.address = binding.editTextAddress.text.toString()
+                                it?.picture = it?.picture
+                                Logger.i("buttonSave UserManager it $it")
+                                //防呆機制
+                                if (startTime == "" || stopTime == "" || it?.name == "" || it?.phone == "" || it?.address == "" || (it?.businessDay as MutableList<String>).isEmpty()) {
+                                    Toast.makeText(activity, "請把資料填完整", Toast.LENGTH_SHORT).show()
+                                } else
+                                    if (it != null) {
+                                        viewModel.setSalerInfo(it)
+                                        Logger.i(" viewModel.setSalerInfo it $it")
+                                    }
+
+
+                                dialog.dismiss()
+                                viewModel.getOk.observe(
+                                    viewLifecycleOwner, androidx.lifecycle.Observer {
+                                        findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
+                                    }
+                                )
+                            }
+                        }else{
+                            Toast.makeText(activity, "地址找不到, 請重新輸入", Toast.LENGTH_SHORT).show()
                         }
+//                        } else {
+//
+//                        }
 
-
-                        dialog.dismiss()
-                        viewModel.getOk.observe(
-                            viewLifecycleOwner, androidx.lifecycle.Observer {
-                                findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
-                            }
-                        )
 
                     }
                     .setNeutralButton("取消") { dialog, _ ->
@@ -217,6 +243,34 @@ class ProfileSalerEditFragment : Fragment() {
         }
         return date?.time ?: 0
     }
+
+    fun checkAddress(address: String): List<Address> {
+        val geoCoder: Geocoder? = Geocoder(context, Locale.getDefault())
+
+        val address1: List<Address> = geoCoder!!.getFromLocationName(address, 1)
+        return address1
+    }
+
+//    fun animation(){
+//
+//        val ani: ObjectAnimator = ObjectAnimator.ofFloat(_buttonC, "Y", 2000)
+//        ani.duration = 4000
+//        ani.addListener(object : AnimatorListenerAdapter() {
+//            override fun onAnimationStart(animation: Animator) {
+//                val parms2 = RelativeLayout.LayoutParams(
+//                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                    RelativeLayout.LayoutParams.WRAP_CONTENT
+//                )
+//                parms2.addRule(RelativeLayout.CENTER_VERTICAL)
+//                parms2.addRule(RelativeLayout.CENTER_HORIZONTAL)
+//                _buttonC.setLayoutParams(parms2)
+//            }
+//
+//            override fun onAnimationEnd(animation: Animator) {}
+//        })
+//
+//
+//    }
 
 
 }

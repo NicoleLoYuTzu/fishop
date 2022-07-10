@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".profile.ProfileBuyerFragment">
 
+    <data>
+        <variable
+            name="users"
+            type="com.nicole.fishop.data.Users" />
+    </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -53,7 +58,7 @@
                 android:text="羅又慈"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@+id/textView11"
-                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView_mine" />
 
             <TextView
                 android:id="@+id/textView14"
@@ -79,9 +84,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="81dp"
-                android:layout_height="74dp"
+                android:id="@+id/imageView_mine"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
