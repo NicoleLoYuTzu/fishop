@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import com.nicole.fishop.data.PhotoStringToUrl.bindImageWithCircleCrop
 import com.nicole.fishop.databinding.FragmentProfileBuyerBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.login.UserManager
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities
 
 
 class ProfileBuyerFragment : Fragment() {
@@ -35,6 +37,8 @@ class ProfileBuyerFragment : Fragment() {
 
         binding.textViewEmail.text = UserManager.user?.email
 
+//        binding.recyclerviewFavoritesaler.adapter =
+        binding.textViewFav.isInvisible
 
 
 

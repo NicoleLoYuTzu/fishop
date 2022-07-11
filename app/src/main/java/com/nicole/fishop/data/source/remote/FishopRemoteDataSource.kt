@@ -807,7 +807,8 @@ object FishopRemoteDataSource : FishopDataSource {
                         "lastchatTime" to chat.lastchatTime,
                         "lastsender" to chat.lastsender,
                         "lastsenderName" to chat.lastsenderName,
-                        "salerPhoto" to chat.salerPhoto
+                        "salerPhoto" to chat.salerPhoto,
+                        "buyerPhoto" to chat.buyerPhoto
                     )
                 )
                 .addOnCompleteListener { Result ->

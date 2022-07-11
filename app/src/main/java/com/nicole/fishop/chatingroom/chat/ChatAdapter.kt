@@ -14,25 +14,40 @@ import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatAdapter() :
+class ChatAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<ChatRecord, RecyclerView.ViewHolder>(DiffCallback) {
+
+
+    class OnClickListener(val clickListener: (chatRecord: ChatRecord) -> Unit) {
+        fun onClick(chatRecord: ChatRecord) = clickListener(chatRecord)
+    }
 
     class RecordHolder(private var binding: FragmentChatRecordBinding):
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(chatRecord: ChatRecord) {
+        fun bind(chatRecord: ChatRecord,onClickListener: OnClickListener) {
+
+
+            binding.root.setOnClickListener { onClickListener.onClick(chatRecord) }
 
             if (UserManager.user?.accountType == "buyer") {
                 binding.textViewName.text = chatRecord.salerName
+                TimeChangFormat.bindImageWithCircleCrop(binding.imageView6,chatRecord.salerPhoto)
             }else if(UserManager.user?.accountType == "saler"){
                 binding.textViewName.text = chatRecord.buyerName
+                TimeChangFormat.bindImageWithCircleCrop(binding.imageView6, chatRecord.buyerPhoto)
             }
             binding.textViewContext.text = chatRecord.lastchat
-            TimeChangFormat.bindImageWithCircleCrop(binding.imageView6,chatRecord.salerPhoto)
+
             Logger.i("chatRecord => ${chatRecord}")
 
 
-            binding.textViewTime.text= TimeChangFormat.getTime(chatRecord.lastchatTime.toLong())
+            try {
+                binding.textViewTime.text= TimeChangFormat.getTime(chatRecord.lastchatTime.toLong())
+            }catch (e:Exception){
+
+            }
+
             Logger.i("binding.textViewTime.text => ${binding.textViewTime.text}")
             Logger.i("$chatRecord")
 
@@ -44,10 +59,10 @@ class ChatAdapter() :
 
     companion object DiffCallback : DiffUtil.ItemCallback<ChatRecord>() {
         override fun areItemsTheSame(oldItem: ChatRecord, newItem: ChatRecord): Boolean {
-            return oldItem === newItem
+            return oldItem.lastchatTime == newItem.lastchatTime
         }
         override fun areContentsTheSame(oldItem: ChatRecord, newItem: ChatRecord): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.lastchatTime == newItem.lastchatTime
         }
         private const val ITEM_VIEW_TYPE_RECORD = 0x00
     }
@@ -64,7 +79,7 @@ class ChatAdapter() :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is RecordHolder -> {
-                holder.bind((getItem(position) as ChatRecord))
+                holder.bind((getItem(position) as ChatRecord), onClickListener)
             }
         }
     }

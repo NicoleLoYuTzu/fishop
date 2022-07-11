@@ -15,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRepository) : ViewModel() {
+class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRepository) :
+    ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -42,22 +43,55 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
             UserManager.user?.let { user ->
                 Logger.d("UserManager.user....誰先跑到=> ${UserManager.user} ")
 
-                    Logger.d("user.id=> ${user.id} ")
+                Logger.d("user.id=> ${user.id} ")
+                if (UserManager.user!!.accountType == "buyer") {
                     value =
-                        UserManager.user!!.id?.let {userId->
+                        UserManager.user!!.id?.let { userId ->
                             ChatRecord(
-                                "", emptyList(), salerFishToday.ownerId, userId,"","","","",salerFishToday.name,user.name.toString()
+                                "",
+                                emptyList(),
+                                salerFishToday.ownerId,
+                                userId,
+                                "",
+                                "",
+                                "",
+                                "",
+                                salerFishToday.name,
+                                user.name.toString(),
+                                _salerInfo.value!!.ownPhoto,
+                                UserManager.user!!.picture.toString()
 
                             )
                         }
                     Logger.d("_addChatroom value 誰先跑到=> ${value} ")
+                } else if (UserManager.user!!.accountType == "saler") {
+                    value =
+                        UserManager.user!!.id?.let { userId ->
+                            UserManager.user!!.picture?.let {
+                                ChatRecord(
+                                    "",
+                                    emptyList(),
+                                    salerFishToday.ownerId,
+                                    salerFishToday.buyerId,
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    salerFishToday.name,
+                                    user.name.toString(),
+                                    it, salerFishToday.ownPhoto
+
+                                )
+                            }
+                        }
+                    Logger.d("_addChatroom value 誰先跑到=> ${value} ")
+
+                }
 
             }
         }
         Logger.d("_salerInfo=>  ${_salerInfo.value},UserManager.user=> ${UserManager.user} ")
     }
-
-
 
 
     // error: The internal MutableLiveData that stores the error of the most recent request
@@ -138,26 +172,50 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
         Logger.d("chat.value ${chat}")
         for (chatRecordDetail in chat) {
 
-            if (chatRecordDetail.sender == UserManager.user?.id) {
+            if (UserManager.user?.accountType == "buyer") {
+                if (chatRecordDetail.sender == UserManager.user?.id) {
 
-                val chatMySide = ChatItem.MySide(chatRecordDetail)
-                myChat.add(chatMySide)
-                Logger.d("chatMySide $chatMySide")
-                Logger.d("UserManager.user?.id $UserManager.user?.id")
-            }
+                    val chatMySide = ChatItem.MySide(chatRecordDetail)
+                    myChat.add(chatMySide)
+                    Logger.d("chatMySide $chatMySide")
+                    Logger.d("UserManager.user?.id $UserManager.user?.id")
+                }
 
 
-            if (chatRecordDetail.sender == _salerInfo.value?.ownerId) {
-                val chatTheOtherSide = ChatItem.TheOtherSide(chatRecordDetail)
-                myChat.add(chatTheOtherSide)
-                Logger.d("chatTheOtherSide $chatTheOtherSide")
-                Logger.d("UserManager.user?.id $UserManager.user?.id")
+                if (chatRecordDetail.sender == _salerInfo.value?.ownerId) {
+                    val chatTheOtherSide = ChatItem.TheOtherSide(chatRecordDetail)
+                    myChat.add(chatTheOtherSide)
+                    Logger.d("chatTheOtherSide $chatTheOtherSide")
+                    Logger.d("UserManager.user?.id $UserManager.user?.id")
+                }
             }
         }
+
+        for (chatRecordDetail in chat) {
+            if (UserManager.user?.accountType == "saler") {
+                if (chatRecordDetail.sender == _addChatroom.value?.saler) {
+
+                    val chatMySide = ChatItem.MySide(chatRecordDetail)
+                    myChat.add(chatMySide)
+                    Logger.d("chatMySide $chatMySide")
+                    Logger.d("UserManager.user?.id $UserManager.user?.id")
+                }
+
+
+                if (chatRecordDetail.sender == _addChatroom.value?.buyer) {
+                    val chatTheOtherSide = ChatItem.TheOtherSide(chatRecordDetail)
+                    myChat.add(chatTheOtherSide)
+                    Logger.d("chatTheOtherSide $chatTheOtherSide")
+                    Logger.d("UserManager.user?.id $UserManager.user?.id")
+                }
+            }
+        }
+
+
+
         Logger.d("myChat $myChat")
         return myChat
     }
-
 
 
     init {
@@ -176,23 +234,26 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
 //        }else if (UserManager.user?.accountType == "saler"){
 //            UserManager.user?.let { getSalerChatBoxRecordResult(argument, it) }
 //        }
-        checkHasRoom()
+        if (UserManager.user?.accountType == "buyer") {
+            checkHasRoom()
+        } else if (UserManager.user?.accountType == "saler") {
+            _addChatroom.value.let {
+                it?.buyer?.let { it1 -> checkHasRoom(it1, it.saler) }
+            }
+        }
+
 
         Logger.d("UserManager.user? ${UserManager.user}")
 
     }
 
-    fun checkHasRoom(){
+    fun checkHasRoom(buyer: String, saler: String) {
         coroutineScope.launch {
             Logger.d("checkHasRoom")
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = _salerInfo.value?.let { UserManager.user?.id?.let { it1 ->
-                repository.checkHasRoom(it.ownerId,
-                    it1
-                )
-            } }
+            val result = repository.checkHasRoom(saler, buyer)
             Logger.d("repository.checkHasRoom")
             Logger.d("result $result")
 
@@ -223,10 +284,57 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
 
         }
     }
+
+
+    fun checkHasRoom() {
+        coroutineScope.launch {
+            Logger.d("checkHasRoom")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = _salerInfo.value?.let {
+                UserManager.user?.id?.let { it1 ->
+                    repository.checkHasRoom(
+                        it.ownerId,
+                        it1
+                    )
+                }
+            }
+            Logger.d("repository.checkHasRoom")
+            Logger.d("result $result")
+
+            _checkHasRoom.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+
+
+        }
+    }
+
     var liveChatItem = MutableLiveData<List<ChatBoxRecord>>()
     var observeChatItem = MutableLiveData<Boolean>()
 
-    fun getLiveChat(roomId:String){
+    fun getLiveChat(roomId: String) {
 
         liveChatItem = repository.getLiveChat(roomId)
         Logger.d(" liveChatItem ${liveChatItem.value}")
@@ -314,7 +422,6 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
     }
 
 
-
     fun addChatroom() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
@@ -323,7 +430,7 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
             Logger.d("_addChatroom.value誰先跑到 ${_addChatroom.value}")
             Logger.d("repository.addChatroom()")
 
-            _chatRecord.value = when(val result = repository.addChatroom(_addChatroom.value!!)) {
+            _chatRecord.value = when (val result = repository.addChatroom(_addChatroom.value!!)) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -351,15 +458,13 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
     }
 
 
-
-
-    fun sendChat(chatRoomId:String,chatBoxRecord:ChatBoxRecord) {
+    fun sendChat(chatRoomId: String, chatBoxRecord: ChatBoxRecord) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
             Logger.d("repository.sendChat()")
 
-           when(val result = repository.sendChat(chatRoomId,chatBoxRecord)) {
+            when (val result = repository.sendChat(chatRoomId, chatBoxRecord)) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -383,34 +488,36 @@ class ChatBoxViewModel(val argument: FishToday,private val repository: FishopRep
     }
 
 
-    fun sendLastChat(chatRoomId:String,chatRecord:ChatRecord) {
+    fun sendLastChat(chatRoomId: String, chatRecord: ChatRecord) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
             Logger.d("repository.sendChat()")
 
-            _FirstCollectionSetUp.value = when(val result = repository.sendLastChat(chatRoomId,chatRecord)) {
-                is Result1.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
+            _FirstCollectionSetUp.value =
+                when (val result = repository.sendLastChat(chatRoomId, chatRecord)) {
+                    is Result1.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        result.data
+                    }
+                    is Result1.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result1.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value =
+                            FishopApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
-                is Result1.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result1.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
             _refreshStatus.value = false
         }
 
