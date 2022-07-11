@@ -32,8 +32,7 @@
 
     <action
         android:id="@+id/action_fishSellerFragment_to_fishSellerFragmentAddToday"
-        app:destination="@id/FishSellerFragmentAddToday"
-        app:popUpTo="@id/nav_fragment" />
+        app:destination="@id/FishSellerFragmentAddToday" />
 
     <action
         android:id="@+id/action_fishSellerFragmentAddToday_to_fishSellerFragment"
@@ -42,7 +41,6 @@
 
     <fragment
         android:id="@+id/fishBuyerGoogleMap"
-        app:popUpTo="@id/nav_fragment"
         android:name="com.nicole.fishop.fishBuyer.FishBuyerGoogleMap"
         android:label="fragment_fish_buyer_google_map"
         tools:layout="@layout/fragment_fish_buyer_google_map">
@@ -55,7 +53,6 @@
 
     <action
         android:id="@+id/action_to_fishBuyerGoogleMap"
-        app:popUpTo="@id/nav_fragment"
         app:destination="@id/fishBuyerGoogleMap" />
 
 

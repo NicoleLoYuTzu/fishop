@@ -58,7 +58,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                                 "",
                                 salerFishToday.name,
                                 user.name.toString(),
-                                salerFishToday.ownPhoto,
+                                _salerInfo.value!!.ownPhoto,
                                 UserManager.user!!.picture.toString()
 
                             )

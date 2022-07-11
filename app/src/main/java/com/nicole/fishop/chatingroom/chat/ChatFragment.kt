@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -51,6 +53,7 @@ class ChatFragment : Fragment() {
                 Logger.i(" binding.recyclerView.adapter it.saler ${it.saler}")
                 fishToday.ownerId = it.saler
                 fishToday.name = it.salerName
+                fishToday.ownPhoto = it.salerPhoto
                 findNavController().navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
             }else if(UserManager.user?.accountType == "saler"){
                 val fishToday = FishToday()
@@ -65,7 +68,19 @@ class ChatFragment : Fragment() {
 
         })
 
+        binding.textViewNochat.isInvisible
+
         viewModel.chatRecord.observe(viewLifecycleOwner, Observer {
+
+            if (it.isEmpty()){
+                if (UserManager.user?.accountType == "buyer"){
+                    binding.textViewNochat.isVisible
+                    binding.textViewNochat.text = "您還沒有跟店家聊天哦~"
+                }else if(UserManager.user?.accountType == "saler"){
+                    binding.textViewNochat.isVisible
+                    binding.textViewNochat.text = "目前還沒有客人找您~"
+                }
+            }
 
             (binding.recyclerView.adapter as ChatAdapter).submitList(it)
             Logger.i(" viewModel.chatRecord => $it")

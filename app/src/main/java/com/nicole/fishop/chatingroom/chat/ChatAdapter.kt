@@ -27,6 +27,7 @@ class ChatAdapter(private val onClickListener: OnClickListener) :
 
         fun bind(chatRecord: ChatRecord,onClickListener: OnClickListener) {
 
+
             binding.root.setOnClickListener { onClickListener.onClick(chatRecord) }
 
             if (UserManager.user?.accountType == "buyer") {
@@ -58,10 +59,10 @@ class ChatAdapter(private val onClickListener: OnClickListener) :
 
     companion object DiffCallback : DiffUtil.ItemCallback<ChatRecord>() {
         override fun areItemsTheSame(oldItem: ChatRecord, newItem: ChatRecord): Boolean {
-            return oldItem === newItem
+            return oldItem.lastchatTime == newItem.lastchatTime
         }
         override fun areContentsTheSame(oldItem: ChatRecord, newItem: ChatRecord): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.lastchatTime == newItem.lastchatTime
         }
         private const val ITEM_VIEW_TYPE_RECORD = 0x00
     }

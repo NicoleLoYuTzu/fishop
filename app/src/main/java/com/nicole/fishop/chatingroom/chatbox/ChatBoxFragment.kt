@@ -174,32 +174,71 @@ class ChatBoxFragment : Fragment() {
                 if (chatRoomId != null) {
 
                     val chatRecord = ChatRecord()
-                    chatRecord.lastsender = UserManager.user?.id.toString()
-                    chatRecord.lastchatTime = System.currentTimeMillis().toString()
-                    chatRecord.lastsenderName = UserManager.user?.name.toString()
-                    chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
-                    chatRecord.salerPhoto = salerInfo.ownPhoto.toString()
+
+                    if (UserManager.user?.accountType == "saler") {
+                        chatRecord.lastsender = UserManager.user?.id.toString()
+                        chatRecord.lastchatTime = System.currentTimeMillis().toString()
+                        chatRecord.lastsenderName = UserManager.user?.name.toString()
+                        chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
+                        chatRecord.salerPhoto = salerInfo.ownPhoto
+                        chatRecord.buyerPhoto = viewModel._addChatroom.value?.buyerPhoto.toString()
 
 
-                    //訊息不是空的才發出去
-                    if (binding.editTextTextPersonName.text.isNotEmpty()) {
-                        viewModel.sendLastChat(chatRoomId, chatRecord)
+                        //訊息不是空的才發出去
+                        if (binding.editTextTextPersonName.text.isNotEmpty()) {
+                            viewModel.sendLastChat(chatRoomId, chatRecord)
+                        }
+
+                        val chatBoxRecord = ChatBoxRecord()
+                        chatBoxRecord.content = binding.editTextTextPersonName.text.toString()
+                        chatBoxRecord.sender = UserManager.user?.id.toString()
+                        chatBoxRecord.senderphoto = UserManager.user?.picture.toString()
+                        chatBoxRecord.time = System.currentTimeMillis()
+                        chatBoxRecord.id = chatRoomId
+                        if (binding.editTextTextPersonName.text.isNotEmpty()) {
+                            viewModel.sendChat(chatRoomId, chatBoxRecord)
+                        }
+
+
+                        Logger.i("viewModel.sendChat chatRoomId=>${chatRoomId},chatBoxRecord=> ${chatBoxRecord}")
+                        Logger.i("viewModel.sendLastChat chatRoomId=>${chatRoomId},chatRecord=> ${chatRecord}")
+                        binding.editTextTextPersonName.text.clear()
                     }
 
-                    val chatBoxRecord = ChatBoxRecord()
-                    chatBoxRecord.content = binding.editTextTextPersonName.text.toString()
-                    chatBoxRecord.sender = UserManager.user?.id.toString()
-                    chatBoxRecord.senderphoto = UserManager.user?.picture.toString()
-                    chatBoxRecord.time = System.currentTimeMillis()
-                    chatBoxRecord.id = chatRoomId
-                    if (binding.editTextTextPersonName.text.isNotEmpty()) {
-                        viewModel.sendChat(chatRoomId, chatBoxRecord)
+
+
+                    if (UserManager.user?.accountType == "buyer") {
+                        chatRecord.lastsender = UserManager.user?.id.toString()
+                        chatRecord.lastchatTime = System.currentTimeMillis().toString()
+                        chatRecord.lastsenderName = UserManager.user?.name.toString()
+                        chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
+                        chatRecord.salerPhoto = salerInfo.ownPhoto
+                        chatRecord.buyerPhoto = viewModel._addChatroom.value?.buyerPhoto.toString()
+
+
+                        //訊息不是空的才發出去
+                        if (binding.editTextTextPersonName.text.isNotEmpty()) {
+                            viewModel.sendLastChat(chatRoomId, chatRecord)
+                        }
+
+                        val chatBoxRecord = ChatBoxRecord()
+                        chatBoxRecord.content = binding.editTextTextPersonName.text.toString()
+                        chatBoxRecord.sender = UserManager.user?.id.toString()
+                        chatBoxRecord.senderphoto = UserManager.user?.picture.toString()
+                        chatBoxRecord.time = System.currentTimeMillis()
+                        chatBoxRecord.id = chatRoomId
+                        if (binding.editTextTextPersonName.text.isNotEmpty()) {
+                            viewModel.sendChat(chatRoomId, chatBoxRecord)
+                        }
+
+
+                        Logger.i("viewModel.sendChat chatRoomId=>${chatRoomId},chatBoxRecord=> ${chatBoxRecord}")
+                        Logger.i("viewModel.sendLastChat chatRoomId=>${chatRoomId},chatRecord=> ${chatRecord}")
+                        binding.editTextTextPersonName.text.clear()
                     }
 
 
-                    Logger.i("viewModel.sendChat chatRoomId=>${chatRoomId},chatBoxRecord=> ${chatBoxRecord}")
-                    Logger.i("viewModel.sendLastChat chatRoomId=>${chatRoomId},chatRecord=> ${chatRecord}")
-                    binding.editTextTextPersonName.text.clear()
+
                 }
             }
 
