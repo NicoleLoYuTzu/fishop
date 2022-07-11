@@ -13,5 +13,7 @@
     <color name="translucent_40">#66000000</color>
     <color name="gray_cccccc">#cccccc</color>
     <color name="blue_voyage">#33a4cc</color>
+    <color name="blue">#c5cae9</color>
+
     <color name="gray_999999">#999999</color>
 </resources>
