@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -139,6 +140,8 @@ class ProfileSalerEditFragment : Fragment() {
 
 //        Logger.d("onCreateView businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
         binding.buttonSave.setOnClickListener {
+
+
             context?.let { it1 ->
                 AlertDialog.Builder(it1)
                     .setTitle("確定儲存?")
