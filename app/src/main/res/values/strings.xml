@@ -23,4 +23,8 @@
     <string name="profile_mystic_information">Into the Unknown~</string>
     <string name="hello_xxx">Hello! XXX~🐠</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+
+    <string name="pref_speakerphone_key">speakerphone_preference</string>
+    <string name="pref_speakerphone_default">auto</string>
 </resources>

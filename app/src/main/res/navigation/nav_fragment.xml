@@ -148,5 +148,14 @@
             app:argType="com.nicole.fishop.data.FishToday"
             app:nullable="false" />
     </fragment>
+    <fragment
+        android:id="@+id/RTCFragment"
+        android:name="com.nicole.fishop.chatingroom.chatbox.rtc.RTCFragment"
+        android:label="RTCFragment" >
+    </fragment>
+
+    <action
+        android:id="@+id/action_chatBoxFragment_to_RTCFragment"
+        app:destination="@id/RTCFragment" />
 
 </navigation>

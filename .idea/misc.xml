@@ -20,10 +20,12 @@
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/bg_white_rounded.xml" value="0.259" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/button_dialog_close_ripple.xml" value="0.1255" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/button_signin.xml" value="0.1" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/circle_background.xml" value="0.1205" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/frame_circle.xml" value="0.1645" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/frame_circle_startdialog.xml" value="0.244" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/frame_circle_todayforbuyer.xml" value="0.1245" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/frame_circle_transparent.xml" value="0.244" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/ic_baseline_cameraswitch_24.xml" value="0.1205" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.1785" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/receive_message.xml" value="0.1205" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/drawable/rounded_corner.xml" value="0.259" />
@@ -61,6 +63,7 @@
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_saler_edit.xml" value="0.264" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_seller.xml" value="0.2" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_profile_seller1.xml" value="0.1" />
+        <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_rtc.xml" value="0.109375" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/fragment_saler_chat.xml" value="0.2234375" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/layout/simple_spinner_dropdown_item.xml" value="0.2046875" />
         <entry key="..\:/Users/nicolelo/AppWorksSchool/Fishop/app/src/main/res/menu/nav_menu.xml" value="0.20717948717948717" />
