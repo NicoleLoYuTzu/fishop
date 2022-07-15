@@ -58,12 +58,106 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
+
+//        if (FishopApplication.instance.isLiveDataDesign()) {
+//            if(UserManager.user?.accountType == "saler"){
+//                getSalerSnapShotChatRecordResult()
+//
+//            }else{
+//                getBuyerSnapShotChatRecordResult()
+//            }
+//        } else {
+//            if(UserManager.user?.accountType == "saler"){
+//                getSalerChatRecordResult()
+//
+//            }else{
+//                getBuyerChatRecordResult()
+//            }
+//        }
+
         if(UserManager.user?.accountType == "saler"){
             getSalerChatRecordResult()
+
         }else{
             getBuyerChatRecordResult()
         }
 
+
+
+    }
+
+    fun getBuyerSnapShotChatRecordResult(){
+
+        coroutineScope.launch {
+            Logger.d("getChatRecordResult")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it)}
+            Logger.d("repository.getSalerChatRecordResult()")
+            Logger.d("result $result")
+
+            _chatRecord.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
+    }
+
+    fun getSalerSnapShotChatRecordResult(){
+
+        coroutineScope.launch {
+            Logger.d("getChatRecordResult")
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it)}
+            Logger.d("repository.getSalerChatRecordResult()")
+            Logger.d("result $result")
+
+            _chatRecord.value = when (result) {
+                is Result1.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result1.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result1.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = FishopApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
     }
 
 

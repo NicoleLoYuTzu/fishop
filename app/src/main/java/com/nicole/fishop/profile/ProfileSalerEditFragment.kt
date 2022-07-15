@@ -152,39 +152,45 @@ class ProfileSalerEditFragment : Fragment() {
                         val stopTimeToLong = stopTime.toTimeLong()
 
 
-                        val checkADDRESS = checkAddress(binding.editTextAddress.text.toString())
-                        Logger.i("checkADDRESS=> $checkADDRESS")
+                        if (binding.editTextAddress.text.isEmpty()) {
+                            Toast.makeText(context, "請填入地址", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val checkADDRESS = checkAddress(binding.editTextAddress.text.toString())
 
-                        if (checkADDRESS.isNotEmpty()) {
-                            UserManager.user.let {
-                                Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
-                                it?.businessDay = mutableArray
-                                it?.businessEndTime = stopTimeToLong.toString()
-                                it?.businessTime = startTimeToLong.toString()
-                                it?.name = binding.editTextShopname.text.toString()
-                                it?.phone = binding.editTextPhone.text.toString()
-                                it?.address = binding.editTextAddress.text.toString()
-                                it?.picture = it?.picture
-                                Logger.i("buttonSave UserManager it $it")
-                                //防呆機制
-                                if (startTime == "" || stopTime == "" || it?.name == "" || it?.phone == "" || it?.address == "" || (it?.businessDay as MutableList<String>).isEmpty()) {
-                                    Toast.makeText(activity, "請把資料填完整", Toast.LENGTH_SHORT).show()
-                                } else
-                                    if (it != null) {
-                                        viewModel.setSalerInfo(it)
-                                        Logger.i(" viewModel.setSalerInfo it $it")
-                                    }
+                            Logger.i("checkADDRESS=> $checkADDRESS")
+
+                            if (checkADDRESS.isNotEmpty()) {
+                                UserManager.user.let {
+                                    Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
+                                    it?.businessDay = mutableArray
+                                    it?.businessEndTime = stopTimeToLong.toString()
+                                    it?.businessTime = startTimeToLong.toString()
+                                    it?.name = binding.editTextShopname.text.toString()
+                                    it?.phone = binding.editTextPhone.text.toString()
+                                    it?.address = binding.editTextAddress.text.toString()
+                                    it?.picture = it?.picture
+                                    Logger.i("buttonSave UserManager it $it")
+                                    //防呆機制
+                                    if (startTime == "" || stopTime == "" || it?.name == "" || it?.phone == "" || it?.address == "" || (it?.businessDay as MutableList<String>).isEmpty()) {
+                                        Toast.makeText(activity, "請把資料填完整", Toast.LENGTH_SHORT)
+                                            .show()
+                                    } else
+                                        if (it != null) {
+                                            viewModel.setSalerInfo(it)
+                                            Logger.i(" viewModel.setSalerInfo it $it")
+                                        }
 
 
-                                dialog.dismiss()
-                                viewModel.getOk.observe(
-                                    viewLifecycleOwner, androidx.lifecycle.Observer {
-                                        findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
-                                    }
-                                )
+                                    dialog.dismiss()
+                                    viewModel.getOk.observe(
+                                        viewLifecycleOwner, androidx.lifecycle.Observer {
+                                            findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
+                                        }
+                                    )
+                                }
+                            } else {
+                                Toast.makeText(activity, "地址找不到, 請重新輸入", Toast.LENGTH_SHORT).show()
                             }
-                        }else{
-                            Toast.makeText(activity, "地址找不到, 請重新輸入", Toast.LENGTH_SHORT).show()
                         }
 //                        } else {
 //

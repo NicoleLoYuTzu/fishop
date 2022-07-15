@@ -41,7 +41,11 @@ interface FishopDataSource {
 
     suspend fun getSalerChatRecordResult(user: Users):  Result1<List<ChatRecord>>
 
+    suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>
+
     suspend fun getBuyerChatRecordResult(user: Users):  Result1<List<ChatRecord>>
+
+    suspend fun getBuyerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>
 
     suspend fun addChatroom(chatRecord: ChatRecord):  Result1<ChatRecord>
 

@@ -22,4 +22,5 @@
 
     <string name="profile_mystic_information">Into the Unknown~</string>
     <string name="hello_xxx">Hello! XXX~🐠</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

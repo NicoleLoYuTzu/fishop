@@ -47,7 +47,7 @@ class ProfileSalerFragment : Fragment() {
         viewModel.users.observe(viewLifecycleOwner, Observer { user ->
             binding.textViewAddress.text = user.address
             binding.textViewPhone.text = user.phone
-            binding.textViewShopname.text = user.name
+            binding.toolbarTitle.text = user.name
             TimeChangFormat.bindImageWithCircleCrop(binding.imageViewMine, user.picture)
 
             UserManager.user?.name = viewModel.users.value?.name

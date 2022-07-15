@@ -13,100 +13,37 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/frame_circle_startdialog"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#bbdefb"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/constraint"
             app:layout_constraintStart_toStartOf="@id/constraint"
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="48dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimationView_people"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="15dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="120dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="156dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="196dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="15dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:elevation="5dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox_saler"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="110dp"
-                android:layout_marginTop="28dp"
-                android:src="@drawable/fishileft"
-                app:layout_constraintEnd_toStartOf="@+id/imageView7"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.476"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                app:layout_constraintVertical_bias="0.47"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_progress="0"
+                app:lottie_rawRes="@raw/people_fishing"
+                app:lottie_renderMode="automatic">
 
-            <CheckBox
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <RadioButton
                 android:id="@+id/checkBox_buyer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,75 +53,78 @@
                 app:layout_constraintBottom_toBottomOf="@+id/checkBox_saler"
                 app:layout_constraintEnd_toStartOf="@+id/checkBox_saler"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
 
-            <CheckBox
+
+            <RadioButton
                 android:id="@+id/checkBox_saler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginBottom="25dp"
                 android:shadowColor="@color/gray_f0f0f0"
                 android:text="成為賣家"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView27"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/checkBox_buyer"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                tools:ignore="TouchTargetSizeCheck" />
 
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="56dp"
-                android:layout_marginEnd="110dp"
-                android:src="@drawable/fishiright"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="84dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/grass1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_google"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <com.google.android.gms.common.SignInButton
+            <Button
                 android:id="@+id/button_login_google"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="72dp"
-                android:gravity="center"
-                android:letterSpacing="0.15"
-                android:textAllCaps="false"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_signin"
+                android:text="登入"
                 android:textColor="@color/white"
-                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
                 android:text="使用前, 請先登入Google帳戶"
+                app:layout_constraintBottom_toTopOf="@+id/button_login_google"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintHorizontal_bias="0.547"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="92dp"
+                android:elevation="2dp"
+                android:src="@drawable/googleg_standard_color_18"
+                app:layout_constraintBottom_toBottomOf="@+id/button_login_google"
+                app:layout_constraintEnd_toEndOf="@+id/button_login_google"
+                app:layout_constraintHorizontal_bias="0.034"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox_saler" />
+                app:layout_constraintTop_toTopOf="@+id/button_login_google" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:letterSpacing="0.15"
+                android:text="TextView"
+                android:textColor="#3B5998"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
