@@ -8,7 +8,8 @@
         android:id="@+id/FishSellerFragment"
         android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
         android:label="FishSellerFragment"
-        app:popUpTo="@id/nav_fragment" />
+        app:popUpToInclusive="true"
+        app:popUpTo="@id/startDialog"/>
 
     <fragment
         android:id="@+id/FishSellerFragmentAddToday"
@@ -68,23 +69,23 @@
         android:id="@+id/startDialog"
         android:name="com.nicole.fishop.login.StartDialog"
         android:label="activity_start_dialog"
-        app:popUpTo="@id/nav_fragment"
         tools:layout="@layout/activity_start_dialog">
 
         <action
             android:id="@+id/action_startDialog_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            app:destination="@id/mainActivity"
+            app:popUpTo="@id/startDialog"/>
     </dialog>
 
     <action
         android:id="@+id/action_startDialog_to_fishSellerFragment"
         app:destination="@id/FishSellerFragment"
-        app:popUpTo="@id/nav_fragment" />
+        app:popUpTo="@id/startDialog" />
 
     <action
         android:id="@+id/action_startDialog_to_fishBuyerFragment"
         app:destination="@id/FishBuyerFragment"
-        app:popUpTo="@id/nav_fragment"
+        app:popUpTo="@id/startDialog"
         app:popUpToInclusive="true" />
 
     <activity
@@ -138,12 +139,29 @@
         android:id="@+id/ChatBoxFragment"
         android:name="com.nicole.fishop.chatingroom.chatbox.ChatBoxFragment"
         android:label="fragment_chat_box"
-        app:popUpTo="@id/nav_fragment"
+        app:popUpTo="@id/startDialog"
+        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_chat_box">
+
         <argument
             android:name="otherPeopleIdKey"
             app:argType="com.nicole.fishop.data.FishToday"
             app:nullable="false" />
     </fragment>
+    <fragment
+        android:id="@+id/RTCFragment"
+        android:name="com.nicole.fishop.chatingroom.chatbox.rtc.RTCFragment"
+        android:label="RTCFragment" >
+
+        <argument
+            android:name="openVedio"
+            app:argType="com.nicole.fishop.data.FishToday"
+            app:nullable="false" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_chatBoxFragment_to_RTCFragment"
+        app:destination="@id/RTCFragment" />
 
 </navigation>

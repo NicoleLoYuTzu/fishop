@@ -37,7 +37,7 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
             binding.fishToday = fishToday
 //            viewModel.getGoogleMapResult(fishToday.ownerId)
 
-            binding.textViewDistance.text = fishToday.distance.toString()
+            binding.textViewDistance.text = "${fishToday.distance/1000}"
 
             binding.imageViewNavigate.setOnClickListener { onClickListener.onClick(fishToday)
                 Logger.d("binding.imageViewNavigate fishToday $fishToday")
@@ -48,10 +48,10 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
                 findNavController(binding.root).navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
                 Logger.i("FishBuyerAdapter fishToday $fishToday")
             }
-            binding.textViewChat.setOnClickListener {
-                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
-                Logger.i("FishBuyerAdapter fishToday $fishToday")
-            }
+//            binding.textViewChat.setOnClickListener {
+//                findNavController(binding.root).navigate(NavFragmentDirections.actionToChatBoxFragment(fishToday))
+//                Logger.i("FishBuyerAdapter fishToday $fishToday")
+//            }
             binding.RecyclerViewTodayfish.adapter = FishBuyerAdapterItem()
             (binding.RecyclerViewTodayfish.adapter as FishBuyerAdapterItem).submitList(fishToday.category)
             binding.executePendingBindings()

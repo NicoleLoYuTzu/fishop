@@ -43,6 +43,7 @@ class AddTodayCategoryFragment : Fragment() {
 //        })
 
         viewModel.fishAll.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            viewModel.fishAll.value?.let { it1 -> binding.recyclerView.setItemViewCacheSize(it1.size) }
             (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(it)
         })
 

@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity() {
 //            }
 
 
-
         val fishop = findViewById<TextView>(R.id.fishop)
         val profileTitle = findViewById<TextView>(R.id.profile_title)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

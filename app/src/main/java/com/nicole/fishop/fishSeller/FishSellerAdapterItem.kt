@@ -24,7 +24,7 @@ class FishSellerAdapterItem() :
 
         fun bind(fishCategory: FishCategory) {
             binding.textViewFishCategory.text = fishCategory.category
-            binding.textViewPrice.text= fishCategory.saleprice
+            binding.textViewPrice.text= "${fishCategory.saleprice} / ${fishCategory.unit}"
             binding.fishCategory = fishCategory
             Logger.d("FishSellerAdapterItem binding.fishRecord=> $fishCategory")
             binding.executePendingBindings()

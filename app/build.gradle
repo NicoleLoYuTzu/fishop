@@ -17,8 +17,8 @@ android {
         applicationId "com.nicole.fishshop"
         minSdk 23
         targetSdk 32
-        versionCode 4
-        versionName "1.1.0"
+        versionCode 8
+        versionName "1.1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,4 +103,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    // WebRTC
+    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+
+    //Ktor dependencies (you can retorfit instead)
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-websocket:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-gson:$ktor_version")
 }

@@ -72,7 +72,15 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
         return remoteDataSource.getSalerChatRecordResult(user)
     }
 
+    override suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>{
+        return remoteDataSource.getBuyerChatRecordResult(user)
+    }
+
     override suspend fun getBuyerChatRecordResult(user: Users):  Result1<List<ChatRecord>>{
+        return remoteDataSource.getBuyerChatRecordResult(user)
+    }
+
+    override suspend fun getBuyerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>{
         return remoteDataSource.getBuyerChatRecordResult(user)
     }
 

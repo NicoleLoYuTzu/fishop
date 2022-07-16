@@ -72,6 +72,7 @@ class ChatFragment : Fragment() {
 
         viewModel.chatRecord.observe(viewLifecycleOwner, Observer {
 
+
             if (it.isEmpty()){
                 if (UserManager.user?.accountType == "buyer"){
                     binding.textViewNochat.isVisible

@@ -20,6 +20,8 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
@@ -72,14 +74,29 @@ class FishBuyerFragment : Fragment() {
 
         getLocationPermission()
 
+
         // Inflate the layout for this fragment
         val binding = FragmentFishBuyerBinding.inflate(inflater)
 //        viewModel.getFishTodayFilterResult("")
+        binding.textViewNo.visibility = View.INVISIBLE
+
 
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
-            (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
-            (binding.recyclerView.adapter as FishBuyerAdapter).notifyDataSetChanged()
-            //把所有owernerId帶入
+
+            if (it.isEmpty()){
+                Logger.d("it.isEmpty()")
+                binding.textViewNo.visibility = View.VISIBLE
+                binding.textViewNo.text= "今天沒有任何一間店家新增漁獲"
+            }
+            Logger.d(" viewModel.fishToday.observe $it ")
+
+            if (viewModel.fishToday.value?.isEmpty() == true) {
+                Toast.makeText(context, "搜尋不到", Toast.LENGTH_SHORT).show()
+            } else {
+
+                (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
+                (binding.recyclerView.adapter as FishBuyerAdapter).notifyDataSetChanged()
+                //把所有owernerId帶入
 
                 val ownerIds = mutableListOf<String>()
                 for (i in it) {
@@ -91,6 +108,7 @@ class FishBuyerFragment : Fragment() {
                 Logger.d("ownerIds $ownerIds ")
 
                 Logger.d(" viewModel.fishToday.observe $it ")
+            }
 
         })
 

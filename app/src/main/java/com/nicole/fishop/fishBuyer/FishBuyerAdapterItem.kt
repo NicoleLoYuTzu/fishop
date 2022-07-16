@@ -21,7 +21,7 @@ class FishBuyerAdapterItem : ListAdapter<FishTodayCategory, RecyclerView.ViewHol
             binding.textViewFishCategory.text = fishTodayCategory.category
             Logger.d( "fishTodayCategory.category ${fishTodayCategory.category}")
             Logger.d( "binding.textViewFishCategory.text ${binding.textViewFishCategory.text}")
-            binding.textViewPrice.text = fishTodayCategory.saleprice
+            binding.textViewPrice.text = "${fishTodayCategory.saleprice} / ${fishTodayCategory.unit}"
             binding.executePendingBindings()
         }
     }

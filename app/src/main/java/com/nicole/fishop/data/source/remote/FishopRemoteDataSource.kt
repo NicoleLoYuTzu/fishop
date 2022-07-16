@@ -177,6 +177,13 @@ object FishopRemoteDataSource : FishopDataSource {
                 .get()
                 .addOnCompleteListener { todaySeller ->
                     Logger.d("${System.currentTimeMillis()}")
+
+                    if(todaySeller.result.isEmpty){
+                        val no = listOf<FishToday>()
+                        continuation.resume(Result1.Success(no))
+                    }
+
+
                     if (todaySeller.isSuccessful) {
                         var list = mutableListOf<FishToday>()
                         var count = todaySeller.result.size()
@@ -239,6 +246,12 @@ object FishopRemoteDataSource : FishopDataSource {
                 .addOnCompleteListener { todayCategory ->
                     var count = todayCategory.result.size()
                     Logger.d("getFishTodayFilterAll count $count}")
+
+                    if(todayCategory.result.isEmpty){
+                        val no = listOf<FishToday>()
+                        continuation.resume(Result1.Success(no))
+                    }
+
 
                     var list = mutableListOf<FishToday>()
                     Logger.d("category ${fish} ")
@@ -707,7 +720,59 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
 
+
+    override suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>> =
+        suspendCoroutine { continuation ->
+            Logger.d("user.id ${user.id} ")
+//
+            FirebaseFirestore.getInstance()
+                .collection(PATH_CHATROOMS)
+                .whereEqualTo(PATH_SALERID, user.id)
+//                .get()
+                .addSnapshotListener { value, error ->
+                    Logger.i("user.id ${user.id}")
+                    var count = value?.size()
+
+                    var chatRecordResult = ChatRecord()
+                    val chatsRecord = mutableListOf<ChatRecord>()
+                    if (value != null) {
+                        for (chatRecord in value.documents) {
+                            Logger.i("chatRecord $chatRecord")
+                            Logger.i("Result.result ${value.documents}")
+                            chatRecordResult = chatRecord.toObject(ChatRecord::class.java)!!
+                            chatsRecord.add(chatRecordResult)
+                        }
+                    }
+                    count = count?.minus(1)
+                    if(count == 0) {
+                        continuation.resume(Result1.Success(chatsRecord))
+                    }
+                }
+        }
+
     override suspend fun getBuyerChatRecordResult(user: Users): Result1<List<ChatRecord>> =
+        suspendCoroutine { continuation ->
+            Logger.d("user.id ${user.id} ")
+//
+            FirebaseFirestore.getInstance()
+                .collection(PATH_CHATROOMS)
+                .whereEqualTo(PATH_BUYERID, user.id)
+                .get()
+                .addOnCompleteListener { Result ->
+                    Logger.d("getSalerChatRecordResult.Result ${Result.result.documents} ")
+                    var chatRecordResult = ChatRecord()
+                    val chatsRecord = mutableListOf<ChatRecord>()
+                    for (chatRecord in Result.result) {
+                        Logger.i("chatRecord $chatRecord")
+                        Logger.i("Result.result ${Result.result}")
+                        chatRecordResult = chatRecord.toObject(ChatRecord::class.java)
+                        chatsRecord.add(chatRecordResult)
+                    }
+                    continuation.resume(Result1.Success(chatsRecord))
+                }
+        }
+
+    override suspend fun getBuyerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>> =
         suspendCoroutine { continuation ->
             Logger.d("user.id ${user.id} ")
 //

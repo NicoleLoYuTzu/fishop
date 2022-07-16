@@ -10,168 +10,169 @@
             type="com.nicole.fishop.data.Users" />
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D1E4F3">
 
-            <Button
-                android:id="@+id/button_revisePhone"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="3dp"
-                android:background="@android:color/transparent"
-                android:gravity="center|right"
-                android:text="修改"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView14" />
+        <Button
+            android:id="@+id/button_revisePhone"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="3dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|right"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
 
-            <ImageView
-                android:id="@+id/imageView22"
-                android:layout_width="21dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/featherpen"
-                app:layout_constraintBottom_toBottomOf="@+id/button_revisePhone"
-                app:layout_constraintStart_toStartOf="@+id/button_revisePhone"
-                app:layout_constraintTop_toTopOf="@+id/button_revisePhone" />
+        <ImageView
+            android:id="@+id/imageView22"
+            android:layout_width="21dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/featherpen"
+            app:layout_constraintBottom_toBottomOf="@+id/button_revisePhone"
+            app:layout_constraintStart_toStartOf="@+id/button_revisePhone"
+            app:layout_constraintTop_toTopOf="@+id/button_revisePhone" />
 
-            <TextView
-                android:id="@+id/textView11"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView18"
-                app:layout_constraintStart_toEndOf="@+id/imageView18"
-                app:layout_constraintTop_toTopOf="@+id/imageView18"
-                app:layout_constraintVertical_bias="1.0" />
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/textView_name"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="羅又慈"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/textView11"
-                app:layout_constraintTop_toBottomOf="@+id/imageView_mine" />
+        <TextView
+            android:id="@+id/textView_name"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="羅又慈"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/textView11"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_mine" />
 
-            <TextView
-                android:id="@+id/textView14"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="32dp"
-                android:text="聯絡電話 : "
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView19"
-                app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+        <TextView
+            android:id="@+id/textView14"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="32dp"
+            android:text="聯絡電話"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView19"
+            app:layout_constraintTop_toBottomOf="@+id/imageView18" />
 
-            <TextView
-                android:id="@+id/textView_phone"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="0912345678"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        <TextView
+            android:id="@+id/textView_phone"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="0912345678"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
-            <ImageView
-                android:id="@+id/imageView_mine"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_add" />
+        <ImageView
+            android:id="@+id/imageView_mine"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_add" />
 
-            <ImageView
-                android:id="@+id/imageView18"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/userprofile"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_email"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_name" />
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/userprofile"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_email"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView_name" />
 
-            <ImageView
-                android:id="@+id/imageView19"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/telephone"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView14" />
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/telephone"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_phone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
 
-            <Button
-                android:id="@+id/button_reviseAddress"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                android:gravity="center|right"
-                android:text="修改"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_name"
-                app:layout_constraintVertical_bias="0.285" />
+        <Button
+            android:id="@+id/button_reviseAddress"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|right"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView_name"
+            app:layout_constraintVertical_bias="0.285" />
 
-            <ImageView
-                android:id="@+id/imageView21"
-                android:layout_width="21dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/featherpen"
-                app:layout_constraintBottom_toBottomOf="@+id/button_reviseAddress"
-                app:layout_constraintStart_toStartOf="@+id/button_reviseAddress"
-                app:layout_constraintTop_toTopOf="@+id/button_reviseAddress"
-                app:layout_constraintVertical_bias="0.352" />
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="21dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/featherpen"
+            app:layout_constraintBottom_toBottomOf="@+id/button_reviseAddress"
+            app:layout_constraintStart_toStartOf="@+id/button_reviseAddress"
+            app:layout_constraintTop_toTopOf="@+id/button_reviseAddress"
+            app:layout_constraintVertical_bias="0.352" />
 
-            <TextView
-                android:id="@+id/textView_email"
-                style="@style/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="A4207486@gmail.com"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView18"
-                app:layout_constraintStart_toStartOf="@+id/textView_name"
-                app:layout_constraintTop_toBottomOf="@+id/textView_name" />
+        <TextView
+            android:id="@+id/textView_email"
+            style="@style/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="A4207486@gmail.com"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintStart_toStartOf="@+id/textView_name"
+            app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 
-            <TextView
-                android:id="@+id/textView_fav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:letterSpacing="0.25"
-                android:text="收藏店家"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_phone" />
+        <TextView
+            android:id="@+id/textView_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:letterSpacing="0.25"
+            android:text="收藏店家"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_phone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_favoritesaler"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_fav" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_favoritesaler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_fav" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </layout>

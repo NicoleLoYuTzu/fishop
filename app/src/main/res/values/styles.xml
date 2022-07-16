@@ -27,4 +27,11 @@
     <style name="LoginDialog">
         <item name="android:windowBackground">@color/translucent_40</item>
     </style>
+
+
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">15dp</item>
+    </style>
+
+
 </resources>

@@ -1,5 +1,6 @@
 package com.nicole.fishop.chatingroom.chatbox
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.nicole.fishop.FishopApplication
+import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.data.ChatBoxRecord
 import com.nicole.fishop.data.ChatRecord
 import com.nicole.fishop.data.Users
@@ -44,6 +48,12 @@ class ChatBoxFragment : Fragment() {
             requireArguments()
         ).otherPeopleIdKey
 
+        if(UserManager.user?.accountType == "buyer"){
+            salerInfo.buyerId = UserManager.user!!.id.toString()
+        }
+
+        Logger.i("salerInfo $salerInfo")
+
 
         Logger.i("chatbox onCreateView")
 
@@ -55,10 +65,6 @@ class ChatBoxFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.recyclerView.adapter = adapter
-
-//        binding.imageViewSend.setOnClickListener {
-//            viewModel
-//        }
 
         binding.textViewName.text = salerInfo.name
         viewModel.checkHasRoom.observe(viewLifecycleOwner, Observer {
@@ -155,6 +161,12 @@ class ChatBoxFragment : Fragment() {
 
         })
 
+        val db = Firebase.firestore
+
+        binding.imageViewVideocall.setOnClickListener {
+            findNavController().navigate(NavFragmentDirections.actionChatBoxFragmentToRTCFragment(salerInfo))
+        }
+
 //        viewModel.liveChatItem.observe(viewLifecycleOwner, Observer {
 //            if (it.isNotEmpty()) {
 //                val snapshot = viewModel.toDivide(viewModel.liveChatItem)
@@ -180,7 +192,7 @@ class ChatBoxFragment : Fragment() {
                         chatRecord.lastchatTime = System.currentTimeMillis().toString()
                         chatRecord.lastsenderName = UserManager.user?.name.toString()
                         chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
-                        chatRecord.salerPhoto = salerInfo.ownPhoto
+                        chatRecord.salerPhoto = viewModel._addChatroom.value?.salerPhoto.toString()
                         chatRecord.buyerPhoto = viewModel._addChatroom.value?.buyerPhoto.toString()
 
 

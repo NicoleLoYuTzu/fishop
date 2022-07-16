@@ -12,6 +12,8 @@ buildscript {
         version_kotlin_coroutines = "1.1.0"
         version_moshi = "1.13.0"
         glide_version = "4.13.2"
+        ktor_version = '1.1.4'
+
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 

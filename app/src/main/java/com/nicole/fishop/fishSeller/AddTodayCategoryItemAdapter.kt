@@ -1,7 +1,5 @@
 package com.nicole.fishop.fishSeller
 
-import android.annotation.SuppressLint
-import android.database.DataSetObserver
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.SparseBooleanArray
@@ -10,22 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Task
 import com.nicole.fishop.R
 import com.nicole.fishop.data.AddTodayItem
 import com.nicole.fishop.data.FishTodayCategory
-import com.nicole.fishop.databinding.*
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayCategorynameBinding
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayItemChilditemBinding
+import com.nicole.fishop.databinding.FragmentFishSellerAddTodayItemItemBinding
 import com.nicole.fishop.util.Logger
-import kotlinx.coroutines.NonDisposableHandle.parent
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategoryViewModel) :
     ListAdapter<AddTodayItem, RecyclerView.ViewHolder>(DiffCallback) {
+
+
 
     var checkedItems = SparseBooleanArray()
     var editPriceItems = SparseBooleanArray()
@@ -61,6 +60,7 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
         private var viewModel: AddTodayCategoryViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        val categoryItemRecyclerView: RecyclerView? = null
         init {
             binding.checkBox.setOnClickListener {
                 if (!checkedItems.get(adapterPosition, false)) {//checkbox checked
@@ -106,6 +106,9 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
             binding.editTextPrice.addTextChangedListener(editTextPriceTextWatcher)
             binding.editTextUnit.addTextChangedListener(editTextAmountTextWatcher)
 
+            val spinnerUnit = MySpinner(binding.spinnerSalerunit)
+            binding.spinnerSalerunit.onItemSelectedListener = spinnerUnit
+
             val spinner = MySpinner(binding.spinner2)
             binding.spinner2.onItemSelectedListener = spinner
         }
@@ -116,9 +119,11 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 for (i in viewModel.fishTodayCategories) {
                     if (i.category == binding.checkBox.text.toString()) {
-                        i.unit = binding.spinner2.selectedItem.toString()
+                        i.unit = binding.spinnerSalerunit.selectedItem.toString()
                     }
                 }
+
+
                 Logger.d("MySpinner viewModel.fishTodayCategories => ${viewModel.fishTodayCategories}")
             }
 
@@ -150,12 +155,32 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
             Logger.d("CategoryItemViewHolder bind")
             binding.title = title
             binding.checkBox.text = title
+
+
+            binding.imageViewDownarrow.setOnClickListener {
+                Logger.i("binding.imageViewDownarrow${binding.imageViewDownarrow}")
+//                if (binding.spinner2.selectedItem == null) { // user selected nothing...
+                    binding.spinner2.performClick()
+                    Logger.i("binding.spinner2${binding.spinner2}")
+//                }
+            }
+
+            binding.imageViewDrop.setOnClickListener {
+//                if (binding.spinner2.selectedItem == null) { // user selected nothing...
+                binding.spinnerSalerunit.performClick()
+//                }
+            }
+
+
             val adapter = ArrayAdapter.createFromResource(
                 binding.root.context,
                 R.array.unit,
                 R.layout.simple_spinner_dropdown_item
             )
 
+
+
+            binding.spinnerSalerunit.adapter = adapter
             binding.spinner2.adapter = adapter
             binding.executePendingBindings()
         }
@@ -211,6 +236,9 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
         }
     }
 
+
+
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CategoryNameViewHolder -> {
@@ -222,12 +250,50 @@ class AddTodayCategoryItemAdapter(private var categoryViewModel: AddTodayCategor
                 holder.binding.editTextPrice.tag = position;
                 holder.binding.editTextUnit.tag = position;
                 holder.binding.spinner2.tag = position
+                holder.binding.imageViewDownarrow.tag = position
+                holder.binding.spinnerSalerunit.tag = position
+
+//
+//                val task: Task = checkedItems.get(position)
+//                holder.title.setText(task.getTitle())
+//                //this one is wrong
+//                //holder.finalComment.setTag(position);
+//                //while doing this you will get the text of final comment in your
+//                //edit text of final comment
+//                //this one is wrong
+//                //holder.finalComment.setTag(position);
+//                //while doing this you will get the text of final comment in your
+//                //edit text of final comment
+//                holder.finalComment.setText(task.getComment())
+//                holder.checkBox.setOnCheckedChangeListener(null)
+//                holder.checkBox.setChecked(task.isState())
+//
+//                holder.checkBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+//                    task.setState(
+//                        b
+//                    )
+//                })
+
+
+
+//                val variantLayoutManager = LinearLayoutManager(holder.itemView.context)
+//                holder.categoryItemRecyclerView?.layoutManager = variantLayoutManager
+//                holder.binding.editTextPrice.text = context
+//                holder.setIsRecyclable(false);
 
             }
             is CategoryChildItemViewHolder -> {
                 holder.bind((getItem(position) as AddTodayItem.CategoryChildItem).childItem)
             }
+
+
+
+
         }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     override fun getItemViewType(position: Int): Int {

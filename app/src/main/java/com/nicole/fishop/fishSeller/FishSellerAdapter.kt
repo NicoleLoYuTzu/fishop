@@ -1,12 +1,16 @@
 package com.nicole.fishop.fishSeller
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nicole.fishop.R
 import com.nicole.fishop.data.FishRecord
+import com.nicole.fishop.databinding.ActivityMainBinding.inflate
+import com.nicole.fishop.databinding.FragmentChatBuyerBinding.inflate
 import com.nicole.fishop.databinding.FragmentFishSellerItemBinding
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
@@ -29,6 +33,21 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
             binding.recyclerView.adapter = FishSellerAdapterItem()
             val fishCategory =  fishRecord.fishCategory
             (binding.recyclerView.adapter as FishSellerAdapterItem).submitList(fishCategory)
+
+
+
+//            val builder = AlertDialog.Builder(binding.root.context, R.style.CustomAlertDialog)
+//                .create()
+//            val view = binding.root.inflate(R.layout.customview_layout)
+//            val  button = view.findViewById<Button>(R.id.dialogDismiss_button)
+//            builder.setView(view)
+//            button.setOnClickListener {
+//                builder.dismiss()
+//            }
+//            builder.setCanceledOnTouchOutside(false)
+//            builder.show()
+
+
             binding.textViewDate.text = date
             binding.textViewTime.text = time
             binding.fishRecord = fishRecord

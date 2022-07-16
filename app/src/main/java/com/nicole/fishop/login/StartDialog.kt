@@ -1,6 +1,7 @@
 package com.nicole.fishop.login
 
 import android.content.Intent
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +19,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.firestore.auth.User
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.R
-import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.ActivityStartDialogBinding
 import com.nicole.fishop.ext.getVmFactory
-import com.nicole.fishop.login.UserManager.accountType
 import com.nicole.fishop.login.UserManager.user
 import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.delay
@@ -72,11 +70,19 @@ class StartDialog() : AppCompatDialogFragment() {
             )
         )
 
+//        val drawable = resources.getDrawable(R.drawable.button_signin)
+//        binding.buttonLoginGoogle.setBackgroundResource(R.drawable.button_signin)
+//        binding.buttonLoginGoogle.setBackgroundColor(R.drawable.button_signin)
+//        binding.buttonLoginGoogle.b
 
+
+        binding.textView10.text= "𝓕𝓘𝓢𝓗𝓞𝓟"
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.checkBoxBuyer.setOnCheckedChangeListener { compoundButton, b ->
             if (binding.checkBoxBuyer.isChecked) {
+                binding.checkBoxSaler.isChecked=false
+
                 context?.let {
                     AlertDialog.Builder(it)
                         .setTitle("確定成為買家?")
@@ -99,6 +105,8 @@ class StartDialog() : AppCompatDialogFragment() {
 
         binding.checkBoxSaler.setOnCheckedChangeListener { compoundButton, b ->
             if (binding.checkBoxSaler.isChecked) {
+
+                binding.checkBoxBuyer.isChecked = false
                 context?.let {
                     AlertDialog.Builder(it)
                         .setTitle("確定成為賣家?")

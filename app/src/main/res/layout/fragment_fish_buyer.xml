@@ -6,7 +6,6 @@
     tools:context=".fishBuyer.FishBuyerFragment">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,24 +14,26 @@
             android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@color/gray_f0f0f0"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_white_rounded"
             android:queryHint="產品搜尋"
-            android:layout_alignParentTop="true"
+            android:theme="@style/AppSearchView"
             android:iconifiedByDefault="false"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        </SearchView>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -40,5 +41,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_view"
             tools:listitem="@layout/fragment_fish_buyer_item" />
+
+        <TextView
+            android:id="@+id/textView_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
