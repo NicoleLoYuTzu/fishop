@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.nicole.fishop.login.UserManager
 import org.webrtc.*
 
 
@@ -221,31 +222,37 @@ class RTCClient(
     }
 
     fun endCall(meetingID: String) {
-        db.collection("calls").document(meetingID).collection("candidates")
-                .get().addOnSuccessListener {
-                    val iceCandidateArray: MutableList<IceCandidate> = mutableListOf()
-                    for ( dataSnapshot in it) {
-                        if (dataSnapshot.contains("type") && dataSnapshot["type"]=="offerCandidate") {
-                            val offerCandidate = dataSnapshot
-                            iceCandidateArray.add(IceCandidate(offerCandidate["sdpMid"].toString(), Math.toIntExact(offerCandidate["sdpMLineIndex"] as Long), offerCandidate["sdp"].toString()))
-                        } else if (dataSnapshot.contains("type") && dataSnapshot["type"]=="answerCandidate") {
-                            val answerCandidate = dataSnapshot
-                            iceCandidateArray.add(IceCandidate(answerCandidate["sdpMid"].toString(), Math.toIntExact(answerCandidate["sdpMLineIndex"] as Long), answerCandidate["sdp"].toString()))
-                        }
-                    }
-                    peerConnection?.removeIceCandidates(iceCandidateArray.toTypedArray())
-                }
-        val endCall = hashMapOf(
-                "type" to "END_CALL"
-        )
-        db.collection("calls").document(meetingID)
-                .set(endCall)
-                .addOnSuccessListener {
-                    Log.e(TAG, "DocumentSnapshot added")
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Error adding document", e)
-                }
+
+//        if (UserManager.user?.accountType=="saler") {
+            val db = Firebase.firestore
+            db.collection("calls").document(meetingID)
+                .delete()
+//        }
+//        db.collection("calls").document(meetingID).collection("candidates")
+//                .get().addOnSuccessListener {
+//                    val iceCandidateArray: MutableList<IceCandidate> = mutableListOf()
+//                    for ( dataSnapshot in it) {
+//                        if (dataSnapshot.contains("type") && dataSnapshot["type"]=="offerCandidate") {
+//                            val offerCandidate = dataSnapshot
+//                            iceCandidateArray.add(IceCandidate(offerCandidate["sdpMid"].toString(), Math.toIntExact(offerCandidate["sdpMLineIndex"] as Long), offerCandidate["sdp"].toString()))
+//                        } else if (dataSnapshot.contains("type") && dataSnapshot["type"]=="answerCandidate") {
+//                            val answerCandidate = dataSnapshot
+//                            iceCandidateArray.add(IceCandidate(answerCandidate["sdpMid"].toString(), Math.toIntExact(answerCandidate["sdpMLineIndex"] as Long), answerCandidate["sdp"].toString()))
+//                        }
+//                    }
+//                    peerConnection?.removeIceCandidates(iceCandidateArray.toTypedArray())
+//                }
+//        val endCall = hashMapOf(
+//                "type" to "END_CALL"
+//        )
+//        db.collection("calls").document(meetingID)
+//                .set(endCall)
+//                .addOnSuccessListener {
+//                    Log.e(TAG, "DocumentSnapshot added")
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.e(TAG, "Error adding document", e)
+//                }
 
         peerConnection?.close()
     }

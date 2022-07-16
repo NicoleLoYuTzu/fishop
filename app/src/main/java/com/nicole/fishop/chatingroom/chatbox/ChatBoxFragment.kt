@@ -48,6 +48,12 @@ class ChatBoxFragment : Fragment() {
             requireArguments()
         ).otherPeopleIdKey
 
+        if(UserManager.user?.accountType == "buyer"){
+            salerInfo.buyerId = UserManager.user!!.id.toString()
+        }
+
+        Logger.i("salerInfo $salerInfo")
+
 
         Logger.i("chatbox onCreateView")
 
@@ -158,7 +164,7 @@ class ChatBoxFragment : Fragment() {
         val db = Firebase.firestore
 
         binding.imageViewVideocall.setOnClickListener {
-            findNavController().navigate(NavFragmentDirections.actionChatBoxFragmentToRTCFragment())
+            findNavController().navigate(NavFragmentDirections.actionChatBoxFragmentToRTCFragment(salerInfo))
         }
 
 //        viewModel.liveChatItem.observe(viewLifecycleOwner, Observer {
@@ -186,7 +192,7 @@ class ChatBoxFragment : Fragment() {
                         chatRecord.lastchatTime = System.currentTimeMillis().toString()
                         chatRecord.lastsenderName = UserManager.user?.name.toString()
                         chatRecord.lastchat = binding.editTextTextPersonName.text.toString()
-                        chatRecord.salerPhoto = salerInfo.ownPhoto
+                        chatRecord.salerPhoto = viewModel._addChatroom.value?.salerPhoto.toString()
                         chatRecord.buyerPhoto = viewModel._addChatroom.value?.buyerPhoto.toString()
 
 

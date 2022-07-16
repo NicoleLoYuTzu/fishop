@@ -16,11 +16,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.navigation.fragment.findNavController
 import com.developerspace.webrtcsample.AppSdpObserver
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
 import com.nicole.fishop.chatingroom.chatbox.ChatBoxAdapter
+import com.nicole.fishop.chatingroom.chatbox.ChatBoxFragmentArgs
+import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.databinding.FragmentChatBoxBinding
 import com.nicole.fishop.databinding.FragmentRtcBinding
+import com.nicole.fishop.login.UserManager
+import com.nicole.fishop.util.Logger
 import org.webrtc.*
 
 
@@ -31,6 +37,9 @@ class RTCFragment : Fragment() {
         private const val AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO
     }
 
+    private var number = 0
+
+    private var isJoin: Boolean = false
     private lateinit var rtcClient: RTCClient
     private lateinit var signallingClient: SignalingClient
 
@@ -38,7 +47,6 @@ class RTCFragment : Fragment() {
 
     private var meetingID : String = "test-call"
 
-    private var isJoin = false
 
     private var isMute = false
 
@@ -59,16 +67,68 @@ class RTCFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+        val vedioInfo = RTCFragmentArgs.fromBundle(
+            requireArguments()
+        ).openVedio
+
         // Inflate the layout for this fragment
-        meetingID = "9527"
-        isJoin = true
+        Logger.i("vedioInfo.buyerId = > ${vedioInfo.buyerId}, vedioInfo.ownerId => ${vedioInfo.ownerId}")
+        Logger.i("UserManager.user?.accountType = > ${UserManager.user?.accountType}")
+
+
+//        if (UserManager.user?.accountType == "saler"){
+//            meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
+//            isJoin = true
+//        }
+////
+//        if (UserManager.user?.accountType == "buyer"){
+//            meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
+//            isJoin = false
+//        }
+
+
+
+
         binding = FragmentRtcBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
 
 
 
-        checkCameraAndAudioPermission()
+        meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
+        val db = Firebase.firestore
+        db.collection("calls").document(meetingID)
+            .get()
+            .addOnCompleteListener {result->
+                val status = result.result.data
+                Logger.i("status $status")
+
+                if (status == null){
+                    isJoin = true
+                    val offer = hashMapOf(
+                        "saler" to vedioInfo.ownerId,
+                        "buyer" to vedioInfo.buyerId
+                    )
+                    db.collection("calls").document(meetingID)
+                        .set(offer)
+                    Logger.i("isJoin true$isJoin")
+                    checkCameraAndAudioPermission()
+                }else{
+                    isJoin = false
+                    Logger.i("isJoin false$isJoin")
+                    checkCameraAndAudioPermission()
+                }
+
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+
+//        checkCameraAndAudioPermission()
+
         audioManager.selectAudioDevice(RTCAudioManager.AudioDevice.SPEAKER_PHONE)
         binding.switchCameraButton.setOnClickListener {
             rtcClient.switchCamera()
@@ -109,6 +169,9 @@ class RTCFragment : Fragment() {
             rtcClient.endCall(meetingID)
             binding.remoteView.isGone = false
             Constants.isCallEnded = true
+
+
+
             findNavController().navigateUp()
         }
 
@@ -139,6 +202,10 @@ class RTCFragment : Fragment() {
             object : PeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
+                    Logger.i("onIceCandidate p0 $p0")
+                    Logger.i("isJoin $isJoin")
+
+                    //這句沒跑到?
                     signallingClient.sendIceCandidate(p0, isJoin)
                     rtcClient.addIceCandidate(p0)
                 }

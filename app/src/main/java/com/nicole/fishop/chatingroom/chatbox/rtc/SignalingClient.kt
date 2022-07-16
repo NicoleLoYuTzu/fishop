@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.nicole.fishop.util.Logger
 import io.ktor.util.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -160,6 +161,8 @@ class SignalingClient(
                 "sdpCandidate" to candidate?.sdp,
                 "type" to type
         )
+
+        Logger.i("candidateConstant $candidateConstant")
         db.collection("calls")
             .document("$meetingID").collection("candidates").document(type)
             .set(candidateConstant as Map<String, Any>)

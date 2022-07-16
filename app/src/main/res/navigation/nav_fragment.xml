@@ -152,6 +152,12 @@
         android:id="@+id/RTCFragment"
         android:name="com.nicole.fishop.chatingroom.chatbox.rtc.RTCFragment"
         android:label="RTCFragment" >
+
+        <argument
+            android:name="openVedio"
+            app:argType="com.nicole.fishop.data.FishToday"
+            app:nullable="false" />
+
     </fragment>
 
     <action
