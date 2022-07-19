@@ -17,8 +17,8 @@ android {
         applicationId "com.nicole.fishshop"
         minSdk 23
         targetSdk 32
-        versionCode 8
-        versionName "1.1.4"
+        versionCode 9
+        versionName "1.1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -112,4 +112,5 @@ dependencies {
     implementation("io.ktor:ktor-client-websocket:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-gson:$ktor_version")
+
 }

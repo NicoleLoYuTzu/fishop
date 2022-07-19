@@ -61,6 +61,16 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 
     private var viewModelJob = Job()
 
+    private var _yes = MutableLiveData<Boolean>()
+
+    val yes: LiveData<Boolean>
+        get() = _yes
+
+    private var _noRecord = MutableLiveData<Boolean>()
+
+    val noRecord: LiveData<Boolean>
+        get() = _noRecord
+
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val _navigateToGoogleMap = MutableLiveData<FishToday>()
@@ -94,6 +104,8 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    _noRecord.value = true
+                    _yes.value = false
                     result.data
                 }
                 is Result1.Fail -> {
@@ -130,6 +142,7 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    _yes.value = true
                     result.data
                 }
                 is Result1.Fail -> {

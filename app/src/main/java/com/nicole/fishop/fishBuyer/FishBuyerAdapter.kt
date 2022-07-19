@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.nicole.fishop.NavFragmentDirections
+import com.nicole.fishop.R
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.SellerLocation
@@ -22,7 +23,10 @@ import com.nicole.fishop.util.Logger
 import java.util.*
 import kotlin.math.absoluteValue
 
-class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
+
+
+
+class FishBuyerAdapter(private val onClickListener: OnClickListener) : ListAdapter<FishToday, RecyclerView.ViewHolder>(DiffCallback) {
 
     class OnClickListener(val clickListener: (fishToday: FishToday) -> Unit) {
         fun onClick(fishToday: FishToday) = clickListener(fishToday)
@@ -36,6 +40,24 @@ class FishBuyerAdapter(private val onClickListener: OnClickListener,) : ListAdap
             binding.textViewSellername.text =fishToday.name
             binding.fishToday = fishToday
 //            viewModel.getGoogleMapResult(fishToday.ownerId)
+
+            binding.imageViewHeart.setOnClickListener {
+                binding.imageViewHeart.setImageResource(R.drawable.heart)
+                binding.imageViewHeart.setOnClickListener {
+                    binding.imageViewHeart.setImageResource(R.drawable.like)
+                }
+            }
+
+
+
+//            binding.imageViewHeart.setOnLikeListener(object : OnLikeListener {
+//                override fun liked(likeButton: LikeButton) {
+//
+//                }
+//                override fun unLiked(likeButton: LikeButton) {
+//
+//                }
+//            })
 
             binding.textViewDistance.text = "${fishToday.distance/1000}"
 
