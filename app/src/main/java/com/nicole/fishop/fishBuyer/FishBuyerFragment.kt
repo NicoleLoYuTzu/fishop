@@ -82,17 +82,20 @@ class FishBuyerFragment : Fragment() {
 
 
         viewModel.fishToday.observe(viewLifecycleOwner, Observer {
+//            if (it.isEmpty()){
+//                Logger.d("it.isEmpty()")
+//                binding.textViewNo.visibility = View.VISIBLE
+//                binding.textViewNo.text= "今天沒有任何一間店家新增漁獲"
+//            }
+            Logger.d(" viewModel.fishToday.observe $it ")
 
-            if (it.isEmpty()){
+            if (viewModel.fishToday.value?.isEmpty() == true && viewModel.yes.value == true) {
+                Toast.makeText(context, "搜尋不到", Toast.LENGTH_SHORT).show()
+            } else if(viewModel.fishToday.value?.isEmpty() == true && viewModel.yes.value == false){
                 Logger.d("it.isEmpty()")
                 binding.textViewNo.visibility = View.VISIBLE
                 binding.textViewNo.text= "今天沒有任何一間店家新增漁獲"
-            }
-            Logger.d(" viewModel.fishToday.observe $it ")
-
-            if (viewModel.fishToday.value?.isEmpty() == true) {
-                Toast.makeText(context, "搜尋不到", Toast.LENGTH_SHORT).show()
-            } else {
+            }else{
 
                 (binding.recyclerView.adapter as FishBuyerAdapter).submitList(it)
                 (binding.recyclerView.adapter as FishBuyerAdapter).notifyDataSetChanged()
