@@ -8,4 +8,3 @@ data class Category(
 data class ChildCategory(
     val title: String
 )
-

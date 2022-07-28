@@ -1,4 +1,4 @@
-package com.nicole.fishop.fishSeller
+package com.nicole.fishop.fishseller
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,25 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nicole.fishop.data.FishCategory
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.FishToday
-import com.nicole.fishop.databinding.FragmentFishBuyerItemBinding
-import com.nicole.fishop.databinding.FragmentFishSellerItemBinding
 import com.nicole.fishop.databinding.FragmentFishSellerItemItemBinding
 import com.nicole.fishop.util.Logger
-import java.sql.Timestamp
-
 
 class FishSellerAdapterItem() :
     ListAdapter<FishCategory, RecyclerView.ViewHolder>(DiffCallback) {
-
 
     class RecordHolder(private var binding: FragmentFishSellerItemItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishCategory: FishCategory) {
             binding.textViewFishCategory.text = fishCategory.category
-            binding.textViewPrice.text= "${fishCategory.saleprice} / ${fishCategory.unit}"
+            binding.textViewPrice.text = "${fishCategory.saleprice} / ${fishCategory.unit}"
             binding.fishCategory = fishCategory
             Logger.d("FishSellerAdapterItem binding.fishRecord=> $fishCategory")
             binding.executePendingBindings()
@@ -42,7 +35,6 @@ class FishSellerAdapterItem() :
 
         private const val ITEM_VIEW_TYPE_RECORD = 0x00
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -63,5 +55,3 @@ class FishSellerAdapterItem() :
         }
     }
 }
-
-

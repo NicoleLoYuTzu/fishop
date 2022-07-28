@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
 import com.nicole.fishop.data.ChatRecord
-import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.Result1
-import com.nicole.fishop.data.Users
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.network.LoadApiStatus
@@ -18,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
+class ChatViewModel(private val repository: FishopRepository) : ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -33,19 +31,16 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
 //    val product: LiveData<Product>
 //        get() = _product
 
-
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
     val error: LiveData<String>
         get() = _error
 
-
     private var _chatRecord = MutableLiveData<List<ChatRecord>>()
 
     val chatRecord: LiveData<List<ChatRecord>>
         get() = _chatRecord
-
 
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -75,25 +70,21 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
 //            }
 //        }
 
-        if(UserManager.user?.accountType == "saler"){
+        if (UserManager.user?.accountType == "saler") {
             getSalerChatRecordResult()
-
-        }else{
+        } else {
             getBuyerChatRecordResult()
         }
-
-
-
     }
 
-    fun getBuyerSnapShotChatRecordResult(){
+    fun getBuyerSnapShotChatRecordResult() {
 
         coroutineScope.launch {
             Logger.d("getChatRecordResult")
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it)}
+            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it) }
             Logger.d("repository.getSalerChatRecordResult()")
             Logger.d("result $result")
 
@@ -123,14 +114,14 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
         }
     }
 
-    fun getSalerSnapShotChatRecordResult(){
+    fun getSalerSnapShotChatRecordResult() {
 
         coroutineScope.launch {
             Logger.d("getChatRecordResult")
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it)}
+            val result = UserManager.user?.let { repository.getSalerSnapShotChatRecordResult(it) }
             Logger.d("repository.getSalerChatRecordResult()")
             Logger.d("result $result")
 
@@ -159,7 +150,6 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
             _refreshStatus.value = false
         }
     }
-
 
     fun getSalerChatRecordResult() {
         coroutineScope.launch {
@@ -167,7 +157,7 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = UserManager.user?.let { repository.getSalerChatRecordResult(it)}
+            val result = UserManager.user?.let { repository.getSalerChatRecordResult(it) }
             Logger.d("repository.getSalerChatRecordResult()")
             Logger.d("result $result")
 
@@ -232,6 +222,4 @@ class ChatViewModel (private val repository: FishopRepository) : ViewModel() {
             _refreshStatus.value = false
         }
     }
-
-
 }

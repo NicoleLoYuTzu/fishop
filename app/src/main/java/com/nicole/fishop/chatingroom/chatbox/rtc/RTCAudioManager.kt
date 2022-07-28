@@ -13,10 +13,9 @@ import android.preference.PreferenceManager
 import android.util.Log
 import androidx.annotation.Nullable
 import com.nicole.fishop.R
-import org.webrtc.ThreadUtils
 import java.util.*
 import kotlin.collections.HashSet
-
+import org.webrtc.ThreadUtils
 
 class RTCAudioManager(context: Context) {
     /**
@@ -36,7 +35,8 @@ class RTCAudioManager(context: Context) {
     interface AudioManagerEvents {
         // Callback fired once audio device is changed or list of available audio devices changed.
         fun onAudioDeviceChanged(
-            selectedAudioDevice: AudioDevice?, availableAudioDevices: Set<AudioDevice?>?
+            selectedAudioDevice: AudioDevice?,
+            availableAudioDevices: Set<AudioDevice?>?
         )
     }
 
@@ -72,7 +72,6 @@ class RTCAudioManager(context: Context) {
     @Nullable
     private val useSpeakerphone: String?
 
-
     // Contains a list of available audio devices. A Set collection is used to
     // avoid duplicate elements.
     private var audioDevices: MutableSet<AudioDevice?> = HashSet()
@@ -84,7 +83,6 @@ class RTCAudioManager(context: Context) {
     @Nullable
     private var audioFocusChangeListener: OnAudioFocusChangeListener? = null
 
-
     /* Receiver which handles changes in wired headset availability. */
     private inner class WiredHeadsetReceiver() : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
@@ -92,11 +90,13 @@ class RTCAudioManager(context: Context) {
             val microphone = intent.getIntExtra("microphone", HAS_NO_MIC)
             val name = intent.getStringExtra("name")
             Log.d(
-                TAG, "WiredHeadsetReceiver.onReceive"
-                    + ": " + "a=" + intent.action.toString() + ", s=" +
-                    (if (state == STATE_UNPLUGGED) "unplugged" else "plugged").toString()
-                    + ", m=" + (if (microphone == HAS_MIC) "mic" else "no mic").toString()
-                    + ", n=" + name.toString() + ", sb=" + isInitialStickyBroadcast)
+                TAG,
+                "WiredHeadsetReceiver.onReceive" +
+                    ": " + "a=" + intent.action.toString() + ", s=" +
+                    (if (state == STATE_UNPLUGGED) "unplugged" else "plugged").toString() +
+                    ", m=" + (if (microphone == HAS_MIC) "mic" else "no mic").toString() +
+                    ", n=" + name.toString() + ", sb=" + isInitialStickyBroadcast
+            )
             hasWiredHeadset = (state == STATE_PLUGGED)
             updateAudioDeviceState()
         }
@@ -140,17 +140,22 @@ class RTCAudioManager(context: Context) {
                 val typeOfChange: String
                 when (focusChange) {
                     AudioManager.AUDIOFOCUS_GAIN -> typeOfChange = "AUDIOFOCUS_GAIN"
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT -> typeOfChange =
-                        "AUDIOFOCUS_GAIN_TRANSIENT"
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE -> typeOfChange =
-                        "AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE"
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK -> typeOfChange =
-                        "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK"
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT ->
+                        typeOfChange =
+                            "AUDIOFOCUS_GAIN_TRANSIENT"
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE ->
+                        typeOfChange =
+                            "AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE"
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK ->
+                        typeOfChange =
+                            "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK"
                     AudioManager.AUDIOFOCUS_LOSS -> typeOfChange = "AUDIOFOCUS_LOSS"
-                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> typeOfChange =
-                        "AUDIOFOCUS_LOSS_TRANSIENT"
-                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> typeOfChange =
-                        "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK"
+                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ->
+                        typeOfChange =
+                            "AUDIOFOCUS_LOSS_TRANSIENT"
+                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK ->
+                        typeOfChange =
+                            "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK"
                     else -> typeOfChange = "AUDIOFOCUS_INVALID"
                 }
                 Log.d(TAG, "onAudioFocusChange: $typeOfChange")
@@ -341,16 +346,21 @@ class RTCAudioManager(context: Context) {
     fun updateAudioDeviceState() {
         ThreadUtils.checkIsOnMainThread()
         Log.d(
-            TAG, ("--- updateAudioDeviceState: "
-                    + "wired headset=" + hasWiredHeadset)
+            TAG,
+            (
+                "--- updateAudioDeviceState: " +
+                    "wired headset=" + hasWiredHeadset
+                )
         )
         Log.d(
-            TAG, ("Device status: "
-                    + "available=" + audioDevices + ", "
-                    + "selected=" + selectedAudioDevice + ", "
-                    + "user selected=" + userSelectedAudioDevice)
+            TAG,
+            (
+                "Device status: " +
+                    "available=" + audioDevices + ", " +
+                    "selected=" + selectedAudioDevice + ", " +
+                    "user selected=" + userSelectedAudioDevice
+                )
         )
-
 
         // Update the set of available audio devices.
         val newAudioDevices: MutableSet<AudioDevice?> = HashSet()
@@ -382,7 +392,6 @@ class RTCAudioManager(context: Context) {
             userSelectedAudioDevice = AudioDevice.SPEAKER_PHONE
         }
 
-
         // Update selected audio device.
         val newAudioDevice: AudioDevice?
         if (hasWiredHeadset) {
@@ -401,9 +410,12 @@ class RTCAudioManager(context: Context) {
             // Do the required device switch.
             setAudioDeviceInternal(newAudioDevice)
             Log.d(
-                TAG, ("New device status: "
-                        + "available=" + audioDevices + ", "
-                        + "selected=" + newAudioDevice)
+                TAG,
+                (
+                    "New device status: " +
+                        "available=" + audioDevices + ", " +
+                        "selected=" + newAudioDevice
+                    )
             )
             if (audioManagerEvents != null) {
                 // Notify a listening client that audio device has been changed.

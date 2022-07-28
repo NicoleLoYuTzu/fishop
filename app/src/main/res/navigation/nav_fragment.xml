@@ -6,21 +6,21 @@
     app:startDestination="@id/startDialog">
     <fragment
         android:id="@+id/FishSellerFragment"
-        android:name="com.nicole.fishop.fishSeller.FishSellerFragment"
+        android:name="com.nicole.fishop.fishseller.FishSellerFragment"
         android:label="FishSellerFragment"
         app:popUpToInclusive="true"
         app:popUpTo="@id/startDialog"/>
 
     <fragment
         android:id="@+id/FishSellerFragmentAddToday"
-        android:name="com.nicole.fishop.fishSeller.AddTodayCategoryFragment"
+        android:name="com.nicole.fishop.fishseller.AddTodayCategoryFragment"
         android:label="FishSellerFragmentAddToday"
         app:popUpTo="@id/nav_fragment" />
 
     <fragment
         android:id="@+id/FishBuyerFragment"
         app:popUpTo="@id/nav_fragment"
-        android:name="com.nicole.fishop.fishBuyer.FishBuyerFragment"
+        android:name="com.nicole.fishop.fishbuyer.FishBuyerFragment"
         android:label="FishBuyerFragment"
         />
 
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/fishBuyerGoogleMap"
-        android:name="com.nicole.fishop.fishBuyer.FishBuyerGoogleMap"
+        android:name="com.nicole.fishop.fishbuyer.FishBuyerGoogleMap"
         android:label="fragment_fish_buyer_google_map"
         tools:layout="@layout/fragment_fish_buyer_google_map">
 

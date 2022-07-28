@@ -1,34 +1,32 @@
-package com.nicole.fishop.fishSeller
+package com.nicole.fishop.fishseller
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nicole.fishop.NavFragmentDirections
 import com.nicole.fishop.databinding.FragmentFishSellerAddTodayBinding
-import com.nicole.fishop.databinding.FragmentFishSellerAddTodayItemItemBinding
 import com.nicole.fishop.ext.getVmFactory
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class AddTodayCategoryFragment : Fragment() {
 
     private val viewModel by viewModels<AddTodayCategoryViewModel> {
-        getVmFactory(
-        )
+        getVmFactory()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -39,13 +37,16 @@ class AddTodayCategoryFragment : Fragment() {
 
 //        viewModel.fishtodayItem.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 //            (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(a)
-////            binding.recyclerView.adapter = AddTodayCategoryItemAdapter()
+// //            binding.recyclerView.adapter = AddTodayCategoryItemAdapter()
 //        })
 
-        viewModel.fishAll.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            viewModel.fishAll.value?.let { it1 -> binding.recyclerView.setItemViewCacheSize(it1.size) }
-            (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(it)
-        })
+        viewModel.fishAll.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+                viewModel.fishAll.value?.let { it1 -> binding.recyclerView.setItemViewCacheSize(it1.size) }
+                (binding.recyclerView.adapter as AddTodayCategoryItemAdapter).submitList(it)
+            }
+        )
 
         binding.textViewToday.text = getNow()
         binding.buttonSave.setOnClickListener {
@@ -101,7 +102,6 @@ class AddTodayCategoryFragment : Fragment() {
             }
         }
 
-
         return binding.root
     }
 
@@ -112,13 +112,12 @@ class AddTodayCategoryFragment : Fragment() {
         } else {
             val tms = Calendar.getInstance()
             tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                    tms.get(Calendar.MONTH).toString() + "/" +
-                    tms.get(Calendar.YEAR).toString() + " " +
-                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                    tms.get(Calendar.MINUTE).toString() + ":" +
-                    tms.get(Calendar.SECOND).toString()
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
         }
     }
-
 }

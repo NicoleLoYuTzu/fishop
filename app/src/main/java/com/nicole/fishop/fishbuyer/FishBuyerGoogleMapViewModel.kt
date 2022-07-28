@@ -1,4 +1,4 @@
-package com.nicole.fishop.fishBuyer
+package com.nicole.fishop.fishbuyer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,6 @@ import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
-import com.nicole.fishop.util.ServiceLocator.repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -81,7 +80,6 @@ class FishBuyerGoogleMapViewModel(private val repository: FishopRepository) : Vi
                 }
             }
             _refreshStatus.value = false
-
         }
     }
 }

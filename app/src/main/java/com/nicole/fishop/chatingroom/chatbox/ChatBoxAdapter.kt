@@ -13,9 +13,8 @@ import com.nicole.fishop.databinding.FragmentChatBuyerMysideBinding
 import com.nicole.fishop.databinding.FragmentChatBuyerTheOtherSideBinding
 import com.nicole.fishop.util.Logger
 
-class ChatBoxAdapter  :
+class ChatBoxAdapter :
     ListAdapter<ChatItem, RecyclerView.ViewHolder>(DiffCallback) {
-
 
     inner class MySideViewHolder(private var binding: FragmentChatBuyerMysideBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(chatRecord: ChatBoxRecord) {
@@ -23,8 +22,7 @@ class ChatBoxAdapter  :
 
             binding.textViewChat.text = chatRecord.content
             binding.textViewTime.text = TimeChangFormat.getTime(chatRecord.time)
-            PhotoStringToUrl.bindImageWithCircleCrop(binding.imageView6,chatRecord.senderphoto)
-
+            PhotoStringToUrl.bindImageWithCircleCrop(binding.imageView6, chatRecord.senderphoto)
 
             Logger.d("binding.textViewChat.text ${binding.textViewChat.text}")
 
@@ -38,14 +36,12 @@ class ChatBoxAdapter  :
             Logger.d("TheOtherSideViewHolder bind")
             binding.textViewChat.text = chatRecord.content
             binding.textViewTime.text = TimeChangFormat.getTime(chatRecord.time)
-            PhotoStringToUrl.bindImageWithCircleCrop(binding.imageViewPic,chatRecord.senderphoto)
+            PhotoStringToUrl.bindImageWithCircleCrop(binding.imageViewPic, chatRecord.senderphoto)
             Logger.d("binding.textViewChat.text ${binding.textViewChat.text}")
 
             binding.executePendingBindings()
         }
     }
-
-
 
     companion object DiffCallback : DiffUtil.ItemCallback<ChatItem>() {
         override fun areItemsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {
@@ -61,7 +57,6 @@ class ChatBoxAdapter  :
         private const val ITEM_VIEW_TYPE_MYSIDE = 0x00
         private const val ITEM_VIEW_TYPE_THEOTHERSIDE = 0x01
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -96,5 +91,4 @@ class ChatBoxAdapter  :
             is ChatItem.TheOtherSide -> ITEM_VIEW_TYPE_THEOTHERSIDE
         }
     }
-
 }

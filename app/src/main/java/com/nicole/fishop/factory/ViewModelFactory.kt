@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.chatingroom.chat.ChatViewModel
-import com.nicole.fishop.chatingroom.chatbox.ChatBoxViewModel
-import com.nicole.fishop.profile.ProfileSalerViewModel
 import com.nicole.fishop.data.source.FishopRepository
-import com.nicole.fishop.fishBuyer.FishBuyerGoogleMapViewModel
-import com.nicole.fishop.fishBuyer.FishBuyerViewModel
-import com.nicole.fishop.fishSeller.FishSellerViewModel
-import com.nicole.fishop.fishSeller.AddTodayCategoryViewModel
+import com.nicole.fishop.fishbuyer.FishBuyerGoogleMapViewModel
+import com.nicole.fishop.fishbuyer.FishBuyerViewModel
+import com.nicole.fishop.fishseller.AddTodayCategoryViewModel
+import com.nicole.fishop.fishseller.FishSellerViewModel
 import com.nicole.fishop.login.StartDialogViewModel
 import com.nicole.fishop.profile.ProfileSalerEditViewModel
+import com.nicole.fishop.profile.ProfileSalerViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.

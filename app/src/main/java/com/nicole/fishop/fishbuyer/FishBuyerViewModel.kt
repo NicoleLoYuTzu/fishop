@@ -1,4 +1,4 @@
-package com.nicole.fishop.fishBuyer
+package com.nicole.fishop.fishbuyer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,6 @@ import com.nicole.fishop.data.*
 import com.nicole.fishop.data.source.FishopRepository
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
-import com.nicole.fishop.util.ServiceLocator.repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,27 +30,20 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 //    val product: LiveData<Product>
 //        get() = _product
 
-
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
     val error: LiveData<String>
         get() = _error
 
-
     val startLocation = MutableLiveData<LatLng>()
-
-
 
     var _fishToday = MutableLiveData<List<FishToday>>()
 
     val fishToday: LiveData<List<FishToday>>
         get() = _fishToday
 
-
 //    var fishAddress = FishToday()
-
-
 
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -162,17 +154,13 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
                 }
             }
             _refreshStatus.value = false
-
         }
-
     }
 
-     var _sellerLocations = MutableLiveData<List<SellerLocation>>()
+    var _sellerLocations = MutableLiveData<List<SellerLocation>>()
 
     val sellerLocations: LiveData<List<SellerLocation>>
         get() = _sellerLocations
-
-
 
     fun getAllSellerAddressResult(ownerIds: List<String>) {
         coroutineScope.launch {
@@ -208,7 +196,6 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
                 }
             }
             _refreshStatus.value = false
-
         }
     }
 
@@ -253,4 +240,3 @@ class FishBuyerViewModel(private val repository: FishopRepository) : ViewModel()
 //        }
 //    }
 }
-

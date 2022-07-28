@@ -24,6 +24,4 @@ object PhotoStringToUrl {
                 .into(imgView)
         }
     }
-
-
 }
