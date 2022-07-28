@@ -1,11 +1,5 @@
 package com.nicole.fishop
 
-import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.Shape
-import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -16,16 +10,6 @@ import com.bumptech.glide.request.RequestOptions
 /**
  * Created by Wayne Chen in Jul. 2019.
  */
-//@BindingAdapter("AddTodayItem")
-//fun bindRecyclerViewWithHomeItems(recyclerView: RecyclerView, homeItems: List<AddTodayItem>?) {
-//    homeItems?.let {
-//        recyclerView.adapter?.apply {
-//            when (this) {
-//                is AddTodayCategoryItemAdapter -> submitList(it)
-//            }
-//        }
-//    }
-//}
 
 
 @BindingAdapter("imageUrlTransform")

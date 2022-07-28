@@ -3,7 +3,7 @@ package com.nicole.fishop.data.source
 import androidx.lifecycle.MutableLiveData
 import com.nicole.fishop.data.*
 
-class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):FishopRepository{
+class DefaultFishopRepository(private val remoteDataSource: FishopDataSource,) : FishopRepository {
     override suspend fun getUsersInfo(): Result1<Users> {
         return remoteDataSource.getUsersInfo()
     }
@@ -20,7 +20,7 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
         return remoteDataSource.getFishTodayAll()
     }
 
-    override suspend fun getFishTodayFilterAll(fish:String): Result1<List<FishToday>>{
+    override suspend fun getFishTodayFilterAll(fish: String): Result1<List<FishToday>> {
         return remoteDataSource.getFishTodayFilterAll(fish)
     }
 
@@ -36,67 +36,71 @@ class DefaultFishopRepository (private val remoteDataSource: FishopDataSource,):
         return remoteDataSource.getAllSellerAddressResult(salerId)
     }
 
-    override suspend fun setTodayFishRecord(fishToday: FishToday,Categories: List<FishTodayCategory>,User: Users): Result1<Boolean> {
-        return remoteDataSource.setTodayFishRecord(fishToday,Categories,User)
+    override suspend fun setTodayFishRecord(
+        fishToday: FishToday,
+        Categories: List<FishTodayCategory>,
+        User: Users
+    ): Result1<Boolean> {
+        return remoteDataSource.setTodayFishRecord(fishToday, Categories, User)
     }
 
 //    override suspend fun setUserAcountType(users: Users,viewModel: MainViewModel): Result1<Boolean>{
 //        return remoteDataSource.setUserAcountType(users,viewModel)
 //    }
 
-    override suspend fun checkBuyerAccount(accountType: String,email: String): Result1<Users>{
-        return remoteDataSource.checkBuyerAccount(accountType,email)
+    override suspend fun checkBuyerAccount(accountType: String, email: String): Result1<Users> {
+        return remoteDataSource.checkBuyerAccount(accountType, email)
     }
 
-    override suspend fun checkSalerAccount(accountType: String,email: String): Result1<Users>{
-        return remoteDataSource.checkSalerAccount(accountType,email)
+    override suspend fun checkSalerAccount(accountType: String, email: String): Result1<Users> {
+        return remoteDataSource.checkSalerAccount(accountType, email)
     }
 
     override suspend fun userSignIn(users: Users): Result1<Users> {
         return remoteDataSource.userSignIn(users)
     }
 
-    override suspend fun getSalerInfo(users: Users): Result1<Users>{
+    override suspend fun getSalerInfo(users: Users): Result1<Users> {
         return remoteDataSource.getSalerInfo(users)
     }
 
-    override suspend fun setSalerInfo(users: Users):  Result1<Boolean>{
+    override suspend fun setSalerInfo(users: Users): Result1<Boolean> {
         return remoteDataSource.setSalerInfo(users)
     }
 
-    override suspend fun getChatBoxRecord(salerFishToday: FishToday,user: Users): Result1<List<ChatBoxRecord>>{
+    override suspend fun getChatBoxRecord(salerFishToday: FishToday, user: Users): Result1<List<ChatBoxRecord>> {
         return remoteDataSource.getChatBoxRecord(salerFishToday, user)
     }
 
-    override suspend fun getSalerChatRecordResult(user: Users):  Result1<List<ChatRecord>>{
+    override suspend fun getSalerChatRecordResult(user: Users): Result1<List<ChatRecord>> {
         return remoteDataSource.getSalerChatRecordResult(user)
     }
 
-    override suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>{
+    override suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>> {
         return remoteDataSource.getBuyerChatRecordResult(user)
     }
 
-    override suspend fun getBuyerChatRecordResult(user: Users):  Result1<List<ChatRecord>>{
+    override suspend fun getBuyerChatRecordResult(user: Users): Result1<List<ChatRecord>> {
         return remoteDataSource.getBuyerChatRecordResult(user)
     }
 
-    override suspend fun getBuyerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>>{
+    override suspend fun getBuyerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>> {
         return remoteDataSource.getBuyerChatRecordResult(user)
     }
 
-    override suspend fun addChatroom(chatRecord: ChatRecord):  Result1<ChatRecord>{
+    override suspend fun addChatroom(chatRecord: ChatRecord): Result1<ChatRecord> {
         return remoteDataSource.addChatroom(chatRecord)
     }
 
-    override suspend fun sendChat(chatRoomId: String,chat: ChatBoxRecord):  Result1<Boolean>{
+    override suspend fun sendChat(chatRoomId: String, chat: ChatBoxRecord): Result1<Boolean> {
         return remoteDataSource.sendChat(chatRoomId, chat)
     }
 
-    override suspend fun sendLastChat(chatRoomId: String,chat: ChatRecord):  Result1<ChatRecord>{
+    override suspend fun sendLastChat(chatRoomId: String, chat: ChatRecord): Result1<ChatRecord> {
         return remoteDataSource.sendLastChat(chatRoomId, chat)
     }
 
-    override suspend fun checkHasRoom(salerId: String,userId: String):  Result1<ChatRecord>{
+    override suspend fun checkHasRoom(salerId: String, userId: String): Result1<ChatRecord> {
         return remoteDataSource.checkHasRoom(salerId, userId)
     }
 

@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fishSeller.AddTodayCategoryFragment">
+    tools:context=".fishseller.AddTodayCategoryFragment">
 
     <data>
         <variable
             name="category"
             type="com.nicole.fishop.data.Category" />
-        <variable name="viewModel" type="com.nicole.fishop.fishSeller.AddTodayCategoryViewModel"/>
+        <variable name="viewModel" type="com.nicole.fishop.fishseller.AddTodayCategoryViewModel"/>
 
 <!--        <variable-->
 <!--            name="ItemBinding"-->

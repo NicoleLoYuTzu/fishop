@@ -1,16 +1,10 @@
 package com.nicole.fishop.login
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.net.Uri
-import android.net.UrlQuerySanitizer
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
 import com.nicole.fishop.data.Users
-
 
 /**
  * Created by Nicole Lo in July. 2022.
@@ -22,10 +16,8 @@ object UserManager {
 
 //     val _user = MutableLiveData<Users?>()
 
-    var user: Users?=Users()
+    var user: Users? = Users()
 //        get() = _user
-
-
 
     var userToken: String? = null
         get() = FishopApplication.instance
@@ -111,5 +103,4 @@ object UserManager {
             }
         }
     }
-
 }

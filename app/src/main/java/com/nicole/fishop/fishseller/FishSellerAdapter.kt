@@ -1,13 +1,11 @@
-package com.nicole.fishop.fishSeller
+package com.nicole.fishop.fishseller
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nicole.fishop.R
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.databinding.ActivityMainBinding.inflate
 import com.nicole.fishop.databinding.FragmentChatBuyerBinding.inflate
@@ -16,42 +14,30 @@ import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapter<FishRecord,RecyclerView.ViewHolder>(
-    DiffCallback
-) {
+class FishSellerAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<FishRecord, RecyclerView.ViewHolder>(
+        DiffCallback
+    ) {
 
     class OnClickListener(val clickListener: (fishRecord: FishRecord) -> Unit) {
         fun onClick(fishRecord: FishRecord) = clickListener(fishRecord)
     }
 
-    class RecordHolder(private var binding: FragmentFishSellerItemBinding):
+    // 把賣家每天的紀錄都抓出來
+    class RecordHolder(private var binding: FragmentFishSellerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishRecord: FishRecord, onClickListener: OnClickListener) {
-            val time = getNowTime(fishRecord.time.toLong())
-            val date = getNowDate(fishRecord.time.toLong())
+            // date的屬性time就是毫秒
+            val time = getNowTime(fishRecord.time.time)
+            val date = getNowDate(fishRecord.time.time)
             binding.recyclerView.adapter = FishSellerAdapterItem()
-            val fishCategory =  fishRecord.fishCategory
+            val fishCategory = fishRecord.fishCategory
             (binding.recyclerView.adapter as FishSellerAdapterItem).submitList(fishCategory)
-
-
-
-//            val builder = AlertDialog.Builder(binding.root.context, R.style.CustomAlertDialog)
-//                .create()
-//            val view = binding.root.inflate(R.layout.customview_layout)
-//            val  button = view.findViewById<Button>(R.id.dialogDismiss_button)
-//            builder.setView(view)
-//            button.setOnClickListener {
-//                builder.dismiss()
-//            }
-//            builder.setCanceledOnTouchOutside(false)
-//            builder.show()
-
-
             binding.textViewDate.text = date
             binding.textViewTime.text = time
             binding.fishRecord = fishRecord
-            Logger.d("binding.fishRecord=> $fishRecord")
+            Logger.d("binding.fishRecord => $fishRecord")
             binding.root.setOnClickListener { onClickListener.onClick(fishRecord) }
             binding.executePendingBindings()
         }
@@ -63,12 +49,12 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
             } else {
                 val tms = Calendar.getInstance()
                 tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                        tms.get(Calendar.MONTH).toString() + "/" +
-                        tms.get(Calendar.YEAR).toString() + " " +
-                        tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                        tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                        tms.get(Calendar.MINUTE).toString() + ":" +
-                        tms.get(Calendar.SECOND).toString()
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
             }
         }
 
@@ -79,12 +65,12 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
             } else {
                 val tms = Calendar.getInstance()
                 tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                        tms.get(Calendar.MONTH).toString() + "/" +
-                        tms.get(Calendar.YEAR).toString() + " " +
-                        tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                        tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                        tms.get(Calendar.MINUTE).toString() + ":" +
-                        tms.get(Calendar.SECOND).toString()
+                    tms.get(Calendar.MONTH).toString() + "/" +
+                    tms.get(Calendar.YEAR).toString() + " " +
+                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                    tms.get(Calendar.MINUTE).toString() + ":" +
+                    tms.get(Calendar.SECOND).toString()
             }
         }
     }
@@ -93,17 +79,21 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
         override fun areItemsTheSame(oldItem: FishRecord, newItem: FishRecord): Boolean {
             return oldItem === newItem
         }
+
         override fun areContentsTheSame(oldItem: FishRecord, newItem: FishRecord): Boolean {
             return oldItem.id == newItem.id
         }
+
         private const val ITEM_VIEW_TYPE_RECORD = 0x00
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_RECORD -> RecordHolder(FragmentFishSellerItemBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+            ITEM_VIEW_TYPE_RECORD -> RecordHolder(
+                FragmentFishSellerItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
@@ -116,4 +106,3 @@ class FishSellerAdapter(private val onClickListener: OnClickListener): ListAdapt
         }
     }
 }
-

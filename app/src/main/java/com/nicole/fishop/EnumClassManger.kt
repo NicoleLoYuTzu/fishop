@@ -6,7 +6,6 @@ enum class LoadApiStatus {
     DONE
 }
 
-
 enum class Mode(val index: Int) {
     BUYER(0), SELLER(1),
 }

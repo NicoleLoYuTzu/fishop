@@ -1,8 +1,5 @@
 package com.nicole.fishop.profile
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Context
@@ -12,9 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -29,18 +24,14 @@ import com.nicole.fishop.util.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class ProfileSalerEditFragment : Fragment() {
 
     private val StartDialogviewModel by viewModels<StartDialogViewModel> {
-        getVmFactory(
-        )
+        getVmFactory()
     }
 
-
     private val viewModel by viewModels<ProfileSalerEditViewModel> {
-        getVmFactory(
-        )
+        getVmFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +41,14 @@ class ProfileSalerEditFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentProfileSalerEditBinding.inflate(inflater)
         binding.editTextStartTime.transformIntoTimePicker(requireContext(), "HH:mm")
         binding.editTextStopTime.transformIntoTimePicker(requireContext(), "HH:mm")
-
 
         Logger.i("FragmentProfileSalerEditBinding onCreateView")
 
@@ -68,9 +59,8 @@ class ProfileSalerEditFragment : Fragment() {
         binding.textViewEmail.text =
             " 〰️〰️\uD83D\uDC20Hello! ${UserManager.user?.name}\uD83D\uDC1F 〰️〰️〰️〰️〰️〰️\uD83D\uDC20〰️〰️〰️\uD83D\uDC1F〰️〰️〰️\uD83D\uDC21〰️〰️〰️ Hello! ${UserManager.user?.name} 〰️〰️〰️\uD83D\uDC20〰️〰️〰️\uD83D\uDC1F〰️〰️〰️\uD83D\uDC21〰️〰️〰️"
 
-
         binding.checkBoxMonday.setOnCheckedChangeListener { compoundButton, b ->
-            //星期一
+            // 星期一
             if (binding.checkBoxMonday.isChecked) {
                 mutableArray.add(binding.checkBoxMonday.text.toString())
                 Logger.d("mutableArray $mutableArray ")
@@ -137,10 +127,8 @@ class ProfileSalerEditFragment : Fragment() {
             }
         }
 
-
 //        Logger.d("onCreateView businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
         binding.buttonSave.setOnClickListener {
-
 
             context?.let { it1 ->
                 AlertDialog.Builder(it1)
@@ -151,7 +139,6 @@ class ProfileSalerEditFragment : Fragment() {
                         val startTimeToLong = startTime.toTimeLong()
                         val stopTimeToLong = stopTime.toTimeLong()
 
-
                         if (binding.editTextAddress.text.isEmpty()) {
                             Toast.makeText(context, "請填入地址", Toast.LENGTH_SHORT).show()
                         } else {
@@ -161,7 +148,7 @@ class ProfileSalerEditFragment : Fragment() {
 
                             if (checkADDRESS.isNotEmpty()) {
                                 UserManager.user.let {
-                                    Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text.toString()}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text.toString()}")
+                                    Logger.d("確定 businessday=> $mutableArray, startTimeToLong=> $startTimeToLong, stopTimeToLong $stopTimeToLong,binding.editTextShopname.text.toString()=> ${binding.editTextShopname.text}, binding.editTextPhone.text.toString(=>${binding.editTextPhone.text}")
                                     it?.businessDay = mutableArray
                                     it?.businessEndTime = stopTimeToLong.toString()
                                     it?.businessTime = startTimeToLong.toString()
@@ -170,20 +157,19 @@ class ProfileSalerEditFragment : Fragment() {
                                     it?.address = binding.editTextAddress.text.toString()
                                     it?.picture = it?.picture
                                     Logger.i("buttonSave UserManager it $it")
-                                    //防呆機制
+                                    // 防呆機制
                                     if (startTime == "" || stopTime == "" || it?.name == "" || it?.phone == "" || it?.address == "" || (it?.businessDay as MutableList<String>).isEmpty()) {
                                         Toast.makeText(activity, "請把資料填完整", Toast.LENGTH_SHORT)
                                             .show()
-                                    } else
-                                        if (it != null) {
-                                            viewModel.setSalerInfo(it)
-                                            Logger.i(" viewModel.setSalerInfo it $it")
-                                        }
-
+                                    } else if (it != null) {
+                                        viewModel.setSalerInfo(it)
+                                        Logger.i(" viewModel.setSalerInfo it $it")
+                                    }
 
                                     dialog.dismiss()
                                     viewModel.getOk.observe(
-                                        viewLifecycleOwner, androidx.lifecycle.Observer {
+                                        viewLifecycleOwner,
+                                        androidx.lifecycle.Observer {
                                             findNavController().navigate(NavFragmentDirections.actionProfileSalerEditFragmentToProfileSellerFragment())
                                         }
                                     )
@@ -195,8 +181,6 @@ class ProfileSalerEditFragment : Fragment() {
 //                        } else {
 //
 //                        }
-
-
                     }
                     .setNeutralButton("取消") { dialog, _ ->
                         dialog.dismiss()
@@ -207,7 +191,6 @@ class ProfileSalerEditFragment : Fragment() {
 
         return binding.root
     }
-
 
     fun EditText.transformIntoTimePicker(
         context: Context,
@@ -239,7 +222,6 @@ class ProfileSalerEditFragment : Fragment() {
             }
         }
     }
-
 
     fun String.toTimeLong(pattern: String = "HH:mm"): Long {
         @SuppressLint("SimpleDateFormat")
@@ -280,6 +262,4 @@ class ProfileSalerEditFragment : Fragment() {
 //
 //
 //    }
-
-
 }

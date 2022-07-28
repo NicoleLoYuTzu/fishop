@@ -8,10 +8,10 @@
             type="String"/>
         <variable
             name="viewModel"
-            type="com.nicole.fishop.fishSeller.AddTodayCategoryViewModel" />
+            type="com.nicole.fishop.fishseller.AddTodayCategoryViewModel" />
         <variable
             name="viewHolder"
-            type="com.nicole.fishop.fishSeller.AddTodayCategoryItemAdapter.CategoryItemViewHolder" />
+            type="com.nicole.fishop.fishseller.AddTodayCategoryItemAdapter.CategoryItemViewHolder" />
         <variable
             name="fishTodayCategory"
             type="com.nicole.fishop.data.FishTodayCategory" />

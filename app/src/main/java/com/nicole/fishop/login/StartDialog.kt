@@ -1,7 +1,6 @@
 package com.nicole.fishop.login
 
 import android.content.Intent
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,30 +28,24 @@ import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class StartDialog() : AppCompatDialogFragment() {
 
     //    var preferences: SharedPreferences? = null
     private lateinit var binding: ActivityStartDialogBinding
 
     private val viewModel by viewModels<StartDialogViewModel> {
-        getVmFactory(
-        )
+        getVmFactory()
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
         Logger.i("onCreate")
-
-
     }
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
@@ -61,7 +54,6 @@ class StartDialog() : AppCompatDialogFragment() {
         Logger.i("UserManager.userToken ${UserManager.userToken}")
 
         binding = ActivityStartDialogBinding.inflate(inflater, container, false)
-
 
         binding.constraint.startAnimation(
             AnimationUtils.loadAnimation(
@@ -75,13 +67,12 @@ class StartDialog() : AppCompatDialogFragment() {
 //        binding.buttonLoginGoogle.setBackgroundColor(R.drawable.button_signin)
 //        binding.buttonLoginGoogle.b
 
-
-        binding.textView10.text= "𝓕𝓘𝓢𝓗𝓞𝓟"
+        binding.textView10.text = "𝓕𝓘𝓢𝓗𝓞𝓟"
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.checkBoxBuyer.setOnCheckedChangeListener { compoundButton, b ->
             if (binding.checkBoxBuyer.isChecked) {
-                binding.checkBoxSaler.isChecked=false
+                binding.checkBoxSaler.isChecked = false
 
                 context?.let {
                     AlertDialog.Builder(it)
@@ -133,7 +124,7 @@ class StartDialog() : AppCompatDialogFragment() {
             }
         }
 
-        //不創id的版本
+        // 不創id的版本
 //        viewModel.userManager.observe(this, Observer {
 //            if (it.user?.accountType == "buyer") {
 //                dismiss()
@@ -146,39 +137,41 @@ class StartDialog() : AppCompatDialogFragment() {
 //        }
 //        )
 
-////      這個是檢查到有id回來配到資料後再配進去給UserManager, 偵測到是甚麼模式就跳什麼分頁
-        viewModel.userswithId.observe(this, Observer {
-            if (it.id!=null&&it.accountType == "buyer"){
-                dismiss()
-                UserManager.user?.id=it.id
-                Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
-                findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
-            }else if(it.id!=null && it.accountType == "saler" && it.address==null){
-                dismiss()
-                UserManager.user?.id=it.id
-                Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
-                findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
+// //      這個是檢查到有id回來配到資料後再配進去給UserManager, 偵測到是甚麼模式就跳什麼分頁
+        viewModel.userswithId.observe(
+            this,
+            Observer {
+                if (it.id != null && it.accountType == "buyer") {
+                    dismiss()
+                    UserManager.user?.id = it.id
+                    Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
+                    findNavController().navigate(NavFragmentDirections.actionStartDialogToFishBuyerFragment())
+                } else if (it.id != null && it.accountType == "saler" && it.address == null) {
+                    dismiss()
+                    UserManager.user?.id = it.id
+                    Logger.i("viewModel.userswithId UserManager.user ${ UserManager.user}")
+                    findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerEditFragment())
+                }
+
+                if (it.accountType == "saler" && it.address != null) {
+                    UserManager.user?.id = it.id
+                    findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerFragment())
+                }
+
+                if (it.email == null) {
+                    user?.let { viewModel.userSignIn(it) }
+                }
+
+                Logger.i(" viewModel.userswithId.observe ${viewModel.userswithId.value}")
             }
-
-            if (it.accountType == "saler" && it.address!=null){
-                UserManager.user?.id =it.id
-                findNavController().navigate(NavFragmentDirections.actionStartDialogToProfileSalerFragment())
-            }
-
-
-            if (it.email == null){
-                user?.let { viewModel.userSignIn(it) }
-            }
-
-            Logger.i(" viewModel.userswithId.observe ${viewModel.userswithId.value}")
-        })
+        )
 
         return binding.root
     }
 
     private fun signIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //從google service json的client id
+            // 從google service json的client id
             .requestIdToken("44039700708-qg19e235nofihjbsjkrv3efsklst64o8.apps.googleusercontent.com")
             .requestEmail()
             .build()
@@ -186,7 +179,7 @@ class StartDialog() : AppCompatDialogFragment() {
         val mGoogleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }
         val signInIntent = mGoogleSignInClient?.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-        //...
+        // ...
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -202,28 +195,27 @@ class StartDialog() : AppCompatDialogFragment() {
 
                 Logger.i("givemepass , email:$email, token:$token")
                 UserManager.userToken = token
-                UserManager.user?.picture =picture
+                UserManager.user?.picture = picture
                 UserManager.accountType = user?.accountType
                 Logger.i("UserManager.userToken ${UserManager.userToken}")
                 user?.email = email
                 user?.name = account?.displayName
-                //先不要建立資料
-                if (UserManager.accountType=="buyer") {
-                    user?.email?.let { viewModel.checkBuyerAccount("buyer",it) }
+                // 先不要建立資料
+                if (UserManager.accountType == "buyer") {
+                    user?.email?.let { viewModel.checkBuyerAccount("buyer", it) }
                 }
 
-                if (UserManager.accountType=="saler"){
-                    user?.email?.let { viewModel.checkSalerAccount("saler",it) }
+                if (UserManager.accountType == "saler") {
+                    user?.email?.let { viewModel.checkSalerAccount("saler", it) }
                 }
 
-                //userManager的值分辨買賣家來跳轉頁面
+                // userManager的值分辨買賣家來跳轉頁面
                 viewModel.userManager.value = UserManager
                 Logger.i(" user.value $user")
                 Logger.d("UserManager.userToken ${UserManager.userToken}")
                 Logger.d("UserManager.user ${user?.accountType}")
                 Logger.d("user?.email ${user?.email}")
                 Toast.makeText(context, "登入成功", Toast.LENGTH_SHORT).show()
-
             } catch (e: ApiException) {
                 Logger.i("givemepass , signInResult:failed code=" + e.statusCode)
                 Toast.makeText(context, "登入失敗", Toast.LENGTH_SHORT).show()
@@ -237,7 +229,6 @@ class StartDialog() : AppCompatDialogFragment() {
     companion object {
         const val RC_SIGN_IN = 100
     }
-
 
     override fun dismiss() {
         binding.constraint.startAnimation(

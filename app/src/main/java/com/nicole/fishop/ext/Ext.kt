@@ -1,11 +1,8 @@
 package com.nicole.fishop.ext
 
 import android.graphics.Rect
-import android.util.DisplayMetrics
 import android.view.TouchDelegate
 import android.view.View
-
-
 
 /**
  * Increase touch area of the view/button .
@@ -22,4 +19,3 @@ fun View.setTouchDelegate() {
         parent.touchDelegate = TouchDelegate(rect, this)
     }
 }
-

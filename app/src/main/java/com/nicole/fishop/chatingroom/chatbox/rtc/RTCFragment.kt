@@ -1,11 +1,9 @@
 package com.nicole.fishop.chatingroom.chatbox.rtc
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,21 +12,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.developerspace.webrtcsample.AppSdpObserver
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
-import com.nicole.fishop.chatingroom.chatbox.ChatBoxAdapter
-import com.nicole.fishop.chatingroom.chatbox.ChatBoxFragmentArgs
-import com.nicole.fishop.data.FishToday
-import com.nicole.fishop.databinding.FragmentChatBoxBinding
 import com.nicole.fishop.databinding.FragmentRtcBinding
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 import org.webrtc.*
-
 
 class RTCFragment : Fragment() {
     companion object {
@@ -45,8 +39,7 @@ class RTCFragment : Fragment() {
 
     private val audioManager by lazy { RTCAudioManager.create(requireContext()) }
 
-    private var meetingID : String = "test-call"
-
+    private var meetingID: String = "test-call"
 
     private var isMute = false
 
@@ -64,10 +57,10 @@ class RTCFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         val vedioInfo = RTCFragmentArgs.fromBundle(
             requireArguments()
@@ -77,35 +70,29 @@ class RTCFragment : Fragment() {
         Logger.i("vedioInfo.buyerId = > ${vedioInfo.buyerId}, vedioInfo.ownerId => ${vedioInfo.ownerId}")
         Logger.i("UserManager.user?.accountType = > ${UserManager.user?.accountType}")
 
-
 //        if (UserManager.user?.accountType == "saler"){
 //            meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
 //            isJoin = true
 //        }
-////
+// //
 //        if (UserManager.user?.accountType == "buyer"){
 //            meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
 //            isJoin = false
 //        }
 
-
-
-
         binding = FragmentRtcBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
-
-
 
         meetingID = "${vedioInfo.buyerId}+${vedioInfo.ownerId}"
         val db = Firebase.firestore
         db.collection("calls").document(meetingID)
             .get()
-            .addOnCompleteListener {result->
+            .addOnCompleteListener { result ->
                 val status = result.result.data
                 Logger.i("status $status")
 
-                if (status == null){
+                if (status == null) {
                     isJoin = true
                     val offer = hashMapOf(
                         "saler" to vedioInfo.ownerId,
@@ -115,17 +102,15 @@ class RTCFragment : Fragment() {
                         .set(offer)
                     Logger.i("isJoin true$isJoin")
                     checkCameraAndAudioPermission()
-                }else{
+                } else {
                     isJoin = false
                     Logger.i("isJoin false$isJoin")
                     checkCameraAndAudioPermission()
                 }
-
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error adding document", e)
             }
-
 
 //        checkCameraAndAudioPermission()
 
@@ -170,8 +155,6 @@ class RTCFragment : Fragment() {
             binding.remoteView.isGone = false
             Constants.isCallEnded = true
 
-
-
             findNavController().navigateUp()
         }
 
@@ -180,14 +163,18 @@ class RTCFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     private fun checkCameraAndAudioPermission() {
-        if ((ContextCompat.checkSelfPermission(requireContext(), CAMERA_PERMISSION)
-                    != PackageManager.PERMISSION_GRANTED) &&
-            (ContextCompat.checkSelfPermission(requireContext(),AUDIO_PERMISSION)
-                    != PackageManager.PERMISSION_GRANTED)) {
+        if ((
+            ContextCompat.checkSelfPermission(requireContext(), CAMERA_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED
+            ) &&
+            (
+                ContextCompat.checkSelfPermission(requireContext(), AUDIO_PERMISSION)
+                    != PackageManager.PERMISSION_GRANTED
+                )
+        ) {
             requestCameraAndAudioPermission()
         } else {
             onCameraAndAudioPermissionGranted()
@@ -205,7 +192,7 @@ class RTCFragment : Fragment() {
                     Logger.i("onIceCandidate p0 $p0")
                     Logger.i("isJoin $isJoin")
 
-                    //這句沒跑到?
+                    // 這句沒跑到?
                     signallingClient.sendIceCandidate(p0, isJoin)
                     rtcClient.addIceCandidate(p0)
                 }
@@ -232,7 +219,9 @@ class RTCFragment : Fragment() {
                     Log.e(TAG, "onDataChannel: $p0")
                 }
 
-                override fun onStandardizedIceConnectionChange(newState: PeerConnection.IceConnectionState?) {
+                override fun onStandardizedIceConnectionChange(
+                    newState: PeerConnection.IceConnectionState?
+                ) {
                     Log.e(TAG, "onStandardizedIceConnectionChange: $newState")
                 }
 
@@ -241,7 +230,7 @@ class RTCFragment : Fragment() {
                 }
 
                 override fun onTrack(transceiver: RtpTransceiver?) {
-                    Log.e(TAG, "onTrack: $transceiver" )
+                    Log.e(TAG, "onTrack: $transceiver")
                 }
             }
         )
@@ -249,9 +238,9 @@ class RTCFragment : Fragment() {
         rtcClient.initSurfaceView(binding.remoteView)
         rtcClient.initSurfaceView(binding.localView)
         rtcClient.startLocalVideoCapture(binding.localView)
-        signallingClient =  SignalingClient(meetingID,createSignallingClientListener())
+        signallingClient = SignalingClient(meetingID, createSignallingClientListener())
         if (!isJoin)
-            rtcClient.call(sdpObserver,meetingID)
+            rtcClient.call(sdpObserver, meetingID)
     }
 
     private fun createSignallingClientListener() = object : SignalingClientListener {
@@ -262,7 +251,7 @@ class RTCFragment : Fragment() {
         override fun onOfferReceived(description: SessionDescription) {
             rtcClient.onRemoteSessionReceived(description)
             Constants.isIntiatedNow = false
-            rtcClient.answer(sdpObserver,meetingID)
+            rtcClient.answer(sdpObserver, meetingID)
             binding.remoteViewLoading.isGone = true
         }
 
@@ -289,7 +278,8 @@ class RTCFragment : Fragment() {
     private fun requestCameraAndAudioPermission(dialogShown: Boolean = false) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), CAMERA_PERMISSION) &&
             ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), AUDIO_PERMISSION) &&
-            !dialogShown) {
+            !dialogShown
+        ) {
             showPermissionRationaleDialog()
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(CAMERA_PERMISSION, AUDIO_PERMISSION), CAMERA_AUDIO_PERMISSION_REQUEST_CODE)
@@ -311,7 +301,11 @@ class RTCFragment : Fragment() {
             .show()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_AUDIO_PERMISSION_REQUEST_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             onCameraAndAudioPermissionGranted()

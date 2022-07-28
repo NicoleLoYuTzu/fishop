@@ -31,11 +31,10 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
 //    val product: LiveData<Product>
 //        get() = _product
 
-    //把店家的資訊帶進來
+    // 把店家的資訊帶進來
     private val _salerInfo = MutableLiveData<FishToday>().apply {
         value = argument
     }
-
 
     val _addChatroom = MutableLiveData<ChatRecord>().apply {
         _salerInfo.value?.let { salerFishToday ->
@@ -63,7 +62,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
 
                             )
                         }
-                    Logger.d("_addChatroom value 誰先跑到=> ${value} ")
+                    Logger.d("_addChatroom value 誰先跑到=> $value ")
                 } else if (UserManager.user!!.accountType == "saler") {
                     value =
                         UserManager.user!!.id?.let { userId ->
@@ -84,22 +83,18 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                                 )
                             }
                         }
-                    Logger.d("_addChatroom value 誰先跑到=> ${value} ")
-
+                    Logger.d("_addChatroom value 誰先跑到=> $value ")
                 }
-
             }
         }
         Logger.d("_salerInfo=>  ${_salerInfo.value},UserManager.user=> ${UserManager.user} ")
     }
-
 
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String?>()
 
     val error: MutableLiveData<String?>
         get() = _error
-
 
     private var _chatRecord = MutableLiveData<ChatRecord>()
 
@@ -164,12 +159,11 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
 //        return myChat
 //    }
 
-
     fun toDivide(chat: List<ChatBoxRecord>): List<ChatItem> {
         Logger.d("toDivideSide")
 
         val myChat = mutableListOf<ChatItem>()
-        Logger.d("chat.value ${chat}")
+        Logger.d("chat.value $chat")
         for (chatRecordDetail in chat) {
 
             if (UserManager.user?.accountType == "buyer") {
@@ -180,7 +174,6 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                     Logger.d("chatMySide $chatMySide")
                     Logger.d("UserManager.user?.id $UserManager.user?.id")
                 }
-
 
                 if (chatRecordDetail.sender == _salerInfo.value?.ownerId) {
                     val chatTheOtherSide = ChatItem.TheOtherSide(chatRecordDetail)
@@ -201,7 +194,6 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                     Logger.d("UserManager.user?.id $UserManager.user?.id")
                 }
 
-
                 if (chatRecordDetail.sender == _addChatroom.value?.buyer) {
                     val chatTheOtherSide = ChatItem.TheOtherSide(chatRecordDetail)
                     myChat.add(chatTheOtherSide)
@@ -211,22 +203,19 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
             }
         }
 
-
-
         Logger.d("myChat $myChat")
         return myChat
     }
 
-
     init {
-        //去拿聊天紀錄, 放入買賣家資訊用id query
+        // 去拿聊天紀錄, 放入買賣家資訊用id query
 //        if (UserManager.user?.accountType == "buyer") {
 //            UserManager.user?.let { getBuyerChatBoxRecordResult(argument, it) }
 //        }else if (UserManager.user?.accountType == "saler"){
 //            UserManager.user?.let { getSalerChatBoxRecordResult(argument, it) }
 //        }
 
-        //先檢查是否有房間
+        // 先檢查是否有房間
 
 //        if (UserManager.user?.accountType == "buyer") {
 //            _salerInfo.value?.let {  }
@@ -242,9 +231,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
             }
         }
 
-
         Logger.d("UserManager.user? ${UserManager.user}")
-
     }
 
     fun checkHasRoom(buyer: String, saler: String) {
@@ -280,11 +267,8 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                 }
             }
             _refreshStatus.value = false
-
-
         }
     }
-
 
     fun checkHasRoom() {
         coroutineScope.launch {
@@ -326,8 +310,6 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                 }
             }
             _refreshStatus.value = false
-
-
         }
     }
 
@@ -342,7 +324,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
         _status.value = LoadApiStatus.DONE
     }
 
-    //拿紀錄是query買賣家的id
+    // 拿紀錄是query買賣家的id
     fun getBuyerChatBoxRecordResult(salerFishToday: FishToday, user: Users) {
         coroutineScope.launch {
             Logger.d("getChatBoxRecordResult")
@@ -377,8 +359,6 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                 }
             }
             _refreshStatus.value = false
-
-
         }
     }
 
@@ -416,17 +396,14 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                 }
             }
             _refreshStatus.value = false
-
-
         }
     }
-
 
     fun addChatroom() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            //如果沒有聊天紀錄就建立一個新的chatroom
+            // 如果沒有聊天紀錄就建立一個新的chatroom
             Logger.d("_addChatroom.value誰先跑到 ${_addChatroom.value}")
             Logger.d("repository.addChatroom()")
 
@@ -454,9 +431,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
             }
             _refreshStatus.value = false
         }
-
     }
-
 
     fun sendChat(chatRoomId: String, chatBoxRecord: ChatBoxRecord) {
         coroutineScope.launch {
@@ -484,9 +459,7 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
             }
             _refreshStatus.value = false
         }
-
     }
-
 
     fun sendLastChat(chatRoomId: String, chatRecord: ChatRecord) {
         coroutineScope.launch {
@@ -520,6 +493,5 @@ class ChatBoxViewModel(var argument: FishToday, private val repository: FishopRe
                 }
             _refreshStatus.value = false
         }
-
     }
 }

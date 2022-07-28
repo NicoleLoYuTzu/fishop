@@ -2,8 +2,6 @@ package com.nicole.fishop
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +13,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.nicole.fishop.data.Users
 import com.nicole.fishop.databinding.ActivityMainBinding
 import com.nicole.fishop.ext.getVmFactory
-import com.nicole.fishop.login.StartDialog
 import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.util.Logger
 
@@ -28,10 +23,8 @@ class MainActivity : AppCompatActivity() {
 //    var preferences: SharedPreferences? = null
 
     private val viewModel by viewModels<MainViewModel> {
-        getVmFactory(
-        )
+        getVmFactory()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,41 +32,11 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
 
-
-//        FirebaseFirestore.getInstance()
-//            .collectionGroup("Users")
-//            .whereEqualTo("email", "a4207486@gmail.com")
-//            .get()
-//            .addOnCompleteListener { SellerInfo ->
-//                Logger.d("SellerInfo.documents ${SellerInfo.result.documents} ")
-//                for (oldDocument in SellerInfo.result) {
-//                    Logger.i("oldDocument $oldDocument")
-//                    Logger.i("SellerInfo.result ${SellerInfo.result}")
-//                    val oldUsers = oldDocument.toObject(Users::class.java)
-//                    oldUsers.id?.let {
-//                        FirebaseFirestore.getInstance()
-//                            .collection("Users")
-//                            .document(it)
-//                            .delete()
-//                            .addOnCompleteListener { result ->
-//                                Logger.i(" oldUsers.email => ${oldUsers.email}")
-//                                if (result.isSuccessful) {
-//                                    Logger.i("result.result => ${result.result}")
-//                                }
-//                            }
-//
-//                    }
-//
-//                }
-//            }
-
-
         val fishop = findViewById<TextView>(R.id.fishop)
         val profileTitle = findViewById<TextView>(R.id.profile_title)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.activity_main_bottom_navigation_view)
-
 
         bottomNavigationView.itemIconTintList = null
 
@@ -83,20 +46,22 @@ class MainActivity : AppCompatActivity() {
         Logger.i("MainActivity UserManager.userToken ${UserManager.userToken}")
         Logger.i("UserManager.user?.accountType ${UserManager.user?.accountType}")
 
-
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
 
-        viewModel.newUser.observe(this, Observer {
-            if (it) {
-                if (UserManager.user?.accountType == "buyer") {
-                    turnMode(Mode.BUYER.index)
-                    Logger.i("UserManager.user ${UserManager.user}")
-                } else if (UserManager.user?.accountType == "saler") {
-                    turnMode(Mode.SELLER.index)
-                    Logger.i("UserManager.user ${UserManager.user}")
+        viewModel.newUser.observe(
+            this,
+            Observer {
+                if (it) {
+                    if (UserManager.user?.accountType == "buyer") {
+                        turnMode(Mode.BUYER.index)
+                        Logger.i("UserManager.user ${UserManager.user}")
+                    } else if (UserManager.user?.accountType == "saler") {
+                        turnMode(Mode.SELLER.index)
+                        Logger.i("UserManager.user ${UserManager.user}")
+                    }
                 }
             }
-        })
+        )
 
         findNavController(R.id.activity_main_nav_host_fragment)
             .addOnDestinationChangedListener { navController: NavController, destination, _ ->
@@ -121,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                         profileTitle.text = "今日漁貨"
                         fishop.visibility = View.INVISIBLE
                     }
-                    R.id.ChatBoxFragment->{
+                    R.id.ChatBoxFragment -> {
                         bottomNavigationView.visibility = View.GONE
                         toolbar.visibility = View.GONE
                         profileTitle.visibility = View.GONE
@@ -156,8 +121,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
-
     }
 
     fun turnMode(mode: Int) {

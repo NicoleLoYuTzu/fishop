@@ -3,13 +3,8 @@ package com.nicole.fishop.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.common.internal.AccountType
-import com.google.android.gms.maps.model.LatLng
 import com.nicole.fishop.FishopApplication
-import com.nicole.fishop.MainViewModel
 import com.nicole.fishop.R
-import com.nicole.fishop.data.FishRecord
-import com.nicole.fishop.data.FishToday
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.Users
 import com.nicole.fishop.data.source.FishopRepository
@@ -50,13 +45,12 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
     val userswithId: LiveData<Users>
         get() = _userswithId
 
-
-    fun checkBuyerAccount(accountType: String,googleId: String) {
+    fun checkBuyerAccount(accountType: String, googleId: String) {
 
         coroutineScope.launch {
             Logger.d("checkAccount")
             _status.value = LoadApiStatus.LOADING
-            val result = repository.checkBuyerAccount(accountType,googleId)
+            val result = repository.checkBuyerAccount(accountType, googleId)
             // It will return Result object after Deferred flow
             _userswithId.value = when (result) {
                 is Result1.Success -> {
@@ -83,13 +77,12 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
         }
     }
 
-
-    fun checkSalerAccount(accountType: String,googleId: String) {
+    fun checkSalerAccount(accountType: String, googleId: String) {
 
         coroutineScope.launch {
             Logger.d("checkAccount")
             _status.value = LoadApiStatus.LOADING
-            val result = repository.checkSalerAccount(accountType,googleId)
+            val result = repository.checkSalerAccount(accountType, googleId)
             // It will return Result object after Deferred flow
             _userswithId.value = when (result) {
                 is Result1.Success -> {
@@ -116,9 +109,7 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
         }
     }
 
-
-
-    //put email,name,accountType
+    // put email,name,accountType
     fun userSignIn(users: Users) {
 
         coroutineScope.launch {
@@ -150,7 +141,4 @@ class StartDialogViewModel(private val repository: FishopRepository) : ViewModel
             }
         }
     }
-
-
-
 }

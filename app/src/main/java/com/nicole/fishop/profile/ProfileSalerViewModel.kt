@@ -1,6 +1,5 @@
 package com.nicole.fishop.profile
 
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,8 +12,6 @@ import com.nicole.fishop.login.UserManager
 import com.nicole.fishop.network.LoadApiStatus
 import com.nicole.fishop.util.Logger
 import kotlinx.coroutines.*
-import java.util.concurrent.TimeUnit
-import java.util.logging.Handler
 
 class ProfileSalerViewModel(private val repository: FishopRepository) : ViewModel() {
 
@@ -23,7 +20,6 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _refreshStatus = MutableLiveData<Boolean>()
 
@@ -39,7 +35,6 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
     val error: MutableLiveData<String?>
         get() = _error
 
-
 //    var userManager = MutableLiveData<UserManager>()
 
     private val _users = MutableLiveData<Users>()
@@ -47,15 +42,13 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
     val users: LiveData<Users>
         get() = _users
 
-
     init {
 //        userManager.value?.user?.let { getSalerInfo(it) }
-        if (UserManager.user?.address!=null) {
+        if (UserManager.user?.address != null) {
             UserManager.user?.let { getSalerInfo(it) }
-        }else if (UserManager.user?.address==null){
+        } else if (UserManager.user?.address == null) {
             getSalerOldInfo()
         }
-
 
         Logger.d("UserManager.user ${UserManager.user}")
         Logger.d("delay")
@@ -101,12 +94,17 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
             _status.value = LoadApiStatus.LOADING
             Logger.d("users => $users")
 
-            _users.value = when (val result =
-                UserManager.user?.accountType?.let { UserManager.user!!.email?.let { it1 ->
-                    repository.checkSalerAccount(it,
-                        it1
-                    )
-                } }) {
+            _users.value = when (
+                val result =
+                    UserManager.user?.accountType?.let {
+                        UserManager.user!!.email?.let { it1 ->
+                            repository.checkSalerAccount(
+                                it,
+                                it1
+                            )
+                        }
+                    }
+            ) {
                 is Result1.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -131,6 +129,4 @@ class ProfileSalerViewModel(private val repository: FishopRepository) : ViewMode
             }
         }
     }
-
-
 }

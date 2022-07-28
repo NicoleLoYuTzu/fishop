@@ -16,7 +16,6 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
 object FishopRemoteDataSource : FishopDataSource {
 
     override suspend fun getUsersInfo(): Result1<Users> {
@@ -35,7 +34,7 @@ object FishopRemoteDataSource : FishopDataSource {
 //                        val list1 = mutableListOf<FishRecord>()
 //                        var count = everydayFishes.result.size()
 //                        for (document1 in everydayFishes.result!!) {
-////                            Logger.d("document1 count => $count")
+// //                            Logger.d("document1 count => $count")
 //                            Logger.d("document1.data => ${document1.data}")
 //                            val fishRecord = document1.toObject(FishRecord::class.java)
 //                            FirebaseFirestore.getInstance()
@@ -79,57 +78,60 @@ object FishopRemoteDataSource : FishopDataSource {
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getFishRecord(User: Users): Result1<List<FishRecord>> =
         suspendCoroutine { continuation ->
-            FirebaseFirestore.getInstance()
-                .collection(PATH_EVERYDAYFISHES)
-                .whereEqualTo("ownerId", User.id)
-                .orderBy("time", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener { everydayFishes ->
-                    val emptyList = listOf<FishRecord>()
-                    Logger.d("ownerId ${User.id}")
-                    if (everydayFishes.result.isEmpty) {
-                        continuation.resume(Result1.Success(emptyList))
+            User.id?.let {
+                FirebaseFirestore.getInstance()
+                    .collection(PATH_EVERYDAYFISHES)
+                    .whereEqualTo("ownerId", User.id)
+                    .get()
+                    .addOnCompleteListener { everydayFishes ->
+                        val emptyList = listOf<FishRecord>()
+                        Logger.d("ownerId ${User.id}")
+                        if (everydayFishes.result.isEmpty) {
+                            continuation.resume(Result1.Success(emptyList))
 
-                        Logger.d("continuation.resume(Result1.Success(emptyList))")
-                    }
+                            Logger.d("continuation.resume(Result1.Success(emptyList))")
+                        }
 
+                        if (everydayFishes.isSuccessful) {
+                            val list1 = mutableListOf<FishRecord>()
+                            var count = everydayFishes.result.size()
+                            for (document1 in everydayFishes.result!!) {
+                                //                            Logger.d("document1 count => $count")
+                                Logger.d("document1.data => ${document1.data}")
+                                val fishRecord = document1.toObject(FishRecord::class.java)
 
-                    if (everydayFishes.isSuccessful) {
-                        val list1 = mutableListOf<FishRecord>()
-                        var count = everydayFishes.result.size()
-                        for (document1 in everydayFishes.result!!) {
-//                            Logger.d("document1 count => $count")
-                            Logger.d("document1.data => ${document1.data}")
-                            val fishRecord = document1.toObject(FishRecord::class.java)
-                            FirebaseFirestore.getInstance()
-                                .collection(PATH_EVERYDAYFISHES)
-                                .document(document1.id)
-                                .collection(PATH_FISHESCOLLECTION)
-                                .get()
-                                .addOnCompleteListener { fishes ->
-                                    // count: 4
-                                    if (fishes.isSuccessful) {
-                                        val category = mutableListOf<FishCategory>()
-                                        for (document2 in fishes.result!!) {
-                                            Logger.d("document2 count => $count")
-                                            Logger.d("document2.data => ${document2.data}")
-                                            category.add(document2.toObject((FishCategory::class.java)))
+                                FirebaseFirestore.getInstance()
+                                    .collection(PATH_EVERYDAYFISHES)
+                                    .document(document1.id)
+                                    .collection(PATH_FISHESCOLLECTION)
+                                    .get()
+                                    .addOnCompleteListener { fishes ->
+                                        // count: 4
+                                        if (fishes.isSuccessful) {
+                                            val category = mutableListOf<FishCategory>()
+                                            for (document2 in fishes.result!!) {
+                                                Logger.d("document2 count => $count")
+                                                Logger.d("document2.data => ${document2.data}")
+                                                category.add(document2.toObject((FishCategory::class.java)))
+                                                fishRecord.fishCategory = category
+                                            }
+                                            list1.add(fishRecord)
+
+                                            Logger.d("fishRecord.fishCategory => ${fishRecord.fishCategory}")
+                                            count -= 1
+                                            if (count == 0) {
+                                                Logger.d("continuation.resume list1) $list1}")
+                                                list1.sortByDescending {
+                                                    it.time.time
+                                                }
+                                                continuation.resume(Result1.Success(list1))
+                                            }
                                         }
-                                        fishRecord.fishCategory = category
-                                        list1.add(fishRecord)
-                                        Logger.d("fishRecord.fishCategory => ${fishRecord.fishCategory}")
-                                        count -= 1
-                                        if (count == 0) {
-                                            Logger.d("continuation.resume list1) $list1}")
-                                            continuation.resume(Result1.Success(list1))
-                                        }
-
                                     }
-
-                                }
+                            }
                         }
                     }
-                }
+            }
         }
 
     private const val PATH_FISHESCATEGORIES = "Categories"
@@ -163,7 +165,6 @@ object FishopRemoteDataSource : FishopDataSource {
                         continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
-
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -178,11 +179,10 @@ object FishopRemoteDataSource : FishopDataSource {
                 .addOnCompleteListener { todaySeller ->
                     Logger.d("${System.currentTimeMillis()}")
 
-                    if(todaySeller.result.isEmpty){
+                    if (todaySeller.result.isEmpty) {
                         val no = listOf<FishToday>()
                         continuation.resume(Result1.Success(no))
                     }
-
 
                     if (todaySeller.isSuccessful) {
                         var list = mutableListOf<FishToday>()
@@ -231,10 +231,9 @@ object FishopRemoteDataSource : FishopDataSource {
                         }
                     }
                 }
-
         }
 
-    //上架前改成當天日期, 下面第二行註解取消
+    // 上架前改成當天日期, 下面第二行註解取消
     override suspend fun getFishTodayFilterAll(fish: String): Result1<List<FishToday>> =
         suspendCoroutine { continuation ->
 //            val todayDate = getNowDate(System.currentTimeMillis())
@@ -247,21 +246,20 @@ object FishopRemoteDataSource : FishopDataSource {
                     var count = todayCategory.result.size()
                     Logger.d("getFishTodayFilterAll count $count}")
 
-                    if(todayCategory.result.isEmpty){
+                    if (todayCategory.result.isEmpty) {
                         val no = listOf<FishToday>()
                         continuation.resume(Result1.Success(no))
                     }
 
-
                     var list = mutableListOf<FishToday>()
-                    Logger.d("category ${fish} ")
+                    Logger.d("category $fish ")
                     Logger.d("todayCategory.documents ${todayCategory.result.documents} ")
                     Logger.d("todayCategory.documents ${todayCategory.result} ")
                     for (document1 in todayCategory.result!!) {
                         Logger.d("document1.data => ${document1.data}")
                         val fishTodayCategory = document1.toObject(FishTodayCategory::class.java)
 
-
+                        // 把有這個tfid的店家都抓出來
                         FirebaseFirestore.getInstance()
                             .collection(PATH_EVERYDAYFISHES)
                             .whereIn("ownerId", listOf(fishTodayCategory.tfId))
@@ -305,7 +303,6 @@ object FishopRemoteDataSource : FishopDataSource {
 
     override suspend fun getChatRecord(): Result1<ChatRecord> =
         suspendCoroutine { continuation ->
-
         }
 
     private const val PATH_USERS = "Users"
@@ -333,7 +330,6 @@ object FishopRemoteDataSource : FishopDataSource {
                         continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
-
         }
 
     override suspend fun getAllSellerAddressResult(ownerId: List<String>): Result1<List<SellerLocation>> =
@@ -363,7 +359,6 @@ object FishopRemoteDataSource : FishopDataSource {
                         continuation.resume(Result1.Fail(FishopApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
-
         }
 
     override suspend fun setTodayFishRecord(
@@ -376,7 +371,7 @@ object FishopRemoteDataSource : FishopDataSource {
 
         fishToday.id = document.id
         fishToday.date = getNow()
-        fishToday.time = System.currentTimeMillis().toString()
+        fishToday.time = Date(System.currentTimeMillis())
         fishToday.ownerId = User.id.toString()
         Logger.i("fishToday.id ${fishToday.id}")
         document
@@ -384,7 +379,6 @@ object FishopRemoteDataSource : FishopDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("setTodayFishRecord: $fishTodays")
-
                 } else {
                     task.exception?.let {
 
@@ -399,7 +393,7 @@ object FishopRemoteDataSource : FishopDataSource {
             var count = Categories.size
             val fishTodayCategoriesDocument = fishTodayCategories.document()
             i.id = fishTodayCategoriesDocument.id
-            i.date = getNowDate(System.currentTimeMillis())
+            i.date = Date(System.currentTimeMillis())
             i.tfId = User.id.toString()
             document.collection(PATH_FISHESCOLLECTION).document(fishTodayCategoriesDocument.id)
                 .set(i).addOnCompleteListener { task ->
@@ -424,19 +418,19 @@ object FishopRemoteDataSource : FishopDataSource {
         }
     }
 
-    override suspend fun checkBuyerAccount(accountType: String,email: String): Result1<Users> =
+    override suspend fun checkBuyerAccount(accountType: String, email: String): Result1<Users> =
         suspendCoroutine { continuation ->
 
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_USERS)
                 .whereEqualTo("email", email)
-                .whereEqualTo("accountType",accountType)
+                .whereEqualTo("accountType", accountType)
                 .get()
                 .addOnCompleteListener { SellerInfo ->
 
                     Logger.i("accountType $accountType, email => $email")
 
-                    if (SellerInfo.result.isEmpty){
+                    if (SellerInfo.result.isEmpty) {
                         val salerInfoIsEmpty = Users()
                         continuation.resume(Result1.Success(salerInfoIsEmpty))
                     }
@@ -447,7 +441,6 @@ object FishopRemoteDataSource : FishopDataSource {
                             Logger.i("salerInfo $salerInfo")
                             continuation.resume(Result1.Success(salerInfo))
                         }
-
                     } else {
                         SellerInfo.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -457,19 +450,19 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
 
-    override suspend fun checkSalerAccount(accountType: String,email: String): Result1<Users> =
+    override suspend fun checkSalerAccount(accountType: String, email: String): Result1<Users> =
         suspendCoroutine { continuation ->
 
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_USERS)
                 .whereEqualTo("email", email)
-                .whereEqualTo("accountType",accountType)
+                .whereEqualTo("accountType", accountType)
                 .get()
                 .addOnCompleteListener { SellerInfo ->
 
                     Logger.i("accountType $accountType, email => $email")
 
-                    if (SellerInfo.result.isEmpty){
+                    if (SellerInfo.result.isEmpty) {
                         val salerInfoIsEmpty = Users()
                         continuation.resume(Result1.Success(salerInfoIsEmpty))
                     }
@@ -480,7 +473,6 @@ object FishopRemoteDataSource : FishopDataSource {
                             Logger.i("salerInfo $salerInfo")
                             continuation.resume(Result1.Success(salerInfo))
                         }
-
                     } else {
                         SellerInfo.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -489,7 +481,6 @@ object FishopRemoteDataSource : FishopDataSource {
                     }
                 }
         }
-
 
     override suspend fun userSignIn(users: Users): Result1<Users> =
         suspendCoroutine { continuation ->
@@ -516,7 +507,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                         Logger.i("salerInfo $salerInfo")
                                         continuation.resume(Result1.Success(salerInfo))
                                     }
-
                                 } else {
                                     SellerInfo.exception?.let {
                                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -548,16 +538,14 @@ object FishopRemoteDataSource : FishopDataSource {
                     for (document2 in SellerInfo.result!!) {
                         salerInfo = document2.toObject(Users::class.java)
                         continuation.resume(Result1.Success(salerInfo))
-                        Logger.i("getSalerInfo salerInfo => ${salerInfo}")
+                        Logger.i("getSalerInfo salerInfo => $salerInfo")
                     }
-
                 }
-
         }
 
     override suspend fun setSalerInfo(users: Users): Result1<Boolean> = suspendCoroutine {
 //        36rzFkt6jRyei8GYjz6X
-            continuation ->
+        continuation ->
         FirebaseFirestore.getInstance()
             .collectionGroup(PATH_USERS)
             .whereEqualTo("id", users.id)
@@ -589,7 +577,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                 if (result.isSuccessful) {
                                     Logger.i(" oldUsers.email => ${oldUsers.email}")
                                     Logger.i("setSalerInfo result.result => ${result.result}")
-
                                 } else {
                                     result.exception?.let {
 
@@ -599,7 +586,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                 }
                                 continuation.resume(Result1.Success(true))
                             }
-
                     }
                 }
             }
@@ -667,7 +653,6 @@ object FishopRemoteDataSource : FishopDataSource {
                         Logger.i("chatRecordResult => $chatRecordResult")
                         Logger.i("chatRecordResultResult.result => ${Result.result.documents}")
 
-
                         chatRecordResult.id.let {
                             FirebaseFirestore.getInstance()
                                 .collection(PATH_CHATROOMS)
@@ -681,7 +666,7 @@ object FishopRemoteDataSource : FishopDataSource {
                                     val chatBoxList = mutableListOf<ChatBoxRecord>()
                                     for (i in Result.result!!) {
                                         Logger.i("chatBoxRecord Result.result ${Result.result}")
-                                        Logger.i("chatBoxRecord i ${i}")
+                                        Logger.i("chatBoxRecord i $i")
                                         chatBoxRecord = i.toObject(ChatBoxRecord::class.java)
                                         chatBoxList.add(chatBoxRecord)
 //                                        chatRecordResult.chats = chatBoxList
@@ -691,7 +676,6 @@ object FishopRemoteDataSource : FishopDataSource {
 
                                     Logger.i("getChatBoxRecord => $chatRecordResult")
                                     Logger.i("chatRecordResult.chats => ${chatRecordResult.chats}")
-
                                 }
                         }
                     }
@@ -720,7 +704,6 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
 
-
     override suspend fun getSalerSnapShotChatRecordResult(user: Users): Result1<List<ChatRecord>> =
         suspendCoroutine { continuation ->
             Logger.d("user.id ${user.id} ")
@@ -744,7 +727,7 @@ object FishopRemoteDataSource : FishopDataSource {
                         }
                     }
                     count = count?.minus(1)
-                    if(count == 0) {
+                    if (count == 0) {
                         continuation.resume(Result1.Success(chatsRecord))
                     }
                 }
@@ -794,7 +777,6 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
         }
 
-
     override suspend fun addChatroom(
         chatRecord: ChatRecord
     ): Result1<ChatRecord> =
@@ -820,7 +802,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                         Logger.i("openNewChatRecord $openNewChatRecord")
                                         continuation.resume(Result1.Success(openNewChatRecord))
                                     }
-
                                 } else {
                                     getNewRoomReady.exception?.let {
                                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -890,18 +871,17 @@ object FishopRemoteDataSource : FishopDataSource {
                                         getLastTimeRecord.result.toObject(ChatRecord::class.java)!!
                                 }
                                 Logger.d("getLastTimeRecord.result ${getLastTimeRecord.result} ")
-                                Logger.d("ChatLastTimeRecord.result ${ChatLastTimeRecord} ")
+                                Logger.d("ChatLastTimeRecord.result $ChatLastTimeRecord ")
                                 continuation.resume(Result1.Success(ChatLastTimeRecord))
                             }
-
                     }
                 }
         }
 
     override suspend fun checkHasRoom(salerId: String, userId: String): Result1<ChatRecord> =
         suspendCoroutine { continuation ->
-            Logger.d("salerId.id ${salerId} ")
-            Logger.d("userId.id ${userId} ")
+            Logger.d("salerId.id $salerId ")
+            Logger.d("userId.id $userId ")
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_CHATROOMS)
                 .whereEqualTo(PATH_SALERID, salerId)
@@ -917,7 +897,6 @@ object FishopRemoteDataSource : FishopDataSource {
                                 ChatLastTimeRecord =
                                     document.toObject(ChatRecord::class.java)!!
                                 continuation.resume(Result1.Success(ChatLastTimeRecord))
-
                             }
                         }
                     }
@@ -940,11 +919,9 @@ object FishopRemoteDataSource : FishopDataSource {
                 }
 
                 liveData.value = list
-
             }
         return liveData
     }
-
 
     @SuppressLint("SimpleDateFormat")
     private fun getNowDate(time: Long): String {
@@ -953,12 +930,12 @@ object FishopRemoteDataSource : FishopDataSource {
         } else {
             val tms = Calendar.getInstance()
             tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                    tms.get(Calendar.MONTH).toString() + "/" +
-                    tms.get(Calendar.YEAR).toString() + " " +
-                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                    tms.get(Calendar.MINUTE).toString() + ":" +
-                    tms.get(Calendar.SECOND).toString()
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
         }
     }
 
@@ -969,14 +946,12 @@ object FishopRemoteDataSource : FishopDataSource {
         } else {
             val tms = Calendar.getInstance()
             tms.get(Calendar.DAY_OF_MONTH).toString() + "/" +
-                    tms.get(Calendar.MONTH).toString() + "/" +
-                    tms.get(Calendar.YEAR).toString() + " " +
-                    tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
-                    tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                    tms.get(Calendar.MINUTE).toString() + ":" +
-                    tms.get(Calendar.SECOND).toString()
+                tms.get(Calendar.MONTH).toString() + "/" +
+                tms.get(Calendar.YEAR).toString() + " " +
+                tms.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                tms.get(Calendar.HOUR_OF_DAY).toString() + ":" +
+                tms.get(Calendar.MINUTE).toString() + ":" +
+                tms.get(Calendar.SECOND).toString()
         }
     }
 }
-
-

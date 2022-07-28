@@ -1,11 +1,10 @@
-package com.nicole.fishop.fishSeller
+package com.nicole.fishop.fishseller
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.R
-import com.nicole.fishop.data.FishCategory
 import com.nicole.fishop.data.FishRecord
 import com.nicole.fishop.data.Result1
 import com.nicole.fishop.data.source.FishopRepository
@@ -17,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FishSellerViewModel (private val repository: FishopRepository) : ViewModel() {
+class FishSellerViewModel(private val repository: FishopRepository) : ViewModel() {
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -25,30 +24,16 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-//    private val _product = MutableLiveData<Product>().apply {
-//        value = arguments
-//    }
-//
-//    val product: LiveData<Product>
-//        get() = _product
-
-
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String?>()
 
     val error: MutableLiveData<String?>
         get() = _error
 
-
     private var _fishRecord = MutableLiveData<List<FishRecord>>()
 
     val fishRecord: LiveData<List<FishRecord>>
         get() = _fishRecord
-
-//    private var _fishCategory = MutableLiveData<List<FishCategory>>()
-//
-//    val fishCategory: LiveData<List<FishCategory>>
-//        get() = _fishCategory
 
     // status for the loading icon of swl
     private val _refreshStatus = MutableLiveData<Boolean>()
@@ -64,7 +49,7 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
         getFishRecordResult()
     }
 
-    fun getFishRecordResult(){
+    fun getFishRecordResult() {
         coroutineScope.launch {
             Logger.d("getFishRecordResult")
 
@@ -97,10 +82,6 @@ class FishSellerViewModel (private val repository: FishopRepository) : ViewModel
                 }
             }
             _refreshStatus.value = false
-
         }
-
     }
-
-
 }

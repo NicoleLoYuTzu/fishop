@@ -3,9 +3,8 @@ package com.nicole.fishop.ext
 import android.app.Activity
 import android.view.Gravity
 import android.widget.Toast
-import com.nicole.fishop.factory.ViewModelFactory
 import com.nicole.fishop.FishopApplication
-import com.nicole.fishop.data.FishRecord
+import com.nicole.fishop.factory.ViewModelFactory
 
 /**
  * Created by Wayne Chen in Jul. 2019.

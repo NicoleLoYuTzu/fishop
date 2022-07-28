@@ -22,7 +22,6 @@ class ProfileSalerEditViewModel(private val repository: FishopRepository) : View
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-
     private val _refreshStatus = MutableLiveData<Boolean>()
 
     val refreshStatus: LiveData<Boolean>
@@ -48,7 +47,7 @@ class ProfileSalerEditViewModel(private val repository: FishopRepository) : View
 //        getSalerInfo()
 //    }
 //
-    fun setSalerInfo(users: Users){
+    fun setSalerInfo(users: Users) {
         coroutineScope.launch {
             Logger.d("setSalerInfo")
             _status.value = LoadApiStatus.LOADING
@@ -75,7 +74,4 @@ class ProfileSalerEditViewModel(private val repository: FishopRepository) : View
             }
         }
     }
-
-
-
 }
