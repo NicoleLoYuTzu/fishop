@@ -8,6 +8,8 @@ Provide two modes to switch between customers and sellers to suit different user
 
 <img src="https://github.com/NicoleLoYuTzu/fishop_readme_gif/blob/main/untitled.gif" height=400>  
 
+<img src="https://github.com/NicoleLoYuTzu/fishop_readme_gif/blob/main/untitled1.gif" height=400>  
+
 
 # Implementation
 ### Design Pattern
