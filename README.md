@@ -6,6 +6,9 @@ appworks school personnal project
 ## Feature
 Provide two modes to switch between customers and sellers to suit different user scenarios
 
+<img src="https://github.com/NicoleLoYuTzu/fishop_readme_gif/blob/main/untitled.gif" height=400>  
+
+
 # Implementation
 ### Design Pattern
 * MVVM
