@@ -26,7 +26,7 @@ Provide two modes to switch between customers and sellers to suit different user
 
 
 # Environment
-* Android SDK 30
+* Android SDK 32
 
 # version
 1.1.6 : 2022/07/29
