@@ -29,7 +29,7 @@ Provide two modes to switch between customers and sellers to suit different user
 * Android SDK 30
 
 # version
-1.5.0 : 2022/05/25
+1.1.6 : 2022/07/29
 
 # contact
 Nicole,  A4207486@gmail.com
