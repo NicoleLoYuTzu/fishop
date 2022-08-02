@@ -2,6 +2,8 @@ package com.nicole.fishop
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Logger.i("MainActivity onCreate")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
 
         val fishop = findViewById<TextView>(R.id.fishop)
         val profileTitle = findViewById<TextView>(R.id.profile_title)

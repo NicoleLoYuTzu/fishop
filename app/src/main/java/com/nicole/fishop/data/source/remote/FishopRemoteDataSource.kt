@@ -240,7 +240,7 @@ object FishopRemoteDataSource : FishopDataSource {
             FirebaseFirestore.getInstance()
                 .collectionGroup(PATH_FISHESCOLLECTION)
                 .whereEqualTo("category", fish)
-                .whereEqualTo("date", getNowDate(System.currentTimeMillis()))
+                .whereEqualTo("dateInStringForFilter", getNow())
                 .get()
                 .addOnCompleteListener { todayCategory ->
                     var count = todayCategory.result.size()
@@ -394,6 +394,7 @@ object FishopRemoteDataSource : FishopDataSource {
             val fishTodayCategoriesDocument = fishTodayCategories.document()
             i.id = fishTodayCategoriesDocument.id
             i.date = Date(System.currentTimeMillis())
+            i.dateInStringForFilter = getNow()
             i.tfId = User.id.toString()
             document.collection(PATH_FISHESCOLLECTION).document(fishTodayCategoriesDocument.id)
                 .set(i).addOnCompleteListener { task ->
