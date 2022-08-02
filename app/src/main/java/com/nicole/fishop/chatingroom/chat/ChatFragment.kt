@@ -79,9 +79,10 @@ class ChatFragment : Fragment() {
                         binding.textViewNochat.isVisible
                         binding.textViewNochat.text = "目前還沒有客人找您~"
                     }
+                } else {
+                    (binding.recyclerView.adapter as ChatAdapter).submitList(it)
                 }
 
-                (binding.recyclerView.adapter as ChatAdapter).submitList(it)
                 Logger.i(" viewModel.chatRecord => $it")
             }
         )
