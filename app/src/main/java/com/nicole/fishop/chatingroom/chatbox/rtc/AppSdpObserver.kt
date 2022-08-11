@@ -1,4 +1,4 @@
-package com.developerspace.webrtcsample
+package com.nicole.fishop.chatingroom.chatbox.rtc
 
 import org.webrtc.SdpObserver
 import org.webrtc.SessionDescription

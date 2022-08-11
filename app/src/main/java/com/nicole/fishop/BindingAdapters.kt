@@ -7,11 +7,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
-
-
 @BindingAdapter("imageUrlTransform")
 fun bindImageTransform(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {

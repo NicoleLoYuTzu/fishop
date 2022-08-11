@@ -31,6 +31,9 @@ import kotlinx.coroutines.launch
 
 class StartDialog() : AppCompatDialogFragment() {
 
+
+    data class Book(var name: String = "", var price: Int = 0)
+
     //    var preferences: SharedPreferences? = null
     private lateinit var binding: ActivityStartDialogBinding
 
@@ -49,6 +52,8 @@ class StartDialog() : AppCompatDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
 
         Logger.i("onCreateView")
 

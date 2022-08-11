@@ -6,11 +6,6 @@ import android.widget.Toast
 import com.nicole.fishop.FishopApplication
 import com.nicole.fishop.factory.ViewModelFactory
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * Extension functions for Activity.
- */
 fun Activity.getVmFactory(): ViewModelFactory {
     val repository = (applicationContext as FishopApplication).repository
     return ViewModelFactory(repository)

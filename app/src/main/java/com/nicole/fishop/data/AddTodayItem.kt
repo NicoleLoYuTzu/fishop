@@ -1,8 +1,5 @@
 package com.nicole.fishop.data
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
 sealed class AddTodayItem {
 
     abstract val id: Long

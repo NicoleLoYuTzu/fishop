@@ -13,11 +13,6 @@ import com.nicole.fishop.login.StartDialogViewModel
 import com.nicole.fishop.profile.ProfileSalerEditViewModel
 import com.nicole.fishop.profile.ProfileSalerViewModel
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * Factory for all ViewModels.
- */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
     private val fishopRepository: FishopRepository
