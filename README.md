@@ -41,100 +41,36 @@ seller could record everyday purchase volume
 # contact
 Nicole,  A4207486@gmail.com
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Introduction to MVVM</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f2f2f2;
-			padding: 20px;
-		}
-		
-		h1 {
-			font-size: 36px;
-			margin-bottom: 20px;
-			color: #005daa;
-			text-align: center;
-		}
-		
-		h2 {
-			font-size: 24px;
-			margin-bottom: 10px;
-			color: #005daa;
-		}
-		
-		p {
-			font-size: 18px;
-			line-height: 1.5;
-			margin-bottom: 20px;
-		}
-		
-		code {
-			background-color: #f2f2f2;
-			padding: 5px;
-			font-family: monospace;
-			font-size: 16px;
-		}
-		
-		ul {
-			list-style-type: disc;
-			margin-bottom: 20px;
-			margin-left: 40px;
-		}
-		
-		li {
-			font-size: 18px;
-			margin-bottom: 10px;
-			line-height: 1.5;
-		}
-		
-		.blockquote {
-			background-color: #f7f7f7;
-			border-left: 10px solid #005daa;
-			padding: 10px 20px;
-			margin: 20px 0;
-			font-size: 18px;
-			line-height: 1.5;
-			color: #666666;
-			quotes: "\201C" "\201D" "\2018" "\2019";
-		}
-		
-		.blockquote:before {
-			content: open-quote;
-			font-size: 40px;
-			line-height: 1;
-			margin-right: 5px;
-			vertical-align: middle;
-		}
-		
-		.blockquote:after {
-			content: close-quote;
-			font-size: 40px;
-			line-height: 1;
-			margin-left: 5px;
-			vertical-align: middle;
-		}
-	</style>
-</head>
-<body>
-	<h1>Introduction to MVVM</h1>
-	
-	<h2>What is MVVM?</h2>
-	<p>MVVM stands for Model-View-ViewModel. It is a design pattern that separates an application into three main components:</p>
-	
-	<ul>
-		<li>The <code>Model</code>, which represents the data and business logic of the application.</li>
-		<li>The <code>View</code>, which represents the user interface.</li>
-		<li>The <code>ViewModel</code>, which acts as a mediator between the Model and the View. It exposes the data from the Model to the View in a way that is easy to bind to, and it also handles user input from the View and updates the Model accordingly.</li>
-	</ul>
-	
-	<p>The MVVM pattern is commonly used in modern web and mobile applications, especially those that utilize a reactive programming approach.</p>
-	
-	<h2>Why use MVVM?</h2>
-	<p>Using MVVM can provide a number of benefits for an application:</p>
-	
-	<ul>
-		<li><strong>Separation of concerns:</strong> By separating
+MVVM Design Pattern
+簡介
+MVVM 是一種設計模式，用於開發基於用戶介面的應用程序。它是 Model-View-ViewModel 的縮寫，這個模式的核心是將 UI 邏輯從 View 中分離出來，並使用 ViewModel 進行管理。
+
+Model
+Model 是您的應用程序的核心部分，它代表您的數據層。它可以包含從本地數據庫、網絡服務、文件等各種來源獲取的數據。Model 通常包含以下幾個部分：
+
+實體類：表示您的數據實體。
+Repository：用於獲取和存儲數據的類。
+DAO：用於與本地數據庫進行交互的類。
+View
+View 是您的應用程序的用戶介面部分。它是用戶與您的應用程序進行交互的地方，因此它應該是清晰、易於使用的。View 包含以下幾個部分：
+
+XML 佈局：包含所有用於構建界面的佈局元素。
+Activity 或 Fragment：用於管理佈局和 UI 狀態。
+ViewModel
+ViewModel 是您的應用程序的業務邏輯部分。它的作用是處理數據、協調 Model 和 View 之間的交互，以及管理應用程序的狀態。ViewModel 包含以下幾個部分：
+
+ViewModel：用於維護與界面相關的數據和狀態。
+MediatorLiveData：用於將 ViewModel 中的數據傳遞到 View 中。
+ViewModelFactory：用於創建 ViewModel 實例。
+如何使用 MVVM
+要使用 MVVM，您需要按照以下步驟操作：
+
+定義您的 Model，包括數據庫表、實體類、Repository 和 DAO。
+定義您的 View，包括 XML 佈局、Activity 或 Fragment。
+定義您的 ViewModel，包括 ViewModel、MediatorLiveData 和 ViewModelFactory。
+在 View 中訂閱 ViewModel 中的 MediatorLiveData，以更新 UI 狀態。
+在 ViewModel 中訂閱 Model 中的數據，以更新 ViewModel 中的 MediatorLiveData。
+MVVM 的優點
+MVVM 的優點包括：
+
+減少代碼耦
